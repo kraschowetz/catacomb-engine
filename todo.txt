@@ -1,0 +1,12 @@
+tile.h
+
+struct Tile {
+	vec2f position;
+	vec2f spr_position;
+	vec2f spr_size;
+	bool solid : 1;
+};
+
+void tile_render(const Tile *t);
+Tile *create_tile();
+void destroy_tile(Tile *self);
