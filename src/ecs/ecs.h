@@ -16,7 +16,7 @@ typedef struct Entity {
 } Entity;
 
 #define ECS_REGISTER(_id, _comp, _ecs, _system) \
-	_ecs_register_internal(_id, _comp, _ecs, _system)
+	_ecs_register_internal(_id, sizeof(_comp), _ecs, _system)
 
 typedef u64 ECS_Tag;
 
@@ -73,5 +73,10 @@ void _ecs_add_internal(Entity entity, ECS_Component component_id, void *val);
 void ecs_event(ECS *self, ECS_Event event);
 Entity ecs_new(ECS *self);
 void ecs_delete(ECS *self, Entity entity);
+void ecs_remove(Entity entity, ECS_Component component);
+bool ecs_has(Entity entity, ECS_Component component);
+void *ecs_get(Entity entity, ECS_Component component);
+void ecs_init(ECS *self);
+void ecs_destroy(ECS *self);
 
 #endif // ECS_H

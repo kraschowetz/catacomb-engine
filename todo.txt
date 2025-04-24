@@ -1,12 +1,4 @@
-tile.h
+ecs is done, but not perfect
 
-struct Tile {
-	vec2f position;
-	vec2f spr_position;
-	vec2f spr_size;
-	bool solid : 1;
-};
-
-void tile_render(const Tile *t);
-Tile *create_tile();
-void destroy_tile(Tile *self);
+- fix ecs alignment XD
+- add pagination to ecs (less memory = gud)

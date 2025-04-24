@@ -1,6 +1,7 @@
 // discretização
 #include "ecs.h"
 #include "ecs_components.h"
+#include <cglm/common.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -139,7 +140,7 @@ void _ecs_add_internal(Entity entity, ECS_Component component_id, void *val) {
 	ECS_ComponentList *list = &entity.ecs->lists[component_id];
 	ECS_Subscriber init = list->system.init;
 	void *component = ECSCL_GET(list, entity.index);
-
+	
 	assert(!(ECS_TAG(component) & ECS_TAG_USED));
 	*ECS_PTAG(component) |= ECS_TAG_USED;
 
@@ -149,5 +150,46 @@ void _ecs_add_internal(Entity entity, ECS_Component component_id, void *val) {
 
 	if (init != NULL) {
         	init(component, entity);
+	}
+}
+
+void ecs_remove(Entity entity, ECS_Component component_id) {
+	ECS_ComponentList *list = &entity.ecs->lists[component_id];
+	ECS_Subscriber destroy = list->system.destroy;
+
+	void *component = ECSCL_GET(list, entity.index);
+
+	assert(ECS_TAG(component) & ECS_TAG_USED);
+	*ECS_PTAG(component) &= ~ECS_TAG_USED;
+
+	if(destroy) {
+		destroy(component, entity);
+	}
+}
+
+bool ecs_has(Entity entity, ECS_Component component) {
+	return ECS_TAG(ECSCL_GET(&entity.ecs->lists[component], entity.index)) & ECS_TAG_USED;
+}
+
+void *ecs_get(Entity entity, ECS_Component component) {
+	assert(ecs_has(entity, component));
+	return ECSCL_GET(&entity.ecs->lists[component], entity.index);
+}
+
+void ecs_init(ECS *self) {
+	self->capacity = 64;
+	self->ids = calloc(self->capacity, sizeof(EntityID));
+	self->used = bitmap_calloc(self->capacity);
+	self->next_entity_id = 1;
+
+	_ecs_init_internals(self);
+}
+
+void ecs_destroy(struct ECS *self) {
+	free(self->used);
+	free(self->ids);
+
+	for (size_t i = 0; i <= ECS_COMP_LAST; i++) {
+		free(self->lists[i].components);
 	}
 }

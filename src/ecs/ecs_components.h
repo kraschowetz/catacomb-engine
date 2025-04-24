@@ -1,7 +1,8 @@
 #ifndef ECS_COMPONENTS_H
 #define ECS_COMPONENTS_H
 
-/* #include "c_position.h" */
+#include "c_position.h" // IWYU pragma: export
+#include "c_printa.h"	// IWYU pragma: export
 
 struct ECS;
 
@@ -11,6 +12,7 @@ struct ECS;
 
 static inline void _ecs_init_internals(struct ECS *ecs) {
 	_ECS_DECLARE_COMP(c_position);
+	_ECS_DECLARE_COMP(c_printa);
 }
 
 #define ECS_COMP_LAST C_PRINTA
