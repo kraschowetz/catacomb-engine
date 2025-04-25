@@ -17,8 +17,12 @@ static inline void _ecs_init_internals(struct ECS *ecs) {
 
 #define ECS_COMP_LAST C_PRINTA
 typedef enum ECS_Component {
-	C_POSITION = 0,
-	C_PRINTA
+	C_POSITION = 0,	// convert to C_TRANSFORM (position & scale)
+	C_PRINTA,	// remove this
+	C_CAMERA,	// orthogonal 2D camera
+	C_SPRITE,	// 2D sprite
+	C_MOVEMENT,	// basic tile based movement
+
 } ECS_Component;
 
 #endif // ECS_COMPONENTS_H

@@ -6,12 +6,12 @@
 #include <string.h>
 
 #define ECS_TAG_SIZE 16
-#define ECS_TAG(_p) *((ECS_Tag *) (((void *) (_p)) - ECS_TAG_SIZE))
-#define ECS_PTAG(_p) ((ECS_Tag *) (((void *) (_p)) - ECS_TAG_SIZE))
+#define ECS_TAG(_p) *((ECS_Tag*) (((u8*) (_p)) - ECS_TAG_SIZE))
+#define ECS_PTAG(_p) ((ECS_Tag*) (((u8*) (_p)) - ECS_TAG_SIZE))
 #define ECSCL_ELEMENT_SIZE(_plist) ((_plist)->component_size + ECS_TAG_SIZE)
 #define ECSCL_GET(_plist, _i) ({\
         ECS_ComponentList *_pl = (_plist);\
-        ((_pl)->components) + ((_i) * ECSCL_ELEMENT_SIZE(_pl)) + ECS_TAG_SIZE;\
+        (u8*)(((_pl)->components)) + ((_i) * ECSCL_ELEMENT_SIZE(_pl)) + ECS_TAG_SIZE;\
     })
 
 void _ecs_register_internal(
@@ -69,7 +69,7 @@ Entity ecs_new(ECS *self) {
 		// realoc bitmap & clear new alloc
 		self->used = bitmap_realloc(self->used, self->capacity);
 		memset(
-			(void*) self->used + BITMAP_SIZE_TO_BYTES(old_cap),
+			(u8*) self->used + BITMAP_SIZE_TO_BYTES(old_cap),
 			0,
 			BITMAP_SIZE_TO_BYTES(self->capacity)-BITMAP_SIZE_TO_BYTES(old_cap)
 		);
@@ -77,7 +77,7 @@ Entity ecs_new(ECS *self) {
 		//realoc idmap & clear new alloc
 		self->ids = realloc(self->ids, self->capacity * sizeof(u64));
 		memset(
-			(void*) self->ids + old_cap,
+			(u8*) self->ids + old_cap,
 			0,
 			(self->capacity - old_cap) * sizeof(u64)
 		);
@@ -90,7 +90,7 @@ Entity ecs_new(ECS *self) {
 			);
 
 			memset(
-				list->components + (old_cap * ECSCL_ELEMENT_SIZE(list)),
+				(u8*)list->components + (old_cap * ECSCL_ELEMENT_SIZE(list)),
 				0,
 				(self->capacity - old_cap) * ECSCL_ELEMENT_SIZE(list)
 			);
@@ -124,7 +124,7 @@ void ecs_delete(ECS *self, Entity entity) {
 		ECS_Subscriber destroy = list->system.destroy;
 
 		void *component = ECSCL_GET(list, entity.index);
-		*ECS_PTAG(component) &= ~ECS_TAG_USED;
+		*ECS_PTAG(component) &= (ECS_Tag) ~ECS_TAG_USED;
 
 		if (destroy != NULL) {
         		destroy(component, entity);
@@ -160,7 +160,7 @@ void ecs_remove(Entity entity, ECS_Component component_id) {
 	void *component = ECSCL_GET(list, entity.index);
 
 	assert(ECS_TAG(component) & ECS_TAG_USED);
-	*ECS_PTAG(component) &= ~ECS_TAG_USED;
+	*ECS_PTAG(component) &= (ECS_Tag) ~ECS_TAG_USED;
 
 	if(destroy) {
 		destroy(component, entity);

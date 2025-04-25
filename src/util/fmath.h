@@ -1,8 +1,8 @@
 #ifndef FMATH_H
 #define FMATH_H
 
-#include "types.h"
-#include <math.h>
+#include "types.h"	// IWYU pragma: export
+#include <math.h>	// IWYU pragma: export
 #include <cglm/cglm.h>
 
 #define PI ((f32)(GLM_PI))

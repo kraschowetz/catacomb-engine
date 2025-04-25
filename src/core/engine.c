@@ -34,7 +34,7 @@ void run_engine(void) {
 	
 	// just toying with ECS
 	Entity player = ecs_new(&ecs);
-	ecs_add(player, C_PRINTA, (C_PrintA){.my_character='b'});
+	ecs_add(player, C_PRINTA, (C_PrintA){.my_string="sou um componente!"});
 	ecs_add(player, C_POSITION);
 	C_Position pos = *(C_Position*) ecs_get(player, C_POSITION);
 

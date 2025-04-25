@@ -1,8 +1,11 @@
 #include "c_printa.h"
 #include "ecs.h"
+#include "../core/input.h"
+#include <SDL2/SDL_keycode.h>
 
 static void tick(C_PrintA *self, Entity entity) {
-	printf("%c\n", self->my_character);
+	if(get_key_just_pressed(SDLK_SPACE))
+		printf("%s\n", self->my_string);
 }
 
 void c_printa_init(struct ECS *ecs) {

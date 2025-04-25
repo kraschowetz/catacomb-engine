@@ -25,7 +25,6 @@ void update_input_state(SDL_Event e) {
 			break;
 		case SDL_KEYUP:
 			_key_buffer[(u8)e.key.keysym.sym] = 0;
-			printf("%d\n", SDL_NumJoysticks());
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			_button_buffer[e.button.button] = 1;
