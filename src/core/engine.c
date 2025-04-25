@@ -29,14 +29,12 @@ void run_engine(void) {
 	renderer = create_renderer(window.sdl_window);
 	
 	ECS ecs;
-	memset(&ecs, 0, sizeof(ECS));
 	ecs_init(&ecs);
 	
 	// just toying with ECS
 	Entity player = ecs_new(&ecs);
 	ecs_add(player, C_PRINTA, (C_PrintA){.my_string="sou um componente!"});
-	ecs_add(player, C_POSITION);
-	C_Position pos = *(C_Position*) ecs_get(player, C_POSITION);
+	ecs_add(player, C_TRANSFORM);
 
 	while(_running) {
 		_poll_events();
