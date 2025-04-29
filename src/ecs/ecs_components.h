@@ -13,14 +13,15 @@ struct ECS;
 static inline void _ecs_init_internals(struct ECS *ecs) {
 	_ECS_DECLARE_COMP(c_transform);
 	_ECS_DECLARE_COMP(c_printa);
+	_ECS_DECLARE_COMP(c_sprite);
 }
 
-#define ECS_COMP_LAST C_PRINTA
+#define ECS_COMP_LAST C_SPRITE
 typedef enum ECS_Component {
 	C_TRANSFORM = 0,	// position, scale & rotation
 	C_PRINTA,		// remove this
-	C_CAMERA,		// orthogonal 2D camera
 	C_SPRITE,		// 2D sprite
+	C_CAMERA,		// orthogonal 2D camera
 	C_MOVEMENT,		// basic tile based movement
 
 } ECS_Component;

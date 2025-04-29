@@ -2,3 +2,5 @@ ecs is done, but not perfect
 
 - fix ecs alignment XD
 - add pagination to ecs (less memory = gud)
+
+- fix sign conversion warnings in stbi

@@ -1,8 +1,8 @@
 #ifndef C_TRANSFORM_H
 #define C_TRANSFORM_H
 
-#include <cglm/struct.h>
 #include "../util/util.h"
+#include <cglm/struct.h>
 
 typedef struct C_Transform {
 	vec2s position, scale;
