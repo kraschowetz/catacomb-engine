@@ -9,8 +9,6 @@ typedef struct Renderer {
 	f32 near_plane, far_plane;
 } Renderer;
 
-extern Renderer renderer;
-
 Renderer create_renderer(SDL_Window *window);
 void destroy_renderer(Renderer *self);
 void render_prepare(void);

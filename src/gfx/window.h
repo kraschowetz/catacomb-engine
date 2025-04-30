@@ -2,7 +2,6 @@
 #define WINDOW_H
 
 #include "gfx.h"
-#include "renderer.h"
 
 typedef struct Window {
 	SDL_Window *sdl_window;
@@ -12,7 +11,5 @@ typedef struct Window {
 
 Window create_window(const char *title, i32 w, i32 h);
 void destroy_window(Window *self);
-
-extern Window window;
 
 #endif // WINDOW_H

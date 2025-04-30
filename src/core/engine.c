@@ -5,8 +5,10 @@
 #include "input.h"
 #include "../gfx/window.h"
 
+#include "state.h"
 #include "../ecs/ecs.h"
 
+GameState game_state;
 bool _running = false;
 
 /*
@@ -36,14 +38,13 @@ void _poll_events(void) {
 void run_engine(void) {
 	_running = true;
 	
-	window = create_window("catacomb engine", 800, 600);
-	renderer = create_renderer(window.sdl_window);
+	game_state.window = create_window("catacomb engine", 800, 600);
+	game_state.renderer = create_renderer(game_state.window.sdl_window);
 	
-	ECS ecs;
-	ecs_init(&ecs);
+	ecs_init(&game_state.ecs);
 	
 	// just toying with ECS
-	Entity player = ecs_new(&ecs);
+	Entity player = ecs_new(&game_state.ecs);
 	ecs_add(player, C_PRINTA, (C_PrintA){.my_string="sou um componente!"});
 	ecs_add(player, C_TRANSFORM);
 	ecs_add(player, C_SPRITE);
@@ -51,9 +52,9 @@ void run_engine(void) {
 	while(_running) {
 		_poll_events();
 
-		// render window
-		render(&renderer, window.sdl_window);
-		/* ecs_event(&ecs, ECS_TICK); */
+		render(&game_state.renderer, game_state.window.sdl_window);
+		ecs_event(&game_state.ecs, ECS_TICK);
+		ecs_event(&game_state.ecs, ECS_RENDER);
 
 		update_global_time();
 	}

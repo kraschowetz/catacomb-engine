@@ -1,5 +1,5 @@
-#ifndef VAO_H
-#define VAO_H
+#ifndef VBO_H
+#define VBO_H
 
 #include "gfx.h"
 
@@ -13,4 +13,4 @@ void destroy_vbo(const VBO *self);
 void vbo_bind(const VBO *self);
 void vbo_buffer(const VBO *self, const void *data, GLsizeiptr offset, GLsizeiptr count);
 
-#endif // VAO_H
+#endif // VBO_H

@@ -1,5 +1,5 @@
-#ifndef VBO_H
-#define VBO_H
+#ifndef VAO_H
+#define VAO_H
 
 #include "vbo.h"
 
@@ -21,4 +21,4 @@ void vao_attr(
 );
 void vao_disable_attr(const VAO *self, const GLuint *ids, size_t id_count);
 
-#endif // VBO_H
+#endif // VAO_H

@@ -1,7 +1,5 @@
 #include "window.h"
 
-Window window;
-
 Window create_window(const char *title, i32 w, i32 h) {
 
 	Window self;
