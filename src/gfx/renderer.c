@@ -77,7 +77,7 @@ void renderer_prepare() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	glViewport(0,0, game_state.window.width, game_state.window.height);
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
@@ -106,10 +106,11 @@ void render(Renderer *self, SDL_Window *window) {
 	// translate -> rotate -> scale
 	glm_mat4_mulN((mat4 *[]){&model, &translation_matrix, &rotation_matrix, &scale_matrix}, 4, model);
 
+	shader_bind(&shader);
+	shader_uniform_mat4(&shader, "u_model", model);
 	shader_uniform_mat4s(&shader, "u_perspective", camera->view_proj.projection);
 	shader_uniform_mat4s(&shader, "u_view", camera->view_proj.view);
 	
-	shader_bind(&shader);
 	triangle_render(triangle);
 
 	SDL_GL_SwapWindow(window);

@@ -1,6 +1,8 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+// basic test header, remove triangle.c & triangle.h later
+
 #include "gfx.h"
 #include "vao.h"
 
