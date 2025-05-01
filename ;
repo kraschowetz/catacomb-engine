@@ -7,6 +7,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../include/stb/stb_image.h"
 
+Shader spr_shader;
+
 static void _render(C_Sprite *self, Entity entity) {
 	vao_bind(&self->vao);
 	glBindTexture(GL_TEXTURE_2D, self->gl_handle);
@@ -82,10 +84,6 @@ static void _init(C_Sprite *self, Entity entity) {
 
 	stbi_image_free(raw_bytes);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	puts("sprite init");
-	printf("pos: %.2f, %.2f\n", position.x, position.y);
-	printf("scl: %.2f, %.2f\n", scale.x, scale.y);
 }
 
 static void _destroy(C_Sprite *self, Entity entity) {

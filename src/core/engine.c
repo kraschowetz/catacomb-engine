@@ -11,17 +11,6 @@
 GameState game_state;
 bool _running = false;
 
-/*
- * this shit segfaults when calling SDL_QUIT
- * segfault happens @ ??(), prolly in ecs_destroy, or sum with stbi image impl
- * fuck...
- *
- * i fucking forgot to update ECS_COMP_LAST to C_SPRITE
- * thus ecs was calling NULL as C_Sprite subscribers
- *
- * i am a total moron
- */
-
 void _poll_events(void) {
 	SDL_Event e;
 	SDL_PollEvent(&e);
@@ -46,15 +35,22 @@ void run_engine(void) {
 	// just toying with ECS
 	Entity player = ecs_new(&game_state.ecs);
 	ecs_add(player, C_PRINTA, (C_PrintA){.my_string="sou um componente!"});
-	ecs_add(player, C_TRANSFORM);
+	ecs_add(
+		player,
+		C_TRANSFORM,
+		((C_Transform) {
+			.position = glms_vec2_zero(),
+			.scale = glms_vec2_one(),
+			.rotation = 0.f
+		})
+	);
 	ecs_add(player, C_SPRITE);
 
 	while(_running) {
 		_poll_events();
 
-		render(&game_state.renderer, game_state.window.sdl_window);
 		ecs_event(&game_state.ecs, ECS_TICK);
-		ecs_event(&game_state.ecs, ECS_RENDER);
+		render(&game_state.renderer, game_state.window.sdl_window);
 
 		update_global_time();
 	}

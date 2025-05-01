@@ -25,6 +25,8 @@
 * i wanna kms
 */
 
+#define GFX_QUAD_RENDERING_ORDER {0, 1, 2, 2, 3, 0}
+
 static inline void _gl_clear_all_errors() {
 	while(glGetError() != GL_NO_ERROR) {}
 }
