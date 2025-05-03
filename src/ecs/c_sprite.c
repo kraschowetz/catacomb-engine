@@ -2,18 +2,51 @@
 #include "c_transform.h"
 #include "ecs.h"
 #include "ecs_components.h"
+#include "../core/time.h"
 #include <cglm/struct/vec2.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../include/stb/stb_image.h"
 
 static void _render(C_Sprite *self, Entity entity) {
+	C_Transform *transform = ecs_get(entity, C_TRANSFORM);
+	vec2s scale;
+	vec2s position;
+	
+	if(transform) {
+		scale = glms_vec2_divs(transform->scale, 2.f);
+		position = transform->position;
+	}
+	else {
+		scale = glms_vec2_one();
+		position = glms_vec2_zero();
+	}
+	f32 gl_positions[12] = {
+		position.x - scale.x,
+		position.y - scale.y,
+		self->z_index,
+		position.x + scale.x,
+		position.y - scale.y,
+		self->z_index,
+		position.x + scale.x,
+		position.y + scale.y,
+		self->z_index,
+		position.x - scale.x,
+		position.y + scale.y,
+		self->z_index
+	};
+	
+	vbo_buffer(&self->vbo_pos, (void*)gl_positions, 0, sizeof(f32) * 12);
+	vao_attr(&self->vao, &self->vbo_pos, 0, 3, GL_FLOAT, 0, 0);
+
 	vao_bind(&self->vao);
 	glBindTexture(GL_TEXTURE_2D, self->gl_handle);
 
 	u32 ids[6] = GFX_QUAD_RENDERING_ORDER;
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, ids);
+
+	transform->position.x += (.25f * global_time.delta_time) * transform->scale.x;
 }
 
 static void _init(C_Sprite *self, Entity entity) {
@@ -51,20 +84,20 @@ static void _init(C_Sprite *self, Entity entity) {
 		scale = glms_vec2_one();
 		position = glms_vec2_zero();
 	}
-
+	
 	f32 gl_positions[12] = {
 		position.x - scale.x,
 		position.y - scale.y,
-		0.f,
+		self->z_index,
 		position.x + scale.x,
 		position.y - scale.y,
-		0.f,
+		self->z_index,
 		position.x + scale.x,
 		position.y + scale.y,
-		0.f,
+		self->z_index,
 		position.x - scale.x,
 		position.y + scale.y,
-		0.f
+		self->z_index
 	};
 
 	f32 uv[8] = {
@@ -82,10 +115,6 @@ static void _init(C_Sprite *self, Entity entity) {
 
 	stbi_image_free(raw_bytes);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	puts("sprite init");
-	printf("pos: %.2f, %.2f\n", position.x, position.y);
-	printf("scl: %.2f, %.2f\n", scale.x, scale.y);
 }
 
 static void _destroy(C_Sprite *self, Entity entity) {

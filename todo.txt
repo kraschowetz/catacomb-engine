@@ -4,3 +4,11 @@ ecs is done, but not perfect
 - add pagination to ecs (less memory = gud)
 
 - fix sign conversion warnings in stbi
+
+-- sprite batching
+
+foreach sprite component:
+	send renderer sprite position, scale & atlas coord;
+	renderer creates a biog vao with all the data and sends a draw call
+
+atlas coords should work as indices (spr_atlas[x][y]);
