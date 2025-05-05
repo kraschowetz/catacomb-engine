@@ -7,5 +7,7 @@ SRC = $(wildcard src/*/*.c) $(wildcard src/*.c)
 OUTPUT = .
 BINNAME = main
 
+DEFS = -D 'DEBUG_GL_SPECS=0' -D 'DEBUG_BATCH_VAO=0'
+
 all: 
-	$(COMPILER) $(SRC) -o $(OUTPUT)/$(BINNAME) $(LIBS) $(FLAGS)
+	$(COMPILER) $(SRC) -o $(OUTPUT)/$(BINNAME) $(LIBS) $(FLAGS) $(DEFS)

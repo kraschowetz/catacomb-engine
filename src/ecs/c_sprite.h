@@ -2,12 +2,11 @@
 #define SPRITE_H
 
 #include "../gfx/vao.h"
+#include <cglm/types-struct.h>
 
 typedef struct C_Sprite {
-	GLuint gl_handle;
-	VAO vao;
-	VBO vbo_pos, vbo_uv;
 	i16 z_index;
+	ivec2s atlas_coords, size;
 } C_Sprite;
 
 #endif // SPRITE_H

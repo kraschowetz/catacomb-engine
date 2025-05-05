@@ -9,22 +9,6 @@
 #include <cglm/cglm.h>					// IWYU pragma: export
 #include <cglm/struct.h>				// IWYU pragma: export
 
-/*
-* nothing is being rendered (???)
-*
-* i need to take a few steps back
-* here and there... outside this machine even
-* then sprint forward
-*
-* remove that C_Sprite bullshit
-* create a raw Triangle @ renderer.c
-* then start again from there
-*
-* update:
-* i forgot to call shader_bind() before rendering...
-* i wanna kms
-*/
-
 #define GFX_QUAD_RENDERING_ORDER {0, 1, 2, 2, 3, 0}
 
 static inline void _gl_clear_all_errors() {

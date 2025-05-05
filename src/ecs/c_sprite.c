@@ -3,6 +3,8 @@
 #include "ecs.h"
 #include "ecs_components.h"
 #include "../core/time.h"
+#include "../core/state.h"
+#include "../gfx/renderer.h"
 #include <cglm/struct/vec2.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -10,111 +12,30 @@
 
 static void _render(C_Sprite *self, Entity entity) {
 	C_Transform *transform = ecs_get(entity, C_TRANSFORM);
-	vec2s scale;
-	vec2s position;
 	
-	if(transform) {
-		scale = glms_vec2_divs(transform->scale, 2.f);
-		position = transform->position;
-	}
-	else {
-		scale = glms_vec2_one();
-		position = glms_vec2_zero();
-	}
-	f32 gl_positions[12] = {
-		position.x - scale.x,
-		position.y - scale.y,
-		self->z_index,
-		position.x + scale.x,
-		position.y - scale.y,
-		self->z_index,
-		position.x + scale.x,
-		position.y + scale.y,
-		self->z_index,
-		position.x - scale.x,
-		position.y + scale.y,
-		self->z_index
-	};
+	renderer_add_sprite_to_batch(	
+		&game_state.renderer,
+		self,
+		transform
+	);
 	
-	vbo_buffer(&self->vbo_pos, (void*)gl_positions, 0, sizeof(f32) * 12);
-	vao_attr(&self->vao, &self->vbo_pos, 0, 3, GL_FLOAT, 0, 0);
-
-	vao_bind(&self->vao);
-	glBindTexture(GL_TEXTURE_2D, self->gl_handle);
-
-	u32 ids[6] = GFX_QUAD_RENDERING_ORDER;
-
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, ids);
-
 	transform->position.x += (.25f * global_time.delta_time) * transform->scale.x;
 }
 
 static void _init(C_Sprite *self, Entity entity) {
-	self->vao = create_vao();
-	self->vbo_pos = create_vbo(GL_ARRAY_BUFFER);
-	self->vbo_uv = create_vbo(GL_ARRAY_BUFFER);
-
-	// silly stbi hack, should declare this once, and not on _init
-	stbi_set_flip_vertically_on_load(true);
-
-	i32 w, h, ch;
-	u8 *raw_bytes = stbi_load("./res/img.png", &w, &h, &ch, STBI_rgb_alpha);
-
-	glGenTextures(1, &self->gl_handle);
-	glBindTexture(GL_TEXTURE_2D, self->gl_handle);
-	glActiveTexture(GL_TEXTURE0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, raw_bytes);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	C_Transform *transform = ecs_get(entity, C_TRANSFORM);
-	
-	vec2s scale;
-	vec2s position;
-
-	if(transform) {
-		scale = glms_vec2_divs(transform->scale, 2.f);
-		position = transform->position;
+	if(self->atlas_coords.x < 0) {
+		self->atlas_coords.x = 0;
 	}
-	else {
-		scale = glms_vec2_one();
-		position = glms_vec2_zero();
+	if(self->atlas_coords.y < 0) {
+		self->atlas_coords.y = 0;
 	}
-	
-	f32 gl_positions[12] = {
-		position.x - scale.x,
-		position.y - scale.y,
-		self->z_index,
-		position.x + scale.x,
-		position.y - scale.y,
-		self->z_index,
-		position.x + scale.x,
-		position.y + scale.y,
-		self->z_index,
-		position.x - scale.x,
-		position.y + scale.y,
-		self->z_index
-	};
 
-	f32 uv[8] = {
-		0, 0,
-		1, 0,
-		1, 1,
-		0, 1
-	};
-
-	vbo_buffer(&self->vbo_pos, (void*)gl_positions, 0, sizeof(f32) * 12);
-	vao_attr(&self->vao, &self->vbo_pos, 0, 3, GL_FLOAT, 0, 0);
-
-	vbo_buffer(&self->vbo_uv, (void*)uv, 0, sizeof(f32) * 8);
-	vao_attr(&self->vao, &self->vbo_uv, 1, 2, GL_FLOAT, 0, 0);
-
-	stbi_image_free(raw_bytes);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	if(self->size.x <= 0) {
+		self->size.x = 1;
+	}
+	if(self->size.y <= 0) {
+		self->size.y = 0;
+	}
 }
 
 static void _destroy(C_Sprite *self, Entity entity) {

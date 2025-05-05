@@ -7,8 +7,8 @@ ecs is done, but not perfect
 
 -- sprite batching
 
-foreach sprite component:
-	send renderer sprite position, scale & atlas coord;
-	renderer creates a biog vao with all the data and sends a draw call
+fix sprites z_index;
 
-atlas coords should work as indices (spr_atlas[x][y]);
+sprites z_index flip sign (??)
+
+add different sprite atlas support

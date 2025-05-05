@@ -16,15 +16,19 @@ bool _running = false;
 // @ my current specs it runs at ~15fps :(
 // gotta find a way to optimize this
 // goal is ~25fps on stress
+//
+// update:
+// sending draw calls in batches with 64 sprites;
+// @ my current specs it runs at ~300fps :D
 
 /*
  * consider:
- * 	- sprite atlasses
- * 	- batching draw calls
- * 	- minimizing gl shader calls
+ * 	- sprite atlasses > done
+ * 	- batching draw calls > done
+ * 	- minimizing gl shader calls > done
  */
 
-const bool stress_test = 0;
+const bool stress_test = 1;
 
 void _poll_events(void) {
 	SDL_Event e;
@@ -54,24 +58,40 @@ void run_engine(void) {
 		player,
 		C_TRANSFORM,
 		((C_Transform) {
-			.position = glms_vec2_zero(),
-			.scale = glms_vec2_one(),
+			.position = (vec2s){{400, 300}},
+			.scale = (vec2s){{1, 1}},
 			.rotation = 0.f
 		})
 	);
-	ecs_add(player, C_SPRITE, ((C_Sprite){.z_index=-1}));
+	ecs_add(
+		player,
+		C_SPRITE,
+		((C_Sprite){
+			.z_index=0,
+			.atlas_coords={{0, 0}},
+			.size = {{160, 160}}
+		})
+	);
 
 	Entity e = ecs_new(&game_state.ecs);
 	ecs_add(
 		e,
 		C_TRANSFORM,
 		((C_Transform) {
-			.position = (vec2s){{-0.5f, 0.f}},
-			.scale = (vec2s){{0.75f, 0.75f}},
+			.position = (vec2s){{32.f, 32.f}},
+			.scale = (vec2s){{1.f, 1.f}},
 			.rotation = 0.f
 		})
 	);
-	ecs_add(e, C_SPRITE, ((C_Sprite){.z_index=0}));
+	ecs_add(
+		e,
+		C_SPRITE,
+		((C_Sprite){
+			.z_index=0,
+			.atlas_coords={{1, 0}},
+			.size = {{64, 64}}
+		})
+	);
 	
 	if(stress_test) {
 		for(int i = 0; i < 0xFFFF; i++) {
@@ -80,12 +100,20 @@ void run_engine(void) {
 				_,
 				C_TRANSFORM,
 				((C_Transform) {
-					.position = (vec2s){{-0.5f, 0.f}},
-					.scale = (vec2s){{0.75f, 0.75f}},
+					.position = (vec2s){{rand()%800, rand()%600}},
+					.scale = (vec2s){{1, 1}},
 					.rotation = 0.f
 				})
 			);
-			ecs_add(_, C_SPRITE, ((C_Sprite){.z_index=rand() % 10}));
+			ecs_add(
+				_,
+				C_SPRITE,
+				((C_Sprite){
+					.z_index=0,
+					.atlas_coords={{rand()%2, 0}},
+					.size = {{32, 32}}
+				})
+			);
 		}
 	}
 
