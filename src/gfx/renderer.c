@@ -4,8 +4,11 @@
 #include "gfx.h"
 #include "../ecs/c_sprite.h"
 
-#include "../../include/stb/stb_image.h"
+#include <SDL2/SDL_keycode.h>
 #include <cglm/struct/mat4.h>
+
+#include "../core/time.h"
+#include "../core/input.h"
 
 Renderer create_renderer(SDL_Window *window) {
 	
@@ -269,6 +272,20 @@ void render(Renderer *self, SDL_Window *window) {
 	_batch_render_sprites(self);
 	
 	SDL_GL_SwapWindow(window);
+	
+	if(get_key_pressed(SDLK_a)) {
+		self->camera->position.x -= 160 * global_time.delta_time;
+	}
+	if(get_key_pressed(SDLK_d)) {
+		self->camera->position.x += 160 * global_time.delta_time;
+	}
+
+	if(get_key_pressed(SDLK_w)) {
+		self->camera->position.y += 160 * global_time.delta_time;
+	}
+	if(get_key_pressed(SDLK_s)) {
+		self->camera->position.y -= 160 * global_time.delta_time;
+	}
 
 	ortho_camera_update(self->camera);
 }

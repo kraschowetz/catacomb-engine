@@ -58,7 +58,7 @@ void run_engine(void) {
 		player,
 		C_TRANSFORM,
 		((C_Transform) {
-			.position = (vec2s){{400, 300}},
+			.position = (vec2s){{800, 600}},
 			.scale = (vec2s){{1, 1}},
 			.rotation = 0.f
 		})
@@ -96,15 +96,15 @@ void run_engine(void) {
 	if(stress_test) {
 		for(int i = 0; i < 0xFFFF; i++) {
 			Entity _ = ecs_new(&game_state.ecs);
-			ecs_add(
-				_,
-				C_TRANSFORM,
-				((C_Transform) {
-					.position = (vec2s){{rand()%800, rand()%600}},
-					.scale = (vec2s){{1, 1}},
-					.rotation = 0.f
-				})
-			);
+			/* ecs_add( */
+			/* 	_, */
+			/* 	C_TRANSFORM, */
+			/* 	((C_Transform) { */
+			/* 		.position = (vec2s){{rand()%800, rand()%600}}, */
+			/* 		.scale = (vec2s){{1, 1}}, */
+			/* 		.rotation = 0.f */
+			/* 	}) */
+			/* ); */
 			ecs_add(
 				_,
 				C_SPRITE,

@@ -7,17 +7,29 @@
 #include "../gfx/renderer.h"
 #include <cglm/struct/vec2.h>
 
-
 static void _render(C_Sprite *self, Entity entity) {
 	C_Transform *transform = ecs_get(entity, C_TRANSFORM);
-	
+	if(!transform) {
+		C_Transform t = (C_Transform) {
+			.position = ((vec2s) {{
+				(f32) game_state.window.width / 2,
+				(f32) game_state.window.height / 2
+			}}),
+			.scale = GLMS_VEC2_ONE
+		};
+		renderer_add_sprite_to_batch(	
+			&game_state.renderer,
+			self,
+			&t
+		);
+		return;
+	}
+
 	renderer_add_sprite_to_batch(	
 		&game_state.renderer,
 		self,
 		transform
 	);
-	
-	transform->position.x += (.25f * global_time.delta_time) * transform->scale.x;
 }
 
 static void _init(C_Sprite *self, Entity entity) {

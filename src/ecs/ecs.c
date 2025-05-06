@@ -171,8 +171,10 @@ bool ecs_has(Entity entity, ECS_Component component) {
 }
 
 void *ecs_get(Entity entity, ECS_Component component) {
-	assert(ecs_has(entity, component));
-	return ECSCL_GET(&entity.ecs->lists[component], entity.index);
+	if(ecs_has(entity, component)) {
+		return ECSCL_GET(&entity.ecs->lists[component], entity.index);
+	}
+	return NULL;
 }
 
 void ecs_init(ECS *self) {

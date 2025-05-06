@@ -1,5 +1,8 @@
 #include "camera.h"
 #include "../core/state.h"
+#include <cglm/struct/affine-pre.h>
+#include <cglm/struct/cam.h>
+#include <cglm/struct/mat4.h>
 
 PerspectiveCamera *create_perspective_camera(f32 fov) {
 	PerspectiveCamera *self = calloc(1, sizeof(PerspectiveCamera));
@@ -61,6 +64,8 @@ void destroy_ortho_camera(OrthoCamera *self) {
 
 void ortho_camera_update(OrthoCamera *self) {
 	self->view_proj.view = glms_mat4_identity();
+	self->view_proj.view = glms_translate(self->view_proj.view, (vec3s){{-self->position.x, -self->position.y, -1.f}});
+
 	self->view_proj.projection = glms_ortho(
 		self->min.x,
 		self->max.x,
