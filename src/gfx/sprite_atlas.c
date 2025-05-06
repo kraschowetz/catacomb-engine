@@ -1,7 +1,8 @@
 #include "sprite_atlas.h"
 
-// sbi image impl
+#define STB_IMAGE_IMPLEMENTATION
 #include "../../include/stb/stb_image.h"
+
 #include "gfx.h"
 #include <cglm/struct/vec2.h>
 
@@ -52,12 +53,12 @@ vec2s sprite_atlas_id_to_uv(const SpriteAtlas *self, ivec2s id) {
 	);
 
 	vec2s result = (vec2s){{
-		id.x * self->sprite_size.x,
-		id.y * self->sprite_size.y,
+		(f32) (id.x * self->sprite_size.x),
+		(f32) (id.y * self->sprite_size.y),
 	}};
 	
-	result.x /= self->size.x * self->sprite_size.x;
-	result.y /= self->size.y * self->sprite_size.y;
+	result.x /= (f32) (self->size.x * self->sprite_size.x);
+	result.y /= (f32) (self->size.y * self->sprite_size.y);
 
 	return result;
 }
@@ -76,23 +77,23 @@ SpriteUV sprite_atlas_id_to_uvs(const SpriteAtlas *self, ivec2s id) {
 	
 	//top left
 	result.raw[3] = (vec2s) {{
-		id.x * self->sprite_size.y / h_id2uv,
-		id.y * self->sprite_size.y / v_id2uv,
+		(f32) (id.x * self->sprite_size.y) / h_id2uv,
+		(f32) (id.y * self->sprite_size.y) / v_id2uv,
 	}};
 	//top right
 	result.raw[2] = (vec2s) {{
-		(id.x+1) * self->sprite_size.y / h_id2uv,
-		id.y * self->sprite_size.y / v_id2uv,
+		(f32) ((id.x+1) * self->sprite_size.y) / h_id2uv,
+		(f32) (id.y * self->sprite_size.y) / v_id2uv,
 	}};
 	//bottom right
 	result.raw[1] = (vec2s) {{
-		(id.x+1) * self->sprite_size.y / h_id2uv,
-		(id.y+1) * self->sprite_size.y / v_id2uv,
+		(f32) ((id.x+1) * self->sprite_size.y) / h_id2uv,
+		(f32) ((id.y+1) * self->sprite_size.y) / v_id2uv,
 	}};
 	//bottom left
 	result.raw[0] = (vec2s) {{
-		id.x * self->sprite_size.y / h_id2uv,
-		(id.y+1) * self->sprite_size.y / v_id2uv,
+		(f32) (id.x * self->sprite_size.y) / h_id2uv,
+		(f32) ((id.y+1) * self->sprite_size.y) / v_id2uv,
 	}};
 
 	return result;

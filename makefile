@@ -1,5 +1,6 @@
 COMPILER = clang
 FLAGS = -Wall -Wextra -Wconversion -Wunreachable-code -Wpointer-arith -O3
+FLAGS += -Wno-unused-parameter
 LIBS = -lm -lcglm -Lgl -Llib -l:glad.a -lSDL2main -lSDL2 -Iinclude/stb
 
 SRC = $(wildcard src/*/*.c) $(wildcard src/*.c) 

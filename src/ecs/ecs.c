@@ -55,7 +55,6 @@ void ecs_event(ECS *self, ECS_Event event) {
 
 Entity ecs_new(ECS *self) {
 	size_t i = 0;
-	
 	for(; i < self->capacity; i += 64) {
 		if(((u64*) self->used)[i/64] != 0xFFFFFFFFFFFFFFFF) {
 			break;

@@ -7,29 +7,6 @@
 #include "../../include/stb/stb_image.h"
 #include <cglm/struct/mat4.h>
 
-static GLuint _load_texture(const char *path) {
-	int w, h, ch;
-	GLuint id;
-
-	stbi_set_flip_vertically_on_load(true);
-	u8 *raw_bytes = stbi_load("./res/img.png", &w, &h, &ch, STBI_rgb_alpha);
-
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	glActiveTexture(GL_TEXTURE0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, raw_bytes);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	stbi_image_free(raw_bytes);
-
-	return id;
-}
-
 Renderer create_renderer(SDL_Window *window) {
 	
 	// init render variables
@@ -134,9 +111,10 @@ static void _batch_render_sprites(Renderer *self) {
 		5 * sizeof(f32),
 		sizeof(f32) * 3
 	);
-
+	
+	// prolly make this a constexpr (or whater is its equivalent in C)
 	u32 ids[SPRITES_PER_BATCH * 6] = {0};
-	for(int i = 0; i < SPRITES_PER_BATCH; i++) {
+	for(u32 i = 0; i < SPRITES_PER_BATCH; i++) {
 		ids[i*6] = i*4;
 		ids[(i*6)+1] = i*4+1;
 		ids[(i*6)+2] = i*4+2;
@@ -156,7 +134,6 @@ static void _batch_render_sprites(Renderer *self) {
 		4,
 		_model.raw
 	);
-
 
 	sprite_atlas_bind(&self->atlasses.tileset);
 	shader_bind(&self->shaders.texture);
@@ -216,8 +193,6 @@ static void _batch_render_sprites(Renderer *self) {
 		0,
 		sizeof(f32) * SPRITES_PER_BATCH * SPRITE_VERTICES * SPRITE_VBO_SIZE
 	);
-
-	/* exit(0); */
 }
 
 void renderer_add_sprite_to_batch(Renderer *self, void *sprite, void *transform) {
@@ -239,20 +214,20 @@ void renderer_add_sprite_to_batch(Renderer *self, void *sprite, void *transform)
 	spr.size.y /= 2;
 
 	f32 vert_pos[12] = {
-		trans.position.x - spr.size.x,
-		trans.position.y - spr.size.y,
+		trans.position.x - (f32) spr.size.x,
+		trans.position.y - (f32) spr.size.y,
 		spr.z_index,
 
-		trans.position.x + spr.size.x,
-		trans.position.y - spr.size.y,
+		trans.position.x + (f32) spr.size.x,
+		trans.position.y - (f32) spr.size.y,
 		spr.z_index,
 
-		trans.position.x + spr.size.x,
-		trans.position.y + spr.size.y,
+		trans.position.x + (f32) spr.size.x,
+		trans.position.y + (f32) spr.size.y,
 		spr.z_index,
 		
-		trans.position.x - spr.size.x,
-		trans.position.y + spr.size.y,
+		trans.position.x - (f32) spr.size.x,
+		trans.position.y + (f32) spr.size.y,
 		spr.z_index,
 	};
 	

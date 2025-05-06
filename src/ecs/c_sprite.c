@@ -7,8 +7,6 @@
 #include "../gfx/renderer.h"
 #include <cglm/struct/vec2.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../include/stb/stb_image.h"
 
 static void _render(C_Sprite *self, Entity entity) {
 	C_Transform *transform = ecs_get(entity, C_TRANSFORM);
