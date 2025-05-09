@@ -6,6 +6,16 @@
 
 struct ECS;
 
+#define ENTITY_NONE 0
+
+typedef u64 EntityID;
+
+typedef struct Entity {
+	EntityID id;
+	u64 index;
+	struct ECS *ecs;
+} Entity;
+
 #define _ECS_DECLARE_COMP(_name) \
 	extern void _name##_init(struct ECS *ecs); \
 	_name##_init(ecs);

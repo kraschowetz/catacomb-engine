@@ -5,16 +5,6 @@
 #include "ecs_components.h"
 #include "../util/bitmap.h"
 
-#define ENTITY_NONE 0
-
-typedef u64 EntityID;
-
-typedef struct Entity {
-	EntityID id;
-	u64 index;
-	struct ECS *ecs;
-} Entity;
-
 #define ECS_REGISTER(_id, _comp, _ecs, _system) \
 	_ecs_register_internal(_id, sizeof(_comp), _ecs, _system)
 

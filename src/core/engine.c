@@ -43,13 +43,22 @@ void _poll_events(void) {
 	update_input_state(e);
 }
 
+
+#include "../util/arraylist.h"
+
 void run_engine(void) {
 	_running = true;
 	
 	game_state.window = create_window("catacomb engine", 800, 600);
 	game_state.renderer = create_renderer(game_state.window.sdl_window);
-	
+
 	ecs_init(&game_state.ecs);
+
+	ArrayList *list = create_arraylist(sizeof(int));
+	
+	arraylist_addraw(list, 12);
+
+	destroy_arraylist(list);
 	
 	// just toying with ECS
 	Entity player = ecs_new(&game_state.ecs);

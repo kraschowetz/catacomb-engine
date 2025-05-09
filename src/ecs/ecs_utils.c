@@ -84,3 +84,30 @@ void ecs_arraylist_set(ECS_ArrayList *self, u64 id, void *val) {
 	void *memset_dest = (u8*)self->raw + self->comp_size * id;
 	memset(memset_dest, 0, self->comp_size);
 }
+
+ECS_SparseSet create_ecs_sparseset(size_t comp_size) {
+	ECS_SparseSet self = {0};
+	
+	self.dense = create_ecs_arraylist(comp_size);
+	self.sparse = create_ecs_arraylist(sizeof(ECS_ArrayList*));
+	self.length = 0;
+
+	return self;
+}
+
+void ecs_sparseset_add(ECS_SparseSet *self, Entity entity, void *comp) {
+	/* self->sparse; */
+}
+
+void destroy_ecs_sparseset(ECS_SparseSet *self) {
+	destroy_ecs_arraylist(&self->sparse);
+	destroy_ecs_arraylist(&self->dense);
+}
+
+void *ecs_sparseset_get(ECS_SparseSet *self, Entity entity) {
+	if(entity.id > self->sparse.length) {
+		return NULL;
+	}
+
+	return NULL;
+}
