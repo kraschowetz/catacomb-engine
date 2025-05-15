@@ -12,25 +12,25 @@
 #define COSF(x) ((f32)(cos(x)))
 #define SINF(x) ((f32)(sin(x)))
 
-#define DEG2RAD(x) ((x) * (typeof(x))(PI / 180.0f))
-#define RAD2DEG(x) ((x) * (typeof(x))(180.0f / PI))
+#define DEG2RAD(x) ((x) * (__typeof__(x))(PI / 180.0f))
+#define RAD2DEG(x) ((x) * (__typeof__(x))(180.0f / PI))
 
 #define MIN(a, b) ({ \
-	typeof(a) _a = (a); \
-	typeof(b) _b = (b); \
+	__typeof__(a) _a = (a); \
+	__typeof__(b) _b = (b); \
 	_a < _b ? _a : _b; \
 })
 
 #define MAX(a, b) ({ \
-	typeof(a) _a = (a); \
-	typeof(b) _b = (b); \
+	__typeof__(a) _a = (a); \
+	__typeof__(b) _b = (b); \
 	_a > _b ? _a : _b; \
 })
 
 #define CLAMP(x, mn, mx) ({\
-	typeof(x) _x = (x); \
-	typeof(mn) _min = (mn); \
-	typeof(mx) _max = (mx); \
+	__typeof__(x) _x = (x); \
+	__typeof__(mn) _min = (mn); \
+	__typeof__(mx) _max = (mx); \
 	MAX(_min, MIN(_max, _x)); \
 })
 

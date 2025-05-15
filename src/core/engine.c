@@ -12,23 +12,7 @@
 GameState game_state;
 bool _running = false;
 
-// creates ~16.5k sprites & transforms;
-// @ my current specs it runs at ~15fps :(
-// gotta find a way to optimize this
-// goal is ~25fps on stress
-//
-// update:
-// sending draw calls in batches with 64 sprites;
-// @ my current specs it runs at ~300fps :D
-
-/*
- * consider:
- * 	- sprite atlasses > done
- * 	- batching draw calls > done
- * 	- minimizing gl shader calls > done
- */
-
-const bool stress_test = 1;
+const bool stress_test = 0;
 
 void _poll_events(void) {
 	SDL_Event e;
@@ -43,9 +27,6 @@ void _poll_events(void) {
 	update_input_state(e);
 }
 
-
-#include "../util/arraylist.h"
-
 void run_engine(void) {
 	_running = true;
 	
@@ -54,15 +35,8 @@ void run_engine(void) {
 
 	ecs_init(&game_state.ecs);
 
-	ArrayList *list = create_arraylist(sizeof(int));
-	
-	arraylist_addraw(list, 12);
-
-	destroy_arraylist(list);
-	
 	// just toying with ECS
 	Entity player = ecs_new(&game_state.ecs);
-	ecs_add(player, C_PRINTA, (C_PrintA){.my_string="sou um componente!"});
 	ecs_add(
 		player,
 		C_TRANSFORM,
@@ -81,7 +55,7 @@ void run_engine(void) {
 			.size = {{160, 160}}
 		})
 	);
-
+	
 	Entity e = ecs_new(&game_state.ecs);
 	ecs_add(
 		e,

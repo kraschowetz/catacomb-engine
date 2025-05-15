@@ -2,7 +2,6 @@
 #include "c_transform.h"
 #include "ecs.h"
 #include "ecs_components.h"
-#include "../core/time.h"
 #include "../core/state.h"
 #include "../gfx/renderer.h"
 #include <cglm/struct/vec2.h>

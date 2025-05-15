@@ -5,6 +5,8 @@
 #include "ecs_components.h"
 #include "limits.h"
 
+#define ECS_SPARSESET_PAGE_SIZE 3
+
 typedef struct { 
 	ArrayList *sparse;
 	ArrayList *dense;
