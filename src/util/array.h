@@ -9,13 +9,13 @@
 		u64 length, capacity;	\
 	} name;				\
 	\
-	extern name *create_##name(u64 capacity); 			\
-	extern name *name##_from(type *src, u64 length); 		\
-	extern void destroy_##name(name *self); 			\
-	extern type name##_get(name *self, u64 index); 			\
-	extern void name##_set(name *self, u64 index, type value); 	\
-	extern void name##_add(name *self, type value); 		\
-	extern void name##_remove(name *self, u64 index);		
+	name *create_##name(u64 capacity); 			\
+	name *name##_from(type *src, u64 length); 		\
+	void destroy_##name(name *self); 			\
+	type name##_get(name *self, u64 index); 		\
+	void name##_set(name *self, u64 index, type value); 	\
+	void name##_add(name *self, type value); 		\
+	void name##_remove(name *self, u64 index);		
 
 DECL_ARRAY(i8, i8_Array)
 DECL_ARRAY(i16, i16_Array)

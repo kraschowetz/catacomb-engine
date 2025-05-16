@@ -70,8 +70,3 @@ IMPL_ARRAY(u64, u64_Array)
 
 IMPL_ARRAY(f32, f32_Array)
 IMPL_ARRAY(f64, f64_Array)
-void _do(void) {
-	f32_Array *a = create_f32_Array(12);
-	int b = 12;
-	array_add(a, (float)b);
-}
