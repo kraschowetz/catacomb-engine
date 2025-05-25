@@ -16,7 +16,7 @@ void main() {
 		_position.x,
 		_position.y,
 		_position.z,
-		_position.w
+		1.0f
 	);
 
 	vertex_color = color;

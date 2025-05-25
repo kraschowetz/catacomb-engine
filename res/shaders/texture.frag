@@ -11,4 +11,6 @@ void main() {
 		u_sprite_atlas,
 		v_uv
 	);
+
+	//color = vec4(1.0);
 }

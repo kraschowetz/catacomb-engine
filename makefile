@@ -1,14 +1,15 @@
-COMPILER = clang
+COMPILER = clang++
 FLAGS = -Wall -Wextra -Wconversion -Wunreachable-code -Wpointer-arith -O3
-FLAGS += -Wno-unused-parameter -std=c11
-LIBS = -lm -lcglm -Lgl -Llib -l:glad.a -lSDL2main -lSDL2 -Iinclude/stb
+FLAGS += -lm -Wno-unused-parameter -std=c++20
+LIBS = -Lgl -Llib -l:glad.a -lSDL2main -lSDL2 -Iinclude/stb
 
-SRC = $(wildcard src/*/*.c) $(wildcard src/*.c) 
+SRC = $(wildcard src/*/*.cpp) $(wildcard src/*.cpp) 
 
 OUTPUT = .
 BINNAME = main
 
-DEFS = -D 'DEBUG_GL_SPECS=0' -D 'DEBUG_BATCH_VAO=0'
+DEFS = -D 'NO_ASSERTS=0'
+DEFS += -D 'DEBUG_GL_SPECS=0' -D 'DEBUG_BATCH_VAO=0'
 
 all: 
 	$(COMPILER) $(SRC) -o $(OUTPUT)/$(BINNAME) $(LIBS) $(FLAGS) $(DEFS)
