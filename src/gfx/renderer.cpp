@@ -5,14 +5,10 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_video.h>
 #include <glm/detail/qualifier.hpp>
-#include "../core/input.hpp"
-#include "textrenderer.hpp"
-
-TextRenderer _text_renderer;
 
 Renderer::Renderer() {
 	vsync = 0;
-	
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -42,9 +38,6 @@ Renderer::Renderer() {
 		"./res/shaders/texture.vert",
 		"./res/shaders/texture.frag"
 	);
-	
-	// tweak this
-	camera = new OrthoCamera(glm::vec2(0, 0), glm::vec2(800, 600));
 
 	atlasses.tileset = new SpriteAtlas("./res/img.png", 0, {16, 16});
 	atlasses.text = new SpriteAtlas("./res/alphabet.png", 1, {8, 8});
@@ -83,6 +76,22 @@ static constexpr std::array<u32, SPRITES_PER_BATCH * 6> _gen_sprite_batch_ids() 
 	return ids;
 }
 
+static glm::ivec2 _char_to_alphabet_coords(char c) {
+	glm::ivec2 pos;
+	
+	const u8 _all_caps_root = 65;
+	const u8 _regular_root = 97;
+
+	if(c >= _regular_root) {
+		pos.y = 0;
+		pos.x = c - _regular_root;
+		return pos;
+	}
+	pos.y = 1;
+	pos.x = c - _all_caps_root;
+	return pos;
+}
+
 void Renderer::batch_render_sprites(u8 atlas_id) {
 	sprite_batcher.vbo.buffer(
 		sprite_batcher.vbo_data,
@@ -114,8 +123,8 @@ void Renderer::batch_render_sprites(u8 atlas_id) {
 	shaders.sprite.bind();
 
 	shaders.sprite.uniform_mat4("u_model", _model);
-	shaders.sprite.uniform_mat4("u_perspective", camera->view_proj.projection);
-	shaders.sprite.uniform_mat4("u_view", camera->view_proj.view);
+	shaders.sprite.uniform_mat4("u_perspective", mat.projection);
+	shaders.sprite.uniform_mat4("u_view", mat.view);
 	shaders.sprite.uniform_i32(
 		"u_sprite_atlas",
 		(i32)atlasses.raw[last_atlas_used]->gl_tex_id
@@ -202,6 +211,49 @@ void Renderer::add_sprite_to_batch(Sprite &sprite, Transform& transform) {
 	sprite_batcher.top += SPRITE_VBO_SIZE * SPRITE_VERTICES;
 }
 
+void Renderer::add_text_to_batch(Text& text, Transform& root) {
+	char *ptr = (char *)text.text;
+	glm::ivec2 pos = {0, 0};
+	while(*ptr) {
+		if(*ptr == ' ') {
+			pos.x++;
+			if(pos.x >= text.bounds.x && text.bounds.x > 0) {
+				pos.x = 0;
+				pos.y++;
+				if(pos.y >= text.bounds.y && text.bounds.y > 0) {
+					break;
+				}
+			}
+			ptr++;
+			continue;
+		}
+		Sprite spr = {
+			.z_index = 127,
+			.atlas_coords = _char_to_alphabet_coords(*ptr),
+			.size = {text.size, text.size},
+			.atlas_index = TEXT_ATLAS,
+		};
+		Transform trans = {
+			.position = {
+				root.position.x + (text.size*pos.x) * root.scale.x,
+				root.position.y + (text.size*pos.y) * root.scale.y,
+			},
+			.scale = root.scale,
+			.rotation = root.rotation
+		};
+
+		gamestate::renderer->add_sprite_to_batch(spr, trans);
+		pos.x++;
+		if(pos.x >= text.bounds.x && text.bounds.x > 0) {
+			pos.x = 0;
+			pos.y++;
+			if(pos.y >= text.bounds.y && text.bounds.y > 0) {
+				break;
+			}
+		}
+		ptr++;
+	}
+}
 
 void Renderer::prepare() {
 	glDisable(GL_CULL_FACE);
@@ -221,37 +273,12 @@ void Renderer::prepare() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
-void Renderer::render() {
-	prepare();
-	
-	auto view = gamestate::ecs->view<Sprite, Transform>();
 
-	view.foreach([&](EntityID id, Sprite& sprite, Transform& transform){
-		add_sprite_to_batch(sprite, transform);
-		transform.position.x += gamestate::delta_time;
-	});
-
-	batch_render_sprites((u8)last_atlas_used);
-
-	_text_renderer.render_text();
-	batch_render_sprites((u8)last_atlas_used);
-
+void Renderer::display() {
 	SDL_GL_SwapWindow(gamestate::window->get_sdl_window());
-	
-	if(input::get_key_pressed((u8)SDLK_RIGHT))
-		camera->position.x += 32 * gamestate::delta_time;
-	if(input::get_key_pressed((u8)SDLK_LEFT))
-		camera->position.x -= 32 * gamestate::delta_time;
-	if(input::get_key_pressed((u8)SDLK_UP))
-		camera->position.y -= 32 * gamestate::delta_time;
-	if(input::get_key_pressed((u8)SDLK_DOWN))
-		camera->position.y += 32 * gamestate::delta_time;
-
-	camera->update();
 }
 
 Renderer::~Renderer() {
 	free(sprite_batcher.vbo_data);
-	delete camera;
 	delete atlasses.tileset;
 }

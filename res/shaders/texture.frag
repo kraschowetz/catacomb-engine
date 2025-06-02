@@ -12,5 +12,7 @@ void main() {
 		v_uv
 	);
 
-	//color = vec4(1.0);
+	if(color == vec4(0)) {
+		discard;
+	}
 }

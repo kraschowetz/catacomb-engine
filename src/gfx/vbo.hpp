@@ -1,7 +1,7 @@
 #ifndef VBO_H
 #define VBO_H
 
-#include "gfx.hpp"
+#include "gfx_util.hpp"
 
 class VBO {
 public:

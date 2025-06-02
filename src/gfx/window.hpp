@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "gfx.hpp"
+#include "gfx_util.hpp"
 
 class Window {
 private: 

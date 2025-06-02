@@ -2,9 +2,9 @@
 
 #include "gamestate.hpp"
 #include "input.hpp"
-#include <SDL2/SDL_events.h>
 
-#include "../ecs/ecs.hpp"
+#include "../ecs/components.hpp"
+#include "../gfx/gfx.hpp"
 
 static bool _running;
 
@@ -34,10 +34,6 @@ static void _update_gamestate_time() {
 		frames = 0;
 	}
 }
-
-#include "../ecs/sprite.hpp"
-#include "../ecs/transform.hpp"
-#include "../ecs/text.hpp"
 
 void catacomb::init() {
 	_running = true;
@@ -78,7 +74,6 @@ void catacomb::init() {
 		.rotation = 0
 	});
 	
-	
 	EntityID _text = gamestate::ecs->create_entity();
 	gamestate::ecs->add<Text>(_text, {
 		.text = "Gulliver",
@@ -91,12 +86,42 @@ void catacomb::init() {
 		.rotation = 0
 	});
 
+	EntityID player = gamestate::ecs->create_entity();
+	gamestate::ecs->add<Transform>(player, {
+		.position = {0, 0},
+		.scale = {3, 3},
+		.rotation = 0
+	});
+	gamestate::ecs->add<Sprite>(player, {
+		.z_index = 1,
+		.atlas_coords = {0, 0},
+		.size = {16, 16},
+		.atlas_index = 1
+	});
+	gamestate::ecs->add<Camera2D>(player,
+		Camera2D(
+		       {0, 0},
+		       {gamestate::window->width, gamestate::window->height}
+		)
+	);
+
 	while(_running) {
 		_poll_events();
 
-		gamestate::renderer->render();
+		{	// player.update();
+			Transform& transform = gamestate::ecs->get<Transform>(player);
 
-		/* gamestate::ecs->get<Transform>(_text).scale += 1 * gamestate::delta_time; */
+			if(input::get_key_pressed((u8)SDLK_RIGHT))
+				transform.position.x += 256 * gamestate::delta_time;
+			if(input::get_key_pressed((u8)SDLK_LEFT))
+				transform.position.x -= 256 * gamestate::delta_time;
+			if(input::get_key_pressed((u8)SDLK_UP))
+				transform.position.y -= 256 * gamestate::delta_time;
+			if(input::get_key_pressed((u8)SDLK_DOWN))
+				transform.position.y += 256 * gamestate::delta_time;
+		}
+
+		gfx::render_cycle();
 
 		_update_gamestate_time();
 	}

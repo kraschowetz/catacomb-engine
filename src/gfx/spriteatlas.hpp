@@ -1,7 +1,7 @@
 #ifndef SPRITEATLAS_H
 #define SPRITEATLAS_H
 
-#include "gfx.hpp"
+#include "gfx_util.hpp"
 #include <array>
 
 using SpriteUV = std::array<glm::vec2, 4>;

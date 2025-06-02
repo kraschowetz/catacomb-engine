@@ -1,5 +1,4 @@
 #include "vbo.hpp"
-#include "gfx.hpp"
 
 void VBO::init(u32 type) {
 	this->type = type;

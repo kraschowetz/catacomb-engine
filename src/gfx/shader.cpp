@@ -1,5 +1,4 @@
 #include "shader.hpp"
-#include "gfx.hpp"
 
 static void _log_err(
 	GLuint handle, const char *adverb, const char *path,
