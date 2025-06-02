@@ -60,9 +60,9 @@ u8 input::get_mouse_click_ammount() {
 
 i8 input::get_key_axis(u8 negative, u8 positive) {
 	i8 res = 0;
-	if(_button_buffer[negative])
+	if(_key_buffer[negative])
 		res--;
-	if(_button_buffer[positive])
+	if(_key_buffer[positive])
 		res++;
 	return res;
 }

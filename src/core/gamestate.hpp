@@ -7,12 +7,12 @@
 #include "timer.hpp"
 
 namespace gamestate {
-	extern Window *window;
-	extern Renderer *renderer;
-	extern ECS *ecs;
-	extern f32 program_time, delta_time;
-	extern Timer program_timer, delta_timer;
-	extern u16 frames;
+	inline Window *window = nullptr;
+	inline Renderer *renderer = nullptr;
+	inline ECS *ecs = nullptr;
+	inline f32 program_time, delta_time;
+	inline Timer program_timer, delta_timer;
+	inline u16 frames;
 }
 
 #endif // GAMESTATE_H

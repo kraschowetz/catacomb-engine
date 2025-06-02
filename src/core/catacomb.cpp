@@ -5,6 +5,7 @@
 
 #include "../ecs/components.hpp"
 #include "../gfx/gfx.hpp"
+#include <glm/geometric.hpp>
 
 static bool _running;
 
@@ -110,15 +111,20 @@ void catacomb::init() {
 
 		{	// player.update();
 			Transform& transform = gamestate::ecs->get<Transform>(player);
-
-			if(input::get_key_pressed((u8)SDLK_RIGHT))
-				transform.position.x += 256 * gamestate::delta_time;
-			if(input::get_key_pressed((u8)SDLK_LEFT))
-				transform.position.x -= 256 * gamestate::delta_time;
-			if(input::get_key_pressed((u8)SDLK_UP))
-				transform.position.y -= 256 * gamestate::delta_time;
-			if(input::get_key_pressed((u8)SDLK_DOWN))
-				transform.position.y += 256 * gamestate::delta_time;
+			
+			glm::vec2 direction = glm::vec2(
+				input::get_key_axis(
+					(u8)SDLK_LEFT, (u8)SDLK_RIGHT
+				),
+				input::get_key_axis(
+					(u8)SDLK_UP, (u8)SDLK_DOWN
+				)
+			);
+			
+			if(glm::length(direction) > 0) {
+			transform.position += 
+				glm::normalize(direction) * 256.f * gamestate::delta_time;
+			}
 		}
 
 		gfx::render_cycle();

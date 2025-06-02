@@ -2,9 +2,8 @@
 #define UTIL_H
 
 #include <iostream>	// IWYU pragma: export
-#include <cstdlib>	// IWYU pragma: export
-#include <type_traits>
 #include "types.hpp"	// IWYU pragma: export
+#include <type_traits>
 
 #define THROW_ERR(_err) {std::cerr << _err << "\n"; std::abort();}
 

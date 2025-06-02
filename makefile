@@ -1,11 +1,12 @@
 COMPILER = clang++
 FLAGS = -Wall -Wextra -Wconversion -Wunreachable-code -Wpointer-arith -O3
 FLAGS += -lm -Wno-unused-parameter -std=c++20
+FLAGS += `sdl2-config --cflags --libs`
 LIBS = -Lgl -Llib -l:glad.a -lSDL2main -lSDL2 -Iinclude/stb
 
-SRC = $(wildcard src/*/*.cpp) $(wildcard src/*.cpp) 
+SRC = $(wildcard src/*/*.cpp) $(wildcard src/*.cpp)
 
-OUTPUT = .
+OUTPUT = ./
 BINNAME = main
 
 DEFS = -D 'NO_ASSERTS=0'
