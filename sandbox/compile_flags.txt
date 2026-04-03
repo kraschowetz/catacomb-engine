@@ -1,0 +1,11 @@
+-std=c++20
+-Wall
+-Wextra
+-Wconversion
+-Wunreacheable-code
+-Wpointer-arith
+-Wno-unused-parameter
+-I../include
+-L../lib
+-D DEVELOP
+-D LINUX
