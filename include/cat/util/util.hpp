@@ -22,3 +22,7 @@ inline std::underlying_type_t<E> enum_val(E e)
 #define NO_COPY(classname)				\
 	classname(const classname&) = delete;		\
 	classname& operator=(const classname&) = delete	\
+
+#define NO_MOVE(classname)				\
+	classname(classname&&) = delete;		\
+	classname& operator=(classname&&) = delete	\

@@ -24,10 +24,16 @@ static inline bool gl_check_error_status(const char* fn, u32 line, const char* f
 
 #ifdef DEVELOP
 
-#define GL_CALL(_x) gl_clear_all_errors(); _x; gl_check_error_status(#_x, __LINE__, __FILE__)
-
+#define GL_CALL(_x)							\
+	do {								\
+		gl_clear_all_errors(); 					\
+		_x;							\
+		gl_check_error_status(#_x, __LINE__, __FILE__);		\
+	} while(false)
+#define GL_CHECK_ERROR gl_check_error_status("_", __LINE__, __FILE__)
 #else
 
 #define GL_CALL(_x) _x
+#define GL_CHECK_ERROR
 
 #endif
