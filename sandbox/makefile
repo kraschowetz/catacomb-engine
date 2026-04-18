@@ -11,7 +11,7 @@ DEBUG=0
 
 DEBUG_FLAGS = -g -O0
 
-DEBUG_FLAGS += -fsanitize=address,undefined -fno-omit-frame-pointer
+DEBUG_FLAGS += -fsanitize=address,undefined -fno-omit-frame-pointer -D DEVELOP
 LSAN_FLAGS = -fsanitize=address,undefined
 
 SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*.c)

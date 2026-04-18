@@ -22,5 +22,6 @@ class Exception : public std::exception
 public:
 	Exception(eErrorCode err) : err_code(std::underlying_type_t<eErrorCode>(err)) {}
 protected:
-	std::underlying_type_t<eErrorCode> err_code; };
+	std::underlying_type_t<eErrorCode> err_code; 
+};
 }

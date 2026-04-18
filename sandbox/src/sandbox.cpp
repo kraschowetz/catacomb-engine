@@ -1,8 +1,10 @@
+#include "cat/config.hpp"
 #include "cat/core/input.hpp"
 #include "cat/gfx/canvas.hpp"
 #include "cat/gfx/sdl_canvas.hpp"
 #include "cat/core/input_manager.hpp"
 #include "cat/util/logger.hpp"
+#include "cat/ecs/ecs.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -38,6 +40,19 @@ int main(int argc, char** argv)
 
 		cat::Input::update();
 	}
+
+	// pretty basic ECS use
+	cat::ECS ecs;
+
+	ecs.register_component_index<int>();
+	cat::EntityID a = ecs.create_entity();
+	ecs.add_component<int>(a, 12);
+
+	auto view = ecs.view<int>();
+
+	view.foreach([](int i){LOG_TEXTF("%d\n", i);});
+	ecs.remove_component<int>(a);
+	ecs.delete_entity(a);
 
 	cat::Input::quit();
 

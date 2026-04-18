@@ -23,7 +23,7 @@ typedef u8 byte_t;
 
 #ifdef DEVELOP
 
-#define DEBUGBREAK __builtin_debugtrap()
+#define DEBUGBREAK __builtin_trap()
 #define CAT_ASSERT(expr) if(!(expr)) DEBUGBREAK
 
 #else
