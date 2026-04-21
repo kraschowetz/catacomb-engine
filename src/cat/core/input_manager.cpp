@@ -86,20 +86,24 @@ static eKeyType cast_sdl_event_to_cat(SDL_Event& e)
 	}
 }
 
-Unique<Input> Input::s_singleton = nullptr;
+std::vector<u8> input::s_prev_key_buff;
+std::vector<u8> input::s_key_buff;
+std::vector<u8> input::s_prev_mouse_buff;
+std::vector<u8> input::s_mouse_buff;
+bool input::s_is_queued_system_exit = false;
 
-void Input::update()
+void input::update()
 {
 	SDL_Event event;
 
 	memcpy(
-		s_singleton->m_prev_key_buff.data(),
-		s_singleton->m_key_buff.data(),
+		s_prev_key_buff.data(),
+		s_key_buff.data(),
 		s_NUM_KEYS
 	);
 	memcpy(
-		s_singleton->m_prev_mouse_buff.data(),
-		s_singleton->m_prev_mouse_buff.data(),
+		s_prev_mouse_buff.data(),
+		s_prev_mouse_buff.data(),
 		s_NUM_MOUSE_BUTTONS
 	);
 
@@ -110,82 +114,80 @@ void Input::update()
 			eKeyType kt = cast_sdl_event_to_cat(event);
 			u32 id = enum_val(kt);
 
-			s_singleton->m_key_buff[id] = 1;
+			s_key_buff[id] = 1;
 		}
 		else if(event.type == SDL_KEYUP)
 		{
 			eKeyType kt = cast_sdl_event_to_cat(event);
 			u32 id = enum_val(kt);
 			
-			s_singleton->m_key_buff[id] = 0;
+			s_key_buff[id] = 0;
 		}
 		else if(event.type == SDL_QUIT || event.type == SDL_APP_TERMINATING)
 		{
-			s_singleton->m_is_queued_system_exit = true;
+			s_is_queued_system_exit = true;
 		}
 	}
 }
 
-void Input::init()
+void input::init()
 {
-	s_singleton = std::make_unique<Input>();
-
-	s_singleton->m_prev_key_buff.assign(s_NUM_KEYS, 0);
-	s_singleton->m_key_buff.assign(s_NUM_KEYS, 0);
-	s_singleton->m_prev_mouse_buff.assign(s_NUM_MOUSE_BUTTONS, 0);
-	s_singleton->m_mouse_buff.assign(s_NUM_MOUSE_BUTTONS, 0);
+	s_prev_key_buff.assign(s_NUM_KEYS, 0);
+	s_key_buff.assign(s_NUM_KEYS, 0);
+	s_prev_mouse_buff.assign(s_NUM_MOUSE_BUTTONS, 0);
+	s_mouse_buff.assign(s_NUM_MOUSE_BUTTONS, 0);
 }
 
-void Input::quit()
+void input::quit()
 {
-	s_singleton.reset();
+	// TODO?
 }
 
-bool Input::is_key_pressed(eKeyType key)
+bool input::is_key_pressed(eKeyType key)
 {
 	u32 id = enum_val(key);
 
-	return s_singleton->m_key_buff[id];
+	return s_key_buff[id];
 }
 
-bool Input::is_key_just_pressed(eKeyType key)
+bool input::is_key_just_pressed(eKeyType key)
 {
 	u32 id = enum_val(key);
 
-	return s_singleton->m_key_buff[id] && !s_singleton->m_prev_key_buff[id];
+	return s_key_buff[id] && !s_prev_key_buff[id];
 }
 
-bool Input::is_key_just_released(eKeyType key)
+bool input::is_key_just_released(eKeyType key)
 {
 	u32 id = enum_val(key);
 
-	return s_singleton->m_prev_key_buff[id] && !s_singleton->m_key_buff[id];
+	return s_prev_key_buff[id] && !s_key_buff[id];
 }
 
-bool Input::is_mouse_button_pressed(eMouseButton button)
+bool input::is_mouse_button_pressed(eMouseButton button)
 {
 	u32 id = enum_val(button);
 	
-	return s_singleton->m_mouse_buff[id];
+	return s_mouse_buff[id];
 }
 
-bool Input::is_mouse_button_just_pressed(eMouseButton button)
+bool input::is_mouse_button_just_pressed(eMouseButton button)
 {
 	u32 id = enum_val(button);
 
-	return s_singleton->m_mouse_buff[id] && !s_singleton->m_prev_mouse_buff[id];
+	return s_mouse_buff[id] && !s_prev_mouse_buff[id];
 }
 
-bool Input::is_mouse_button_just_released(eMouseButton button)
+bool input::is_mouse_button_just_released(eMouseButton button)
 {
 	u32 id = enum_val(button);
 
-	return !s_singleton->m_mouse_buff[id] && s_singleton->m_prev_mouse_buff[id];
+	return !s_mouse_buff[id] && s_prev_mouse_buff[id];
 }
 
-bool Input::has_queued_exit()
+bool input::has_queued_exit()
 {
-	return s_singleton->m_is_queued_system_exit;
+	return s_is_queued_system_exit;
 }
 
 }

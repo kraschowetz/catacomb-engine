@@ -7,7 +7,7 @@
 namespace cat
 {
 
-class Input
+struct input
 {
 public:
 	static void update();
@@ -26,14 +26,14 @@ public:
 	static bool has_queued_exit();
 
 private:
-	std::vector<u8> m_prev_key_buff;
-	std::vector<u8> m_key_buff;
-	std::vector<u8> m_prev_mouse_buff;
-	std::vector<u8> m_mouse_buff;
+	input() = default;
 
-	bool m_is_queued_system_exit = false;
+	static std::vector<u8> s_prev_key_buff;
+	static std::vector<u8> s_key_buff;
+	static std::vector<u8> s_prev_mouse_buff;
+	static std::vector<u8> s_mouse_buff;
 
-	static Unique<Input> s_singleton;
+	static bool s_is_queued_system_exit;
 	
 	static constexpr u32 s_NUM_KEYS = 256;
 	static constexpr u32 s_NUM_MOUSE_BUTTONS = 16;

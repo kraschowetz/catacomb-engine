@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Wextra -Wconversion -Wunreachable-code
 CXXFLAGS += -Wpointer-arith -std=c++20 -g
 CXXFLAGS += -Iinclude
 # TODO: add a real switch between release & debug mode
-CXXFLAGS += -D DEVELOP -D LINUX
+CXXFLAGS += -D DEVELOP -D LINUX -D ENABLE_BENCHMARK
 LDFLAGS = -Llib
 #-l:glad.a -Iinclude/stb
 
