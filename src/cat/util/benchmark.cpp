@@ -1,4 +1,4 @@
-#if BENCHMARK_ENABLED
+#if ENABLE_BENCHMARK
 
 #include "cat/util/chrono.hpp"
 #include <cat/util/benchmark.hpp>

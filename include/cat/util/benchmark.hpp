@@ -11,6 +11,9 @@
 
 #if ENABLE_BENCHMARK
 
+#define BENCHMARK_IN_SECONDS true
+#define BENCHMARK_IN_MILLIS false
+
 namespace cat
 {
 

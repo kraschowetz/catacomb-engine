@@ -1,4 +1,3 @@
-#include "cat/config.hpp"
 #include "cat/core/input.hpp"
 #include "cat/gfx/canvas.hpp"
 #include "cat/gfx/sdl_canvas.hpp"
@@ -27,6 +26,7 @@ int main(int argc, char** argv)
 	
 	while(!cat::input::has_queued_exit())
 	{
+		CAT_BENCH_SCOPE("update loop", bench_marker);
 		if(cat::input::is_key_just_released(cat::eKeyType::A))
 		{
 			LOG_TEXT("A was just released!\n");
@@ -45,12 +45,6 @@ int main(int argc, char** argv)
 		cat::engine::update_internals();
 	}
 
-	for(int i = 0; i < 10; ++i)
-	{
-		CAT_BENCH_SCOPE("update loop", bench_marker);
-		sleep(1);
-	}
-
 	// pretty basic ECS use
 	cat::ECS ecs;
 
@@ -66,7 +60,7 @@ int main(int argc, char** argv)
 
 	cat::engine::destroy_internals();
 
-	CAT_BENCH_DISPLAY(false);
+	CAT_BENCH_DISPLAY(BENCHMARK_IN_MILLIS);
 
 	return 0;
 }

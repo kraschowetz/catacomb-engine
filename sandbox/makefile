@@ -1,18 +1,21 @@
-CXX = g++
+CXX = clang++
 CXXFLAGS = -Wall -Wextra -Wconversion -Wunreachable-code
 CXXFLAGS += -Wno-unused-parameter
-CXXFLAGS += -Wpointer-arith -std=c++20 -O3
+CXXFLAGS += -Wpointer-arith -std=c++20
 CXXFLAGS += `sdl2-config --cflags --libs`
-LDFLAGS = -I../include -I../dependencies -L../lib -L../bin -lcatacomb -lSDL2 -l:glad.a
+LDFLAGS = -I../include -I../dependencies -L../lib -L../bin -lm -lcatacomb -lSDL2 -l:glad.a
 #LDFLAGS = -lSDL2main #only needed on windows
 #LDFLAGS += `pkg-config --cflags assimp` `pkg-config --libs assimp`
 
-DEBUG=0
+DEBUG=1
 
-DEBUG_FLAGS = -g -O0
+DBGLV_FLAGS_0 = -O3
 
-DEBUG_FLAGS += -fsanitize=address,undefined -fno-omit-frame-pointer -D DEVELOP
-LSAN_FLAGS = -fsanitize=address,undefined
+DBGLV_FLAGS_1 = -g -O1 -D DEVELOP -D ENABLE_BENCHMARK
+
+DBGLV_FLAGS_2 = -g -O0 -D DEVELOP -D ENABLE_BENCHMARK
+
+LSAN_FLAGS = -fsanitize=address,undefined -fno-omit-frame-pointer
 
 SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*.c)
 OUTPUT = main
@@ -21,9 +24,11 @@ OUTPUT = main
 
 all: dir
 ifeq ($(DEBUG), 0)
-	$(CXX) $(SRC) -o bin/$(OUTPUT) $(CXXFLAGS) $(LDFLAGS)
-else
-	$(CXX) $(SRC) -o bin/$(OUTPUT) $(CXXFLAGS) $(DEBUG_FLAGS) $(LDFLAGS) $(LSAN_FLAGS)
+	$(CXX) $(SRC) -o bin/$(OUTPUT) $(CXXFLAGS) $(DBGLV_FLAGS_0) $(LDFLAGS)
+else ifeq ($(DEBUG), 1)
+	$(CXX) $(SRC) -o bin/$(OUTPUT) $(CXXFLAGS) $(DBGLV_FLAGS_1) $(LDFLAGS)
+else ifeq ($(DEBUG), 2)
+	$(CXX) $(SRC) -o bin/$(OUTPUT) $(CXXFLAGS) $(DBGLV_FLAGS_2) $(LDFLAGS) $(LSAN_FLAGS)
 endif
 
 clear:

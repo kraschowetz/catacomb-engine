@@ -3,6 +3,8 @@
 #include <cat/core/input_manager.hpp>
 #include <cat/util/chrono.hpp>
 
+#include <cat/util/logger.hpp>
+
 void cat::engine::init_internals()
 {
 	chrono::init();
