@@ -31,6 +31,8 @@ public:
 		, message(msg)
 	{}
 
+    // TODO: implement const char* what();
+
 protected:
 	std::underlying_type_t<eErrorCode> err_code; 
 	std::string message;

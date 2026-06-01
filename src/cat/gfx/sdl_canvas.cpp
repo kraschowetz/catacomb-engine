@@ -1,6 +1,7 @@
 #include <cat/gfx/sdl_canvas.hpp>
 
 #include "cat/config.hpp"
+#include "cat/gfx/display_server.hpp"
 #include "cat/gfx/gfx_util.hpp"
 #include "cat/util/logger.hpp"
 #include <SDL2/SDL_video.h>
@@ -22,7 +23,7 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 		SDL_WINDOW_OPENGL
 	);
 
-	m_gl_handle = SDL_GL_CreateContext(m_sdl_handle);
+    DisplayServer::init(SDL_GL_CreateContext(m_sdl_handle), {});
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, static_cast<i32>(info.version.major));
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, static_cast<i32>(info.version.minor));
@@ -39,11 +40,14 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 	}
 
 	m_info = info;
+    DisplayServer::get().update({});
 }
 
 SdlCanvas::~SdlCanvas()
 {
-	SDL_GL_DeleteContext(m_gl_handle);
+	SDL_GL_DeleteContext(
+        const_cast<void*>(DisplayServer::get().get_handle())
+    );
 	SDL_DestroyWindow(m_sdl_handle);
 	SDL_Quit();
 }

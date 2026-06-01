@@ -17,7 +17,7 @@ u32 VertexElement::get_size() const
 		case GL_SHORT:	 	return sizeof(i16);
 		case GL_BYTE: 		return sizeof(i8);
 		default: 		return 0;
-	}	
+	}
 }
 
 u32 VertexLayout::get_stride() const

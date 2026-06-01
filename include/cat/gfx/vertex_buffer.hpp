@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cat/gfx/vertex_layout.hpp>
-#include <cat/util/util.hpp>
+#include <cat/gfx/vertex_layout.hpp>    // IWYU pragma: export
+#include <cat/util/util.hpp>            // IWYU pragma: export
 
 namespace cat
 {
