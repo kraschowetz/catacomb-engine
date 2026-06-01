@@ -1,8 +1,6 @@
 #include "cat/core/input.hpp"
 #include "cat/core/memory.hpp"
 #include "cat/core/resource_manager.hpp"
-#include "cat/gfx/canvas.hpp"
-#include "cat/gfx/sdl_canvas.hpp"
 #include "cat/core/input_manager.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/ecs/ecs.hpp"
@@ -10,8 +8,8 @@
 #include <cat/util/benchmark.hpp>
 #include <cat/gfx/vertex_array.hpp>
 #include <cat/gfx/gfx_util.hpp>
+#include <cat/gfx/shader_loader.hpp>
 #include <functional>
-#include <iostream>
 
 #include <string>
 #include <unistd.h>
@@ -85,10 +83,11 @@ int main(int argc, char** argv)
 
     cat::Engine::init();
 
-    cat::ResourceManager::get().register_resource<ResourceSample, ResourceSampleLoader>();
-    cat::Shared<ResourceSample> resource = cat::ResourceManager::get()
-        .load<ResourceSample, ResourceSampleLoader>(
-            "pretend/this/is/a/file"
+    cat::ResourceManager::get().register_resource<cat::Shader, cat::ShaderLoader>();
+    cat::Shared<cat::Shader> resource = cat::ResourceManager::get()
+        .load<cat::Shader, cat::ShaderLoader>(
+            "pretend/this/is/a/file",
+            ""
         );
     
     // bare-bones game loop

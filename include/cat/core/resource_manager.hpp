@@ -28,7 +28,7 @@ concept ResourceLoader = requires(L loader, ResT* res)
 template<typename L, typename ResT, typename... Args>
 concept ResourceLoaderFor = requires(L loader, ResT* ptr, Args... args) {
     { loader.hash(args...) } -> std::convertible_to<hash_t>;
-    { loader.load(args...) } -> std::convertible_to<ResT>;
+    { loader.load(args...) } -> std::same_as<ResT>;
 };
 
 // type-erased ResourcePool interface

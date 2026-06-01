@@ -1,12 +1,11 @@
 #pragma once
 
 #include <cat/config.hpp>
+#include <cat/gfx/shader.hpp>
 #include <string>
 
 namespace cat
 {
-
-class Shader;
 
 struct ShaderLoader
 {

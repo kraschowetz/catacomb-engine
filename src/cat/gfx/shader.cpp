@@ -17,6 +17,16 @@ void Shader::unbind() const
     GL_CALL(glUseProgram(0));
 }
 
+u32 Shader::get_handle() const
+{
+    return m_handle;
+}
+
+u32& Shader::get_handle_ref()
+{
+    return m_handle;
+}
+
 void Shader::set_uniform(const std::string& name, f32 val) const
 {
     i32 location = glGetUniformLocation(m_handle, name.c_str());

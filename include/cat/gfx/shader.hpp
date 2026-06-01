@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cat/gfx/shader_loader.hpp>
 #include <cat/util/math.hpp>
 #include <cat/util/util.hpp>
 
@@ -15,6 +14,9 @@ public:
     ~Shader() = default;
 
     NO_COPY(Shader);
+
+    Shader(Shader&&) = default;
+    Shader& operator=(Shader&&) = default;
 
     u32 get_handle() const;
     u32& get_handle_ref();

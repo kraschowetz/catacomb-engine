@@ -87,7 +87,8 @@ private:
 
             u64 slot = m_free_slots[--m_free_count];
 
-            new (&m_buffer[slot]) T(std::move(obj));
+            T* ptr = reinterpret_cast<T*>(&m_buffer[slot]);
+            new (ptr) T(std::move(obj));
 
             return {slot, reinterpret_cast<T*>(&m_buffer[slot])};
         }
