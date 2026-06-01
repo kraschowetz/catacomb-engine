@@ -38,7 +38,7 @@ private:
 	static millis_t s_epoch;
 	static seconds_t s_delta;
 
-	friend struct engine;
+	friend class Engine;
 };
 
 }
