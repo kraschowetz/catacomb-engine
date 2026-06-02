@@ -18,8 +18,7 @@ enum class eErrorCode : u32
 	BAD_CAST,
 };
 
-class Exception : public std::exception
-{
+class Exception : public std::exception {
 public:
 	Exception(eErrorCode err) : err_code(std::underlying_type_t<eErrorCode>(err)) {}
 	Exception(std::string&& msg) 
@@ -31,7 +30,7 @@ public:
 		, message(msg)
 	{}
 
-    // TODO: implement const char* what();
+    const char* what() const noexcept override {return message.c_str();}
 
 protected:
 	std::underlying_type_t<eErrorCode> err_code; 

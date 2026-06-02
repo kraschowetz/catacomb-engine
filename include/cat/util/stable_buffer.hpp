@@ -43,14 +43,13 @@ public:
         {
             if(!m_blocks[i].has_free_slot()) continue;
 
-            return make_shared(m_blocks[i], i, std::move(obj));
+            return make_shared(m_blocks[i], std::move(obj));
         }
 
         // no block is free
-        m_blocks.emplace_back();
-        u64 block_index = m_blocks.size() - 1;
+        m_blocks.emplace_back(m_last_block_hash++);
 
-        return make_shared(m_blocks.back(), block_index, std::move(obj));
+        return make_shared(m_blocks.back(), std::move(obj));
     }
 
     u64 block_count() const { return m_blocks.size(); }
@@ -62,6 +61,16 @@ private:
     {
     public:
         Block()
+        {
+            // fill m_free_slots
+            for(u64 i = 0; i < BlockSize; ++i)
+            {
+                m_free_slots[i] = i;
+            }
+        }
+
+        Block(hash_t hash)
+        : m_id(hash)
         {
             // fill m_free_slots
             for(u64 i = 0; i < BlockSize; ++i)
@@ -98,6 +107,11 @@ private:
             m_free_slots[m_free_count++] = slot;
         }
 
+        bool operator==(const Block& other) const
+        {
+            return this->m_id == other.m_id;
+        }
+
     private:
         // raw memeory storage to avoid calling ctors & dtors
         using Storage = std::aligned_storage_t<sizeof(T), alignof(T)>;
@@ -105,16 +119,17 @@ private:
         
         std::array<u64, BlockSize> m_free_slots;
         u64 m_free_count = BlockSize;
+        hash_t m_id;
     };
 
     // helper method: inserts an obj into a block & return its ptr
-    Shared<T> make_shared(Block& block, u64 block_index, T&& obj)
+    Shared<T> make_shared(Block& block, T&& obj)
     {
         auto [slot, ptr] = block.insert(std::move(obj));
 
         return Shared<T>(ptr, 
             // custom deleter, should call `Deleter`, obj dtor and check if memory block could be freed
-            [this, &block, block_index, slot](T* resource)
+            [this, &block, slot](T* resource)
             {
                 if constexpr(!std::is_same_v<Deleter, NoopDeleter>)
                 {
@@ -128,7 +143,7 @@ private:
                 // check if block could be freed
                 if(block.empty())
                 {
-                    m_blocks.erase(m_blocks.begin() + (i64)(block_index));
+                    std::erase_if(m_blocks, [&block](Block& _block){ return _block == block;});
                 }
             }
         );
@@ -136,6 +151,7 @@ private:
 
     // use a deque so no block reallocs would happen
     std::deque<Block> m_blocks;
+    hash_t m_last_block_hash = 0;
 
         // zero-size if NoopDeleter, thanks to [[no_unique_address]]
     [[no_unique_address]] Deleter m_deleter;

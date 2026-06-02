@@ -86,8 +86,8 @@ int main(int argc, char** argv)
     cat::ResourceManager::get().register_resource<cat::Shader, cat::ShaderLoader>();
     cat::Shared<cat::Shader> resource = cat::ResourceManager::get()
         .load<cat::Shader, cat::ShaderLoader>(
-            "pretend/this/is/a/file",
-            ""
+            "./sandbox/res/shader.vert",
+            "./sandbox/res/shader.frag"
         );
     
     // bare-bones game loop

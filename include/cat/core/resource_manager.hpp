@@ -2,7 +2,7 @@
 
 #include "cat/core/memory.hpp"
 #include <cat/util/dense_map.hpp>
-#include <cat/util/storage_buffer.hpp>
+#include <cat/util/stable_buffer.hpp>
 #include <memory>
 #include <typeindex>
 #include <utility>
@@ -41,14 +41,14 @@ struct iResourcePool
 };
 
 // concrete ResourcePool
-// holds a StorageBuffer (blocksize set via template) of a Resource
+// holds a StableBuffer (blocksize set via template) of a Resource
 // ResourcePool calls `LoaderT` for loading, hashing & unloading resources
 template <typename ResT, ResourceLoader<ResT> LoaderT, u64 BlockSize = 16>
 struct ResourcePool : public iResourcePool
 {
 public:
     // wrapper for `LoaderT.unload(ResT*)`
-    // used as the deleter of the StorageBuffer
+    // used as the deleter of the StableBuffer
     struct LoaderDeleter
     {
         LoaderT* loader;
@@ -92,7 +92,7 @@ public:
 private:
     LoaderT m_loader;
     DenseMap<hash_t, Weak<ResT>> m_ptr_map;
-    StorageBuffer<ResT, BlockSize, LoaderDeleter> m_buffer;
+    StableBuffer<ResT, BlockSize, LoaderDeleter> m_buffer;
 };
 
 // global resource manager
