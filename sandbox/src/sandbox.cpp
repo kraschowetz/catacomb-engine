@@ -2,6 +2,8 @@
 #include "cat/core/memory.hpp"
 #include "cat/core/resource_manager.hpp"
 #include "cat/core/input_manager.hpp"
+#include "cat/gfx/vertex_buffer.hpp"
+#include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/ecs/ecs.hpp"
 #include <cat/core/engine.hpp>
@@ -9,19 +11,51 @@
 #include <cat/gfx/vertex_array.hpp>
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/gfx/shader_loader.hpp>
-#include <functional>
 
-#include <string>
 #include <unistd.h>
 
-void _render_triangle(cat::VertexBuffer& vbo, cat::VertexArray& vao)
+void _raw_render_triangle()
+{
+    static bool initialized = false;
+    static u32 vao, vbo;
+
+    if(!initialized)
+    {
+        float vertices[] = {
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.0f,  0.5f, 0.0f
+        };
+
+        glGenVertexArrays(1, &vao);
+        glGenBuffers(1, &vbo);
+
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        initialized = true;
+    }
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void _render_triangle()
 {
     using namespace cat;
+
     VertexLayout layout;
     // position
     layout.push_f32(3);
     // color
     layout.push_f32(3);
+
+    static cat::VertexBuffer vbo{6 * sizeof(float), 3, cat::eBufferType::VERTEX};
+    static cat::VertexArray vao{};
 
     constexpr f32 POSITION_BUFFER[9] = {
         -1, -1, 0,
@@ -29,13 +63,13 @@ void _render_triangle(cat::VertexBuffer& vbo, cat::VertexArray& vao)
         0, 1, 0
     };
 
-    constexpr f32 COLOR_BUFFER[9] = {
+    const f32 COLOR_BUFFER[9] = {
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
     };
 
-    constexpr u32 ids[3] = {0, 1, 2};
+    const u32 ids[3] = {0, 1, 2};
 
     vbo.buffer(POSITION_BUFFER, layout, 0);
     vbo.buffer(COLOR_BUFFER, layout, 1);
@@ -43,7 +77,7 @@ void _render_triangle(cat::VertexBuffer& vbo, cat::VertexArray& vao)
     vao.attr(vbo, layout);
     vao.bind();
 
-    GL_CALL(glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, ids));
+    GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 }
 
 int main(int argc, char** argv)
@@ -51,11 +85,12 @@ int main(int argc, char** argv)
     cat::Engine::init();
 
     cat::ResourceManager::get().register_resource<cat::Shader, cat::ShaderLoader>();
-    cat::Shared<cat::Shader> resource = cat::ResourceManager::get()
+    cat::Shared<cat::Shader> shader = cat::ResourceManager::get()
         .load<cat::Shader, cat::ShaderLoader>(
             "./res/shader.vert",
             "./res/shader.frag"
         );
+
     
     // bare-bones game loop
     while(!cat::input::has_queued_exit())
@@ -68,6 +103,14 @@ int main(int argc, char** argv)
         {
             LOG_TEXT("A has been pressed\n");
         }
+
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+        shader->bind();
+
+        _render_triangle();
+
+        cat::Engine::display();
     }
 
     { // ECS sample

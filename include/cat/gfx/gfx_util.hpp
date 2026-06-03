@@ -6,7 +6,7 @@
 
 static inline void gl_clear_all_errors()
 {
-	while(glGetError() != GL_NO_ERROR) { DEBUGBREAK; }
+	while(glGetError() != GL_NO_ERROR) { ;; }
 }
 
 static inline bool gl_check_error_status(const char* fn, u32 line, const char* file)

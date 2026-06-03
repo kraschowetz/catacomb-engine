@@ -23,13 +23,13 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 		SDL_WINDOW_OPENGL
 	);
 
-    DisplayServer::init(SDL_GL_CreateContext(m_sdl_handle), {});
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, static_cast<i32>(info.version.major));
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, static_cast<i32>(info.version.minor));
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    DisplayServer::init(SDL_GL_CreateContext(m_sdl_handle), {});
 
 	SDL_GL_SetSwapInterval(1);
 	
@@ -41,10 +41,12 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 
 	m_info = info;
     DisplayServer::get().update({});
+    LOG_TEXT("canvas created!\n");
 }
 
 SdlCanvas::~SdlCanvas()
 {
+    LOG_TEXT("canvas deleted!\n");
 	SDL_GL_DeleteContext(
         const_cast<void*>(DisplayServer::get().get_handle())
     );
@@ -54,10 +56,12 @@ SdlCanvas::~SdlCanvas()
 
 void SdlCanvas::begin_frame()
 {
+    DisplayServer::get().prepare(eRenderPass::PASS_2D);
 }
 
 void SdlCanvas::end_frame()
 {
+    SDL_GL_SwapWindow(m_sdl_handle);
 }
 
 void SdlCanvas::poll_events()

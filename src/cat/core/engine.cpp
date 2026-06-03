@@ -1,5 +1,7 @@
 #include "cat/config.hpp"
 #include "cat/gfx/canvas.hpp"
+#include "cat/gfx/display_server.hpp"
+#include "cat/util/logger.hpp"
 #include <cat/core/engine.hpp>
 
 #include <cat/core/input_manager.hpp>
@@ -36,6 +38,7 @@ Engine* Engine::s_singleton = nullptr;
 
 Engine::Engine()
 {
+    LOG_TEXT("initing engine\n");
     m_gfx_config = CAT_DEFAULT_GFX_CONFIG;
 
     CanvasInfo canvas_info = CAT_DEFAULT_WINDOW_CONFIG;
@@ -46,4 +49,5 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+    LOG_TEXT("deleting engine\n");
 }

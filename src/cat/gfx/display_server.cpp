@@ -16,7 +16,9 @@ void DisplayServer::quit()
 
 void DisplayServer::update(const GfxConfig& config)
 {
-    glViewport(0, 0, config.resolution.x, config.resolution.y);
+    LOG_TEXTF("%dx%d\n", config.resolution.x, config.resolution.y);
+
+    glViewport(0, 0, 800, 600);
     glClearColor(
         config.clear_color.r,
         config.clear_color.g,

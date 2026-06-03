@@ -46,7 +46,7 @@ u32 VertexLayout::get_offset(u32 index) const
 	{
 		const VertexElement& element = m_elements[i];
 
-		offset += element.count + element.get_size();
+		offset += element.count * element.get_size();
 	}
 
 	return offset;

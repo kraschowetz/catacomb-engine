@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/display_server.hpp"
 #include <cat/config.hpp>
 #include <cat/core/memory.hpp>
 #include <cat/gfx/gfx_config.hpp>
@@ -32,6 +33,15 @@ public:
     static void init();
     static void quit();
     static void update();
+
+    static void render_prepare(eRenderPass pass)
+    {
+        s_singleton->m_main_window->begin_frame();
+    }
+    static void display()
+    {
+        s_singleton->m_main_window->end_frame();
+    }
 
 private:
     Engine();

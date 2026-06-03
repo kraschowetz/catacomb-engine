@@ -1,5 +1,7 @@
 #include <cat/gfx/shader.hpp>
 
+#include <SDL2/SDL.h>
+
 #include <cat/gfx/gfx_util.hpp>
 
 using namespace cat;
