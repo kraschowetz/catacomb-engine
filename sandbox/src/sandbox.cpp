@@ -46,48 +46,15 @@ void _render_triangle(cat::VertexBuffer& vbo, cat::VertexArray& vao)
     GL_CALL(glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, ids));
 }
 
-struct ResourceSample
-{
-    u64 data;
-
-    ResourceSample(const std::string& s)
-    {
-        data = std::hash<std::string>{}(s);
-    }
-};
-
-struct ResourceSampleLoader
-{
-    ResourceSample load(const std::string& s)
-    {
-        LOG_TEXT("laoding resource!\n");
-        return ResourceSample(s);
-    }
-
-    hash_t hash(const std::string& s)
-    {
-        return std::hash<std::string>{}(s);
-    }
-
-    void unload(ResourceSample* r)
-    {
-        LOG_TEXT("unlaoding resource!\n");
-        r->data = 0;
-    }
-
-};
-
 int main(int argc, char** argv)
 {
-    LOG_TEXT("hello\n");
-
     cat::Engine::init();
 
     cat::ResourceManager::get().register_resource<cat::Shader, cat::ShaderLoader>();
     cat::Shared<cat::Shader> resource = cat::ResourceManager::get()
         .load<cat::Shader, cat::ShaderLoader>(
-            "./sandbox/res/shader.vert",
-            "./sandbox/res/shader.frag"
+            "./res/shader.vert",
+            "./res/shader.frag"
         );
     
     // bare-bones game loop

@@ -66,7 +66,7 @@ public:
     template<typename... Args>
     Shared<ResT> load_or_get(Args&& ...args) THROWS
     {
-        hash_t hash = m_loader.hash(std::forward<Args>(args)...);
+        hash_t hash = m_loader.hash(args...);
 
         if(m_ptr_map.contains(hash))
         {
