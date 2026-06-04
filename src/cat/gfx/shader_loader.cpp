@@ -1,3 +1,4 @@
+#include "cat/gfx/gfx_engine.hpp"
 #include <cat/gfx/shader_loader.hpp>
 
 #include <cat/gfx/gfx_util.hpp>
@@ -43,6 +44,13 @@ static void _log_err(
 
 static u32 _compile(const std::string& path, GLenum type)
 {
+    // check if opengl ptrs are valid
+    // if theyre not, the GfxEngine was probably not loaded
+    if(!glCreateShader)
+    {
+        GfxEngine::get();
+    }
+
     std::ifstream file(path);
 
     if(!file.is_open())

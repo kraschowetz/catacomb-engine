@@ -58,9 +58,9 @@ void _render_triangle()
     static VertexArray vao{};
 
     constexpr f32 POSITION_BUFFER[9] = {
-        -1, -1, 0,
-        1, -1, 0,
-        0, 1, 0
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
     };
 
     const f32 COLOR_BUFFER[9] = {
@@ -85,9 +85,6 @@ int main(int argc, char** argv)
     using namespace cat;
 
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
-
-    // force `GfxEngine` to init here, to avoid lag in the game loop
-    GfxEngine::get();
 
     resource_manager.register_resource<Shader, ShaderLoader>();
     Shared<Shader> shader = resource_manager
