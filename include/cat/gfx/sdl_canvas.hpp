@@ -18,6 +18,7 @@ public:
 
 private:
 	SDL_Window* m_sdl_handle;
+    void* m_gl_handle;
 	CanvasInfo m_info;
 };
 

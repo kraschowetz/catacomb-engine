@@ -1,5 +1,6 @@
 #include <cat/gfx/display_server.hpp>
 
+/*
 using namespace cat;
 
 DisplayServer* DisplayServer::s_singleton = nullptr;
@@ -55,3 +56,4 @@ DisplayServer::DisplayServer(void* gl_handle)
 {
 
 }
+*/

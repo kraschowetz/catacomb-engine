@@ -1,7 +1,7 @@
-#include "cat/core/input.hpp"
 #include "cat/core/memory.hpp"
 #include "cat/core/resource_manager.hpp"
 #include "cat/core/input_manager.hpp"
+#include "cat/gfx/gfx_engine.hpp"
 #include "cat/gfx/vertex_buffer.hpp"
 #include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/logger.hpp"
@@ -54,8 +54,8 @@ void _render_triangle()
     // color
     layout.push_f32(3);
 
-    static cat::VertexBuffer vbo{6 * sizeof(float), 3, cat::eBufferType::VERTEX};
-    static cat::VertexArray vao{};
+    static VertexBuffer vbo{6 * sizeof(float), 3, eBufferType::VERTEX};
+    static VertexArray vao{};
 
     constexpr f32 POSITION_BUFFER[9] = {
         -1, -1, 0,
@@ -69,7 +69,7 @@ void _render_triangle()
         0, 0, 1
     };
 
-    const u32 ids[3] = {0, 1, 2};
+    // const u32 ids[3] = {0, 1, 2};
 
     vbo.buffer(POSITION_BUFFER, layout, 0);
     vbo.buffer(COLOR_BUFFER, layout, 1);
@@ -82,44 +82,49 @@ void _render_triangle()
 
 int main(int argc, char** argv)
 {
-    cat::Engine::init();
+    using namespace cat;
 
-    cat::ResourceManager::get().register_resource<cat::Shader, cat::ShaderLoader>();
-    cat::Shared<cat::Shader> shader = cat::ResourceManager::get()
-        .load<cat::Shader, cat::ShaderLoader>(
+    ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
+
+    // force `GfxEngine` to init here, to avoid lag in the game loop
+    GfxEngine::get();
+
+    resource_manager.register_resource<Shader, ShaderLoader>();
+    Shared<Shader> shader = resource_manager
+        .load<Shader, ShaderLoader>(
             "./res/shader.vert",
             "./res/shader.frag"
         );
 
     
     // bare-bones game loop
-    while(!cat::input::has_queued_exit())
+    while(!CoreEngine::get().get_input_manager().has_queued_exit())
     {
         CAT_BENCH_SCOPE("update loop", bench_marker);
 
-        cat::Engine::update();  
+        CoreEngine::get().update();  
 
-        if(cat::input::is_key_just_released(cat::eKeyType::SPACE))
+        if(CoreEngine::get().get_input_manager().is_key_just_released(eKeyType::SPACE))
         {
             LOG_TEXT("A has been pressed\n");
         }
 
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        GfxEngine::get().prepare(eRenderPass::PASS_2D);
 
         shader->bind();
 
         _render_triangle();
 
-        cat::Engine::display();
+        GfxEngine::get().display();
     }
 
     { // ECS sample
         // create ECS & register components
-        cat::ECS ecs;
+        ECS ecs;
         ecs.register_component_index<i64>();
         
         // creante entities and add components
-        cat::EntityID entity_a = ecs.create_entity();
+        EntityID entity_a = ecs.create_entity();
         ecs.add_component(entity_a, 12);
 
         // create a view and iterate trhough components
@@ -132,5 +137,4 @@ int main(int argc, char** argv)
     }
     
     CAT_BENCH_DISPLAY(BENCHMARK_IN_SECONDS);
-    cat::Engine::quit();
 }

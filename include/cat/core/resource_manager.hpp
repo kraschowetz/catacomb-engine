@@ -101,13 +101,6 @@ private:
 class ResourceManager
 {
 public:
-    static ResourceManager& get() 
-    {
-        // avoid initialization-order fiasco
-        static ResourceManager instance;
-        return instance;
-    }
-
     // brief: register a component pool
     // tparam `ResourceT`: typename of resource that will be registered
     // tparam `LoaderT`: ResourceLoader concept for ResourceT
@@ -144,8 +137,6 @@ public:
 
 private:
     DenseMap<hash_t, Unique<iResourcePool>> m_resource_pools;
-
-    friend class Engine;
 };
 
 }

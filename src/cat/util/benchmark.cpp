@@ -4,20 +4,22 @@
 #include <cat/util/benchmark.hpp>
 
 #include <cat/util/logger.hpp>
+#include <cat/core/engine.hpp>
 #include <cmath>
 #include <numeric>
 
+using namespace cat;
 
-std::unordered_map<std::string_view, std::vector<millis_t>> cat::BenchMarker::s_library;
+std::unordered_map<std::string_view, std::vector<millis_t>> BenchMarker::s_library;
 
-cat::BenchMarker::BenchMarker(const std::string_view& label)
+BenchMarker::BenchMarker(const std::string_view& label)
 	: m_label(label)
-	, m_start_time(cat::chrono::current_millis())
+    , m_start_time(CoreEngine::get().get_chrono().current_millis())
 {}
 
-cat::BenchMarker::~BenchMarker()
+BenchMarker::~BenchMarker()
 {
-	millis_t duration = chrono::current_millis() - m_start_time;
+	millis_t duration = CoreEngine::get().get_chrono().current_millis() - m_start_time;
 	s_library[m_label].push_back(duration);
 }
 
@@ -46,7 +48,7 @@ static f64 _variance(const std::vector<millis_t>& data)
 	);
 }
 
-void cat::BenchMarker::display(bool convert_to_seconds)
+void BenchMarker::display(bool convert_to_seconds)
 {
 	using LogSection = std::pair<std::string_view, std::vector<millis_t>>;
 

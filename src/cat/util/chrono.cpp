@@ -3,10 +3,6 @@
 using namespace cat;
 using namespace std::chrono;
 
-millis_t chrono::s_last_millis = 0;
-millis_t chrono::s_epoch = 0;
-seconds_t chrono::s_delta = 0.f;
-
 static inline millis_t _get_now_millis()
 {
 	return static_cast<millis_t>(
@@ -16,31 +12,31 @@ static inline millis_t _get_now_millis()
 	);
 }
 
-void chrono::init()
+Chrono::Chrono()
 {
-	s_epoch = _get_now_millis();
+	m_epoch = _get_now_millis();
 }
 
-void chrono::update()
+void Chrono::update()
 {
 	millis_t now = _get_now_millis();
-	millis_t ms_delta = now - s_last_millis;
+	millis_t ms_delta = now - m_last_millis;
 
-	s_delta = static_cast<seconds_t>(ms_delta) / 1000.f;
-	s_last_millis = now;
+	m_delta = static_cast<seconds_t>(ms_delta) / 1000.f;
+	m_last_millis = now;
 }
 
-millis_t chrono::current_millis()
+millis_t Chrono::current_millis() const
 {
-	return _get_now_millis() - s_epoch;
+	return _get_now_millis() - m_epoch;
 }
 
-seconds_t chrono::current_seconds()
+seconds_t Chrono::current_seconds() const
 {
-	return static_cast<seconds_t>(_get_now_millis() - s_epoch) / 1000.f;
+	return static_cast<seconds_t>(_get_now_millis() - m_epoch) / 1000.f;
 }
 
-seconds_t chrono::get_delta()
+seconds_t Chrono::get_delta() const
 {
-	return s_delta;
+	return m_delta;
 }

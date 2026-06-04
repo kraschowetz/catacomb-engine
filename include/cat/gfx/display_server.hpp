@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <cat/gfx/gfx_util.hpp>     // IWYU pragma: export
 #include <cat/gfx/gfx_config.hpp>   // IWYU pragma: export
 
@@ -35,3 +35,4 @@ private:
 };
 
 }
+*/

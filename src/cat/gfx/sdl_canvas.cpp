@@ -1,7 +1,6 @@
 #include <cat/gfx/sdl_canvas.hpp>
 
 #include "cat/config.hpp"
-#include "cat/gfx/display_server.hpp"
 #include "cat/gfx/gfx_util.hpp"
 #include "cat/util/logger.hpp"
 #include <SDL2/SDL_video.h>
@@ -29,7 +28,7 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-    DisplayServer::init(SDL_GL_CreateContext(m_sdl_handle), {});
+    m_gl_handle = SDL_GL_CreateContext(m_sdl_handle);
 
 	SDL_GL_SetSwapInterval(1);
 	
@@ -40,23 +39,17 @@ SdlCanvas::SdlCanvas(CanvasInfo& info)
 	}
 
 	m_info = info;
-    DisplayServer::get().update({});
-    LOG_TEXT("canvas created!\n");
 }
 
 SdlCanvas::~SdlCanvas()
 {
-    LOG_TEXT("canvas deleted!\n");
-	SDL_GL_DeleteContext(
-        const_cast<void*>(DisplayServer::get().get_handle())
-    );
+	SDL_GL_DeleteContext(m_gl_handle);
 	SDL_DestroyWindow(m_sdl_handle);
 	SDL_Quit();
 }
 
 void SdlCanvas::begin_frame()
 {
-    DisplayServer::get().prepare(eRenderPass::PASS_2D);
 }
 
 void SdlCanvas::end_frame()
