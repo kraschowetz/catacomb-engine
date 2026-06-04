@@ -5,7 +5,7 @@
 #include "cat/gfx/vertex_buffer.hpp"
 #include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/logger.hpp"
-#include "cat/ecs/ecs.hpp"
+#include "cat/core/ecs.hpp"
 #include <cat/core/engine.hpp>
 #include <cat/util/benchmark.hpp>
 #include <cat/gfx/vertex_array.hpp>
