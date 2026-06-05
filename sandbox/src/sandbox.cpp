@@ -11,38 +11,9 @@
 #include <cat/gfx/vertex_array.hpp>
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/gfx/shader_loader.hpp>
+#include <cat/gfx/texture_loader.hpp>
 
 #include <unistd.h>
-
-void _raw_render_triangle()
-{
-    static bool initialized = false;
-    static u32 vao, vbo;
-
-    if(!initialized)
-    {
-        float vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
-        };
-
-        glGenVertexArrays(1, &vao);
-        glGenBuffers(1, &vbo);
-
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        initialized = true;
-    }
-
-    glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-}
 
 void _render_triangle()
 {
@@ -87,6 +58,7 @@ int main(int argc, char** argv)
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
 
     resource_manager.register_resource<Shader, ShaderLoader>();
+    resource_manager.register_resource<Texture, TextureLoader>();
     Shared<Shader> shader = resource_manager
         .load<Shader, ShaderLoader>(
             "./res/shader.vert",
@@ -99,7 +71,7 @@ int main(int argc, char** argv)
     {
         CAT_BENCH_SCOPE("update loop", bench_marker);
 
-        CoreEngine::get().update();  
+        CoreEngine::get().update();
 
         if(CoreEngine::get().get_input_manager().is_key_just_released(eKeyType::SPACE))
         {
@@ -117,7 +89,7 @@ int main(int argc, char** argv)
 
     { // ECS sample
         // create ECS & register components
-        ECS ecs;
+        ECS& ecs = CoreEngine::get().get_ecs();
         ecs.register_component_index<i64>();
         
         // creante entities and add components

@@ -7,13 +7,6 @@
 #include <cat/core/resource_manager.hpp>
 #include <cat/util/chrono.hpp>
 
-enum eEstadoJogador
-{
-    ANDANDO,
-    CORRENDO,
-    NO_AR
-};
-
 namespace cat
 {
 
@@ -41,31 +34,4 @@ private:
     ECS m_ecs;
 };
 
-/*
-class CoreEngine
-{
-public:
-    static void init();
-    static void quit();
-    static void update();
-
-    static void render_prepare(eRenderPass pass)
-    {
-        s_singleton->m_main_window->begin_frame();
-    }
-    static void display()
-    {
-        s_singleton->m_main_window->end_frame();
-    }
-
-    CoreEngine();
-    ~CoreEngine();
-
-private:
-    GfxConfig m_gfx_config;
-    Unique<SdlCanvas> m_main_window;
-
-    static CoreEngine* s_singleton;
-};
-*/
 }
