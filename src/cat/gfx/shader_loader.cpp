@@ -44,9 +44,7 @@ static void _log_err(
 
 static u32 _compile(const std::string& path, GLenum type)
 {
-    // check if opengl ptrs are valid
-    // if theyre not, the GfxEngine was probably not loaded
-    if(!glCreateShader)
+    if(!GfxEngine::is_loaded())
     {
         GfxEngine::get();
     }

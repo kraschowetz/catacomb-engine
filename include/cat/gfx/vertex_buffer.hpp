@@ -36,6 +36,8 @@ public:
 	// @param 3: vertex attribute to receive the data
 	void buffer(const void* data, VertexLayout& layout, u32 index) const;
 
+    void upload_indices(const u32* src, u64 num_indices) const;
+
 private:
 	u32 m_handle;
 	u32 m_target;

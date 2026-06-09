@@ -1,6 +1,6 @@
 #include <cat/config.hpp>
 #include <cat/util/math.hpp>
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 
 namespace cat
 {

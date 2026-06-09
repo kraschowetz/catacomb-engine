@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cat/config.hpp>
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 #include <cat/core/ecs.hpp>
 #include <cat/core/input_manager.hpp>
 #include <cat/core/resource_manager.hpp>

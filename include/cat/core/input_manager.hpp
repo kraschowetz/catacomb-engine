@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 #include <cat/core/input_mappings.hpp>
 #include <vector>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cat/core/memory.hpp"
+#include "cat/util/memory.hpp"
 #include <cat/util/dense_map.hpp>
 #include <cat/util/stable_buffer.hpp>
 #include <memory>

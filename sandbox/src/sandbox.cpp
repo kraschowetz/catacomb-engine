@@ -1,4 +1,4 @@
-#include "cat/core/memory.hpp"
+#include "cat/util/memory.hpp"
 #include "cat/core/resource_manager.hpp"
 #include "cat/core/input_manager.hpp"
 #include "cat/gfx/gfx_engine.hpp"
@@ -12,6 +12,7 @@
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/gfx/shader_loader.hpp>
 #include <cat/gfx/texture_loader.hpp>
+#include <cat/gfx/sprite_atlas.hpp>
 
 #include <unistd.h>
 
@@ -65,6 +66,12 @@ int main(int argc, char** argv)
             "./res/shader.frag"
         );
 
+    SpriteAtlas atlas = {
+        resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
+        glm::ivec2{8, 8}
+    };
+
+    cSprite sprite = atlas.get_sprite({0, 0});
     
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -78,7 +85,13 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
-        GfxEngine::get().prepare(eRenderPass::PASS_2D);
+        cTransform transform{
+            .position = {},
+            .scale = {1, 1, 1},
+            .rotation = {},
+        };
+
+        GfxEngine::get().get_sprite_renderer().render_sprite(sprite, transform);
 
         shader->bind();
 

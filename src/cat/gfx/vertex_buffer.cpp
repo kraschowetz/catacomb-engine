@@ -96,3 +96,17 @@ void VertexBuffer::buffer(const void* data, VertexLayout& layout, u32 index) con
 
 	unbind();
 }
+
+void VertexBuffer::upload_indices(const u32* src, u64 num_indices) const
+{
+    bind();
+
+    GL_CALL(glBufferSubData(
+        m_target,
+        0, 
+        (i64)(num_indices * sizeof(u32)), 
+        src)
+    );
+
+    unbind();
+}

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "cat/gfx/sprite_renderer.hpp"
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/sdl_canvas.hpp>
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 
 #ifndef CAT_DEFAULT_GFX_CONFIG
     #define CAT_DEFAULT_GFX_CONFIG                  \
@@ -27,6 +28,7 @@ namespace cat
 
 enum class eRenderPass : u8
 {
+    NONE = 0,
     PASS_2D,
     PASS_3D,
 };
@@ -35,19 +37,25 @@ class GfxEngine
 {
 public:
     static GfxEngine& get();
+    static bool is_loaded();
 
     GfxEngine();
     ~GfxEngine();
 
     void update_settings(const GfxConfig& config);
 
-    void prepare(eRenderPass pass);
+    SpriteRenderer& get_sprite_renderer();
+
     void display();
 
 private:
-    Unique<SdlCanvas> m_main_window;
+    void prepare(eRenderPass pass);
+    void finish_render_pass();
 
-    bool m_is_rendering = false;
+private:
+    Unique<SdlCanvas> m_main_window;
+    Unique<SpriteRenderer> m_sprite_renderer;
+    eRenderPass m_current_pass = eRenderPass::NONE;
 };
 
 }

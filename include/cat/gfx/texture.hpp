@@ -6,6 +6,11 @@
 namespace cat
 {
 
+struct TextureUV
+{
+    f32 right_x, left_x, top_y, bottom_y;
+};
+
 class Texture
 {
 public:

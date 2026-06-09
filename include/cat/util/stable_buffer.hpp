@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 #include <cat/config.hpp>
 #include <deque>
 #include <type_traits>

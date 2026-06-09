@@ -12,4 +12,6 @@ void main()
         v_color.b,
         1.0
     );
+    
+    out_color = vec4(1);
 }

@@ -7,7 +7,7 @@ layout (location = 0) out vec3 v_color;
 
 void main()
 {
-    gl_Position = vec4(a_pos.x, a_pos.y, a_pos.z, 1.0);
+    gl_Position = vec4(a_pos.x / 800, a_pos.y / 600, a_pos.z, 1.0);
 
     v_color = a_color;
 }

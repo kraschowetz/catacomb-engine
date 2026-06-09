@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cat/config.hpp>
-#include <cat/core/memory.hpp>
+#include <cat/util/memory.hpp>
 
 #include <limits>
 #include <utility>

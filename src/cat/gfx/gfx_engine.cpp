@@ -1,7 +1,9 @@
-#include "cat/gfx/gfx_config.hpp"
 #include <cat/gfx/gfx_engine.hpp>
 
+#include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/gfx_util.hpp>
+#include <cat/gfx/sprite_renderer.hpp>
+#include <memory>
 
 using namespace cat;
 
@@ -28,11 +30,19 @@ static void _update_gl_state(const GfxConfig& config)
     return instance;
 }
 
+/*static*/ bool GfxEngine::is_loaded()
+{
+    // check if opengl ptrs are valid
+    // if theyre not, the GfxEngine was probably not loaded
+    return glEnable;
+}
+
 GfxEngine::GfxEngine()
 {
     CanvasInfo window_info = CAT_DEFAULT_WINDOW_CONFIG;
 
     m_main_window = std::make_unique<SdlCanvas>(window_info);
+    m_sprite_renderer = std::make_unique<SpriteRenderer>();
     
     // TODO: load configs from a file
     _update_gl_state(CAT_DEFAULT_GFX_CONFIG);
@@ -51,10 +61,13 @@ void GfxEngine::update_settings(const GfxConfig& config)
 
 void GfxEngine::prepare(eRenderPass pass)
 {
-    if(!m_is_rendering)
+    if(m_current_pass == eRenderPass::NONE)
     {
-        m_is_rendering = true;
         m_main_window->begin_frame();
+    }
+    else if(m_current_pass != pass)
+    {
+        finish_render_pass();
     }
 
     switch(pass)
@@ -69,11 +82,34 @@ void GfxEngine::prepare(eRenderPass pass)
             glDepthFunc(GL_LEQUAL);
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             break;
+        default: break;
     }
+
+    m_current_pass = pass;
+}
+
+void GfxEngine::finish_render_pass()
+{
+    switch (m_current_pass) {
+        case eRenderPass::PASS_2D:
+            m_sprite_renderer->render_batch();
+            break;
+
+        default: break;
+    }
+}
+
+SpriteRenderer& GfxEngine::get_sprite_renderer()
+{
+    if(m_current_pass != eRenderPass::PASS_2D)
+        prepare(eRenderPass::PASS_2D);
+
+    return *m_sprite_renderer;
 }
 
 void GfxEngine::display()
 {
+    finish_render_pass();
     m_main_window->end_frame();
-    m_is_rendering = false;
+    m_current_pass = eRenderPass::NONE;
 }
