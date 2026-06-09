@@ -56,14 +56,13 @@ int main(int argc, char** argv)
 {
     using namespace cat;
 
+    GfxEngine::get();
+
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
 
-    resource_manager.register_resource<Shader, ShaderLoader>();
-    resource_manager.register_resource<Texture, TextureLoader>();
     Shared<Shader> shader = resource_manager
         .load<Shader, ShaderLoader>(
-            "./res/shader.vert",
-            "./res/shader.frag"
+            "./res/shader.csl"
         );
 
     SpriteAtlas atlas = {

@@ -12,7 +12,7 @@ DBGLV_FLAGS_0 = -O3
 DBGLV_FLAGS_1 = -g -O1 -D DEVELOP -D ENABLE_BENCHMARK
 DBGLV_FLAGS_2 = -g -O0 -D DEVELOP -D ENABLE_BENCHMARK
 
-SRC = $(wildcard src/*.cpp) $(wildcard src/cat/*/*.cpp)
+SRC = $(wildcard src/*.cpp) $(wildcard src/cat/*/*.cpp) $(wildcard src/cat/*/*/*.cpp)
 OBJ = $(SRC:.cpp=.o)
 
 OUTPUT = libcatacomb.a

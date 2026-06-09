@@ -1,13 +1,14 @@
-#include "cat/gfx/gfx_engine.hpp"
 #include <cat/gfx/shader_loader.hpp>
+
+#include <cat/gfx/gfx_engine.hpp>
 
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/gfx/shader.hpp>
 #include <cat/error.hpp>
 
+#include <cat/gfx/csl/csl.hpp>
+
 #include <cstdlib>
-#include <fstream>
-#include <sstream>
 
 
 using namespace cat;
@@ -42,37 +43,16 @@ static void _log_err(
     free(log_text);
 }
 
-static u32 _compile(const std::string& path, GLenum type)
+static u32 _compile(const std::string& src, GLenum type)
 {
     if(!GfxEngine::is_loaded())
     {
         GfxEngine::get();
     }
 
-    std::ifstream file(path);
-
-    if(!file.is_open())
-    {
-        std::stringstream stream;
-        stream << "failed to load shader (" << path << ")!";
-        throw Exception {
-            eErrorCode::FILE_NOT_FOUND,
-            stream.str()
-        };
-    }
-
-    std::string line, code;
-
-    while (std::getline(file, line))
-    {
-        code.append(line + "\n");
-    }
-
-    file.close();
-
     u32 shader_handle = glCreateShader(type);
 
-    const char* code_ptr = code.c_str();
+    const char* code_ptr = src.c_str();
     
     glShaderSource(shader_handle, 1, &code_ptr, NULL);
     glCompileShader(shader_handle);
@@ -82,19 +62,31 @@ static u32 _compile(const std::string& path, GLenum type)
 
     if(!compiled)
     {
-        LOG_SHADER_COMPILE_ERROR(code.c_str(), shader_handle, path.c_str());
+        LOG_SHADER_COMPILE_ERROR(src.c_str(), shader_handle, "TODO: fix path");
     }
 
     return shader_handle;
 }
 
 Shader ShaderLoader::load(
-    const std::string &vertex, 
-    const std::string &fragment
+    const std::string& path
 ) const THROWS
 {
-    u32 vs = _compile(vertex, GL_VERTEX_SHADER);
-    u32 fs = _compile(fragment, GL_FRAGMENT_SHADER);
+    csl::ShaderSource source = csl::split_file(path);
+    
+    // TODO: allow to choose the shader foundation to be used (e.g: 2D or 3D)
+    std::string vert_src;
+        vert_src.append(csl::PREAMBLE);
+        vert_src.append(csl::STD_VERTEX_2D);
+        vert_src.append(source.vertex);
+
+    std::string frag_src;
+        frag_src.append(csl::PREAMBLE);
+        frag_src.append(csl::STD_FRAGMENT_2D);
+        frag_src.append(source.fragment);
+
+    u32 vs = _compile(vert_src, GL_VERTEX_SHADER);
+    u32 fs = _compile(frag_src, GL_FRAGMENT_SHADER);
 
     u32 program = glCreateProgram();
 
@@ -110,11 +102,10 @@ Shader ShaderLoader::load(
 }
 
 hash_t ShaderLoader::hash(
-    const std::string &vertex, 
-    const std::string &fragment
+    const std::string& path 
 ) const noexcept
 {
-    return m_hasher(vertex) ^ m_hasher(fragment);
+    return m_hasher(path);
 }
 
 void ShaderLoader::unload(Shader* shader) const

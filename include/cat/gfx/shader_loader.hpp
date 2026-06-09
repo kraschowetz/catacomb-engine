@@ -11,13 +11,11 @@ struct ShaderLoader
 {
 public:
     Shader load(
-        const std::string& vertex, 
-        const std::string& fragment
+        const std::string& path
     ) const THROWS;
 
     hash_t hash(
-        const std::string& vertex, 
-        const std::string& fragment
+        const std::string& path
     ) const noexcept;
 
     void unload(Shader*) const;

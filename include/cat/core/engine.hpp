@@ -7,6 +7,8 @@
 #include <cat/core/resource_manager.hpp>
 #include <cat/util/chrono.hpp>
 
+// TODO: rename to core_engine
+
 namespace cat
 {
 

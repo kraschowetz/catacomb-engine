@@ -1,0 +1,6 @@
+@section FRAGMENT
+
+void post_process_hook()
+{
+    out_color = vec4(1, 0, 0, 1);
+}

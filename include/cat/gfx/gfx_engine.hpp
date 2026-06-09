@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/shader.hpp"
 #include "cat/gfx/sprite_renderer.hpp"
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/sdl_canvas.hpp>
@@ -55,6 +56,9 @@ private:
 private:
     Unique<SdlCanvas> m_main_window;
     Unique<SpriteRenderer> m_sprite_renderer;
+
+    Watcher<Shader> m_default_2d_shader;
+
     eRenderPass m_current_pass = eRenderPass::NONE;
 };
 

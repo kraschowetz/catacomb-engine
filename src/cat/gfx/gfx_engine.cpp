@@ -3,6 +3,13 @@
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/gfx/sprite_renderer.hpp>
+#include <cat/gfx/texture_loader.hpp>
+#include <cat/gfx/shader_loader.hpp>
+#include <cat/gfx/csl/csl.hpp>
+
+#include <cat/core/resource_manager.hpp>
+#include <cat/core/engine.hpp>
+
 #include <memory>
 
 using namespace cat;
@@ -22,6 +29,21 @@ static void _update_gl_state(const GfxConfig& config)
     glCullFace(GL_BACK);
 
     glEnable(GL_TEXTURE_CUBE_MAP);  // futureproofing for 3D games
+}
+
+static void _register_default_resources()
+{
+    ResourceManager& rm = CoreEngine::get().get_resource_manager();
+
+    rm.register_resource<Shader, ShaderLoader>();
+    rm.register_resource<Texture, TextureLoader>();
+}
+
+static void _load_default_resources()
+{
+    ResourceManager& rm = CoreEngine::get().get_resource_manager();
+
+    /*m_default_2d_shader = */rm.load<Shader, ShaderLoader>(csl::STD_2D_SHADER);
 }
 
 /*static*/ GfxEngine& GfxEngine::get()
@@ -46,6 +68,13 @@ GfxEngine::GfxEngine()
     
     // TODO: load configs from a file
     _update_gl_state(CAT_DEFAULT_GFX_CONFIG);
+
+    _register_default_resources();
+    _load_default_resources();
+
+    ResourceManager& rm = CoreEngine::get().get_resource_manager();
+
+    m_default_2d_shader = rm.load<Shader, ShaderLoader>(csl::STD_2D_SHADER);
 }
 
 GfxEngine::~GfxEngine()
