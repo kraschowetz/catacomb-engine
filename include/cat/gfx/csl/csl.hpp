@@ -10,7 +10,8 @@
 #include "basic_shaders/unlit_2d.hpp"   // IWYU pragma: export
 
 // TODO: @uniform directive
-// TODO: @output directive
+// TODO: @output directive (should be a contract!)
+// TODO: @include directive
 
 #define CAT_CSL_VERTEX_SECTION "@section VERTEX"
 #define CAT_CSL_FRAGMENT_SECTION "@section FRAGMENT"
