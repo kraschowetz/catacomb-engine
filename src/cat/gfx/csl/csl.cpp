@@ -1,5 +1,5 @@
+#include "cat/gfx/csl/basic_shaders/unlit_2d.hpp"
 #include "cat/gfx/csl/hook.hpp"
-#include "cat/gfx/csl/standard_2d.hpp"
 #include <cat/gfx/csl/csl.hpp>
 
 #include <cat/error.hpp>
@@ -29,15 +29,17 @@ static void _resolve_hooks(std::string& src, std::span<const Hook> codex)
 ShaderSource split_file(const std::string& path)
 {
     // TODO: array-proof this
+    
+    ShaderSource result;
 
     // check if trying to load a default shader
     // if so, ignore all csl processing
-    if(path.find(STD_2D_SHADER) != std::string::npos)
+    if(path.find(CSL_BASIC_SHADER_PATH) != std::string::npos)
     {
-        return {};
+        _resolve_hooks(result.vertex, hooks::vertex_hooks);
+        _resolve_hooks(result.fragment, hooks::fragment_hooks);
+        return result;
     }
-
-    ShaderSource result;
 
     std::string current_line;
     std::string* current_buffer = nullptr;
@@ -76,7 +78,7 @@ ShaderSource split_file(const std::string& path)
     }
 
     _resolve_hooks(result.vertex, hooks::vertex_hooks);
-    _resolve_hooks(result.fragment, hooks::vertex_hooks);
+    _resolve_hooks(result.fragment, hooks::fragment_hooks);
 
     return result;
 }

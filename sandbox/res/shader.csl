@@ -1,3 +1,5 @@
+@target 2D_UNLIT
+
 @section FRAGMENT
 
 void post_process_hook()

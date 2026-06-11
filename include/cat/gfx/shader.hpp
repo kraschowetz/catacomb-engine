@@ -3,6 +3,8 @@
 #include <cat/util/math.hpp>
 #include <cat/util/util.hpp>
 
+#include <cat/gfx/csl/csl.hpp>  // IWYU pragma: export
+
 namespace cat {
 
 class Shader

@@ -1,3 +1,5 @@
+#include "cat/gfx/shader.hpp"
+#include "cat/util/util.hpp"
 #include <cat/gfx/gfx_engine.hpp>
 
 #include <cat/gfx/gfx_config.hpp>
@@ -31,19 +33,22 @@ static void _update_gl_state(const GfxConfig& config)
     glEnable(GL_TEXTURE_CUBE_MAP);  // futureproofing for 3D games
 }
 
-static void _register_default_resources()
+void GfxEngine::load_basic_shaders()
 {
-    ResourceManager& rm = CoreEngine::get().get_resource_manager();
-
-    rm.register_resource<Shader, ShaderLoader>();
-    rm.register_resource<Texture, TextureLoader>();
+    for(u8 i = 0; i < NUM_BASIC_SHADERS; ++i)
+    {
+        m_basic_shaders[i] = ShaderLoader{}.load_basic(
+            static_cast<eBasicShaderType>(i)
+        );
+    }
 }
 
-static void _load_default_resources()
+void GfxEngine::unload_basic_shaders()
 {
-    ResourceManager& rm = CoreEngine::get().get_resource_manager();
-
-    /*m_default_2d_shader = */rm.load<Shader, ShaderLoader>(csl::STD_2D_SHADER);
+    for(u8 i = 0; i < NUM_BASIC_SHADERS; ++i)
+    {
+        ShaderLoader{}.unload(&m_basic_shaders[i]);
+    }
 }
 
 /*static*/ GfxEngine& GfxEngine::get()
@@ -69,16 +74,12 @@ GfxEngine::GfxEngine()
     // TODO: load configs from a file
     _update_gl_state(CAT_DEFAULT_GFX_CONFIG);
 
-    _register_default_resources();
-    _load_default_resources();
-
-    ResourceManager& rm = CoreEngine::get().get_resource_manager();
-
-    m_default_2d_shader = rm.load<Shader, ShaderLoader>(csl::STD_2D_SHADER);
+    load_basic_shaders();
 }
 
 GfxEngine::~GfxEngine()
 {
+    unload_basic_shaders();
 }
 
 void GfxEngine::update_settings(const GfxConfig& config)
@@ -134,6 +135,11 @@ SpriteRenderer& GfxEngine::get_sprite_renderer()
         prepare(eRenderPass::PASS_2D);
 
     return *m_sprite_renderer;
+}
+
+Shader& GfxEngine::get_basic_shader(eBasicShaderType type)
+{
+    return m_basic_shaders[enum_val(type)];
 }
 
 void GfxEngine::display()

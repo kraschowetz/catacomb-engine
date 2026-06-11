@@ -4,9 +4,7 @@
 namespace cat::csl
 {
 
-inline constexpr char STD_2D_SHADER[] = "cat_csl_standard_2d";
-
-inline constexpr char STD_FRAGMENT_2D[] = R"std_fragment_2d(
+inline constexpr char BASIC_UNLIT_2D_FRAGMENT[] = R"std_fragment_2d(
     layout (location=0) in vec3 v_position;
     layout (location=1) in vec2 v_uv;
 
@@ -23,7 +21,7 @@ inline constexpr char STD_FRAGMENT_2D[] = R"std_fragment_2d(
 
 )std_fragment_2d";
 
-inline constexpr char STD_VERTEX_2D[] = R"std_vertex_2d(
+inline constexpr char BASIC_UNLIT_2D_VERTEX[] = R"std_vertex_2d(
     layout (location=0) in vec3 a_position;
     layout (location=1) in vec2 a_uv;
 

@@ -20,6 +20,8 @@ public:
 
     void unload(Shader*) const;
 
+    Shader load_basic(eBasicShaderType type);
+
 private:
     std::hash<std::string> m_hasher;
 };

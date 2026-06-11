@@ -22,31 +22,12 @@ typedef u64 hash_t;
 #define IN
 #define OUT
 
-// resource loader utils
-#define CAT_RESOURCELOADER_LOAD_DECL(Type, ...)         \
-    hash_t operator()(Type* dest, __VA_ARGS__) const THROWS
-
-#define CAT_RESOURCELOADER_HASH_DECL(...)               \
-    hash_t operator()(__VA_ARGS__) const noexcept
-
-#define CAT_RESOURCELOADER_UNLOAD_DECL(Type)            \
-    void operator()(Type*) const
-
-// args should be: Type* dest, ...
-#define CAT_RESOURCELOADER_LOAD_IMPL(...)               \
-    operator()(__VA_ARGS__) const THROWS
-
-#define CAT_RESOURCELOADER_HASH_IMPL(...)               \
-    operator()(__VA_ARGS__) const noexcept
-
-// args should be: Type*
-#define CAT_RESOURCELOADER_UNLOAD_IMPL(...)            \
-    operator()(__VA_ARGS__) const
-
 #ifdef DEVELOP
 
+#include <cassert>
+
 #define DEBUGBREAK __builtin_trap()
-#define CAT_ASSERT(expr) if(!(expr)) DEBUGBREAK
+#define CAT_ASSERT(expr) assert(expr)
 
 #else
 

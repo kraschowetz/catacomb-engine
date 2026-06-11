@@ -1,3 +1,4 @@
+#include "cat/gfx/shader.hpp"
 #include "cat/util/memory.hpp"
 #include "cat/core/resource_manager.hpp"
 #include "cat/core/input_manager.hpp"
@@ -60,10 +61,15 @@ int main(int argc, char** argv)
 
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
 
+    resource_manager.register_resource<Shader, ShaderLoader>();
+    resource_manager.register_resource<Texture, TextureLoader>();
+
     Shared<Shader> shader = resource_manager
         .load<Shader, ShaderLoader>(
             "./res/shader.csl"
         );
+
+    Shader& s1 = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -92,7 +98,8 @@ int main(int argc, char** argv)
 
         GfxEngine::get().get_sprite_renderer().render_sprite(sprite, transform);
 
-        shader->bind();
+        // shader->bind();
+        s1.bind();
 
         _render_triangle();
 

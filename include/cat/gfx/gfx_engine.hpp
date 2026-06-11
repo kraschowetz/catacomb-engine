@@ -5,6 +5,7 @@
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/sdl_canvas.hpp>
 #include <cat/util/memory.hpp>
+#include <cat/util/stable_buffer.hpp>
 
 #ifndef CAT_DEFAULT_GFX_CONFIG
     #define CAT_DEFAULT_GFX_CONFIG                  \
@@ -46,6 +47,7 @@ public:
     void update_settings(const GfxConfig& config);
 
     SpriteRenderer& get_sprite_renderer();
+    Shader& get_basic_shader(eBasicShaderType type);
 
     void display();
 
@@ -53,11 +55,14 @@ private:
     void prepare(eRenderPass pass);
     void finish_render_pass();
 
+    void load_basic_shaders();
+    void unload_basic_shaders();
+
 private:
     Unique<SdlCanvas> m_main_window;
     Unique<SpriteRenderer> m_sprite_renderer;
 
-    Watcher<Shader> m_default_2d_shader;
+    std::array<Shader, 4> m_basic_shaders;
 
     eRenderPass m_current_pass = eRenderPass::NONE;
 };
