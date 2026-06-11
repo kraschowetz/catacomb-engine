@@ -64,12 +64,13 @@ int main(int argc, char** argv)
     resource_manager.register_resource<Shader, ShaderLoader>();
     resource_manager.register_resource<Texture, TextureLoader>();
 
-    Shared<Shader> shader = resource_manager
+    Shared<Shader> csl_shader = resource_manager
         .load<Shader, ShaderLoader>(
             "./res/shader.csl"
         );
 
-    Shader& s1 = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
+    // could also use a basic shader like this
+    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -98,8 +99,7 @@ int main(int argc, char** argv)
 
         GfxEngine::get().get_sprite_renderer().render_sprite(sprite, transform);
 
-        // shader->bind();
-        s1.bind();
+        csl_shader->bind();
 
         _render_triangle();
 

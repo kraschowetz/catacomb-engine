@@ -26,6 +26,18 @@ static void _resolve_hooks(std::string& src, std::span<const Hook> codex)
     }
 }
 
+void _resolve_target(ShaderSource& source, std::string_view name)
+{
+    for(const TargetDef& def : SHADER_TARGET_LOOKUP_TABLE)
+    {
+        if(name == def.name)
+        {
+            source.base_behaviour = def.type;
+            return;
+        }
+    }
+}
+
 ShaderSource split_file(const std::string& path)
 {
     // TODO: array-proof this
@@ -68,6 +80,13 @@ ShaderSource split_file(const std::string& path)
         else if(current_line == CAT_CSL_FRAGMENT_SECTION)
         {
             current_buffer = &result.fragment;
+            continue;
+        }
+        else if(current_line.find(CAT_CSL_TARGET_DIRECTIVE) != std::string::npos)
+        {
+            constexpr u64 DIRECTIVE_SIZE = 8;
+            std::string_view name = std::string_view(current_line).substr(DIRECTIVE_SIZE);
+            _resolve_target(result, name);
             continue;
         }
 

@@ -35,7 +35,7 @@ static void _update_gl_state(const GfxConfig& config)
 
 void GfxEngine::load_basic_shaders()
 {
-    for(u8 i = 0; i < NUM_BASIC_SHADERS; ++i)
+    for(u8 i = 0; i < enum_val(eBasicShaderType::COUNT); ++i)
     {
         m_basic_shaders[i] = ShaderLoader{}.load_basic(
             static_cast<eBasicShaderType>(i)
@@ -45,7 +45,7 @@ void GfxEngine::load_basic_shaders()
 
 void GfxEngine::unload_basic_shaders()
 {
-    for(u8 i = 0; i < NUM_BASIC_SHADERS; ++i)
+    for(u8 i = 0; i < enum_val(eBasicShaderType::COUNT); ++i)
     {
         ShaderLoader{}.unload(&m_basic_shaders[i]);
     }

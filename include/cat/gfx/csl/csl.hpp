@@ -14,15 +14,16 @@
 
 #define CAT_CSL_VERTEX_SECTION "@section VERTEX"
 #define CAT_CSL_FRAGMENT_SECTION "@section FRAGMENT"
+#define CAT_CSL_TARGET_DIRECTIVE "@target"
 
 namespace cat
 {
 
 enum class eBasicShaderType : u8
 {
-    UNLIT_2D
+    UNLIT_2D,
+    COUNT
 };
-constexpr u8 NUM_BASIC_SHADERS = 1;
 
 }
 
@@ -39,14 +40,26 @@ struct BasicShaderDef
     const char* fragment;
 };
 
-inline constexpr const BasicShaderDef BASIC_SHADERS_LIST[] = {
+inline constexpr BasicShaderDef BASIC_SHADERS_LIST[] = {
     {BASIC_UNLIT_2D_VERTEX, BASIC_UNLIT_2D_FRAGMENT}
+};
+
+struct TargetDef
+{
+    const char* name;
+    eBasicShaderType type;
+};
+
+inline constexpr TargetDef SHADER_TARGET_LOOKUP_TABLE[]
+{
+    {"UNLIT_2D", eBasicShaderType::UNLIT_2D}
 };
 
 struct ShaderSource
 {
     std::string vertex;
     std::string fragment;
+    eBasicShaderType base_behaviour = eBasicShaderType::COUNT;
 };
 
 // brief: reads a csl file & split it into hooks for vertex & fragment shader
