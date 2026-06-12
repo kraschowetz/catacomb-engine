@@ -3,6 +3,7 @@
 #include <cat/config.hpp>
 
 #include <string>
+#include <vector>
 
 #include "hook.hpp"                     // IWYU pragma: export
 
@@ -16,6 +17,7 @@
 #define CAT_CSL_VERTEX_SECTION "@section VERTEX"
 #define CAT_CSL_FRAGMENT_SECTION "@section FRAGMENT"
 #define CAT_CSL_TARGET_DIRECTIVE "@target"
+#define CAT_CSL_UNIFORM_DIRECTIVE "@uniform"
 
 namespace cat
 {
@@ -61,6 +63,7 @@ struct ShaderSource
     std::string vertex;
     std::string fragment;
     eBasicShaderType base_behaviour = eBasicShaderType::COUNT;
+    std::vector<std::string> custom_uniforms;
 };
 
 // brief: reads a csl file & split it into hooks for vertex & fragment shader

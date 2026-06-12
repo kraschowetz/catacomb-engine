@@ -23,6 +23,9 @@ public:
     Shader load_basic(eBasicShaderType type);
 
 private:
+    void populate_uniform_cache(Shader& shader);
+
+private:
     std::hash<std::string> m_hasher;
 };
 

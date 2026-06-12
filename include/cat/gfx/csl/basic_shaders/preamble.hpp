@@ -6,7 +6,10 @@ namespace cat::csl
 inline const char PREAMBLE[] = R"preamble(
     #version 460
 
-    // TODO: structs & general-stubs declaration
+    // basic uniforms
+    uniform mat4 u_model_matrix;
+    uniform mat4 u_view_matrix;
+    uniform mat4 u_projection_matrix;
     
     // vertex hooks
     void pre_process_hook();

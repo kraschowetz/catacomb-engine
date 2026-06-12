@@ -1,9 +1,11 @@
-#include "cat/gfx/csl/basic_shaders/unlit_2d.hpp"
-#include "cat/gfx/csl/hook.hpp"
 #include <cat/gfx/csl/csl.hpp>
+
+#include <cat/gfx/csl/hook.hpp>
+#include <cat/util/logger.hpp>
 
 #include <cat/error.hpp>
 
+#include <cstring>
 #include <fstream>
 #include <span>
 #include <sstream>
@@ -87,6 +89,33 @@ ShaderSource split_file(const std::string& path)
             constexpr u64 DIRECTIVE_SIZE = 8;
             std::string_view name = std::string_view(current_line).substr(DIRECTIVE_SIZE);
             _resolve_target(result, name);
+            continue;
+        }
+        else if(current_line.find(CAT_CSL_UNIFORM_DIRECTIVE) != std::string::npos)
+        {
+            constexpr u32 NAME_TOKEN_INDEX = 3;
+
+            // just ignore the @ to convert the directive into glsl
+            std::string glsl_directive = current_line.c_str() + 1;
+
+            // directives should not end with a semicolon
+            // (though this is not enforced)
+            // add a semicolon to convert drom csl to glsl
+            glsl_directive.append(";");
+
+            char* ptr = const_cast<char*>(current_line.c_str());
+
+            for(u32 i = 0; i < NAME_TOKEN_INDEX; ++i)
+            {
+                char* _ptr = i == 0 ? ptr : nullptr;
+                ptr = std::strtok(_ptr, " ");
+            };
+
+            result.custom_uniforms.push_back(std::string{ptr});
+
+            if(!current_buffer) continue;
+
+            current_buffer->append(glsl_directive + '\n');
             continue;
         }
 

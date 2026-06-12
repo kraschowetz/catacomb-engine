@@ -69,6 +69,26 @@ static u32 _compile(const std::string& src, GLenum type)
     return shader_handle;
 }
 
+Shader::UniformCache _populate_uniform_cache(u32 handle, const csl::ShaderSource& src)
+{
+    Shader::UniformCache cache;
+
+    cache.model_matrix = 
+        glGetUniformLocation(handle, "u_model_matrix");
+    cache.view_matrix = 
+        glGetUniformLocation(handle, "u_view_matrix");
+    cache.projection_matrix =
+        glGetUniformLocation(handle, "u_projection_matrix");
+
+    for(const std::string& uname : src.custom_uniforms)
+    {
+        cache.user_uniforms[std::hash<std::string>{}(uname)] =
+            glGetUniformLocation(handle, uname.c_str());
+    }
+
+    return cache;
+}
+
 Shader ShaderLoader::load(
     const std::string& path
 ) const THROWS
@@ -109,7 +129,13 @@ Shader ShaderLoader::load(
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-    return Shader{ program };
+    Shader shader{ program };
+    shader.m_uniform_cache = _populate_uniform_cache(
+        shader.get_handle(),
+        source
+    );
+
+    return shader;
 }
 
 hash_t ShaderLoader::hash(
@@ -159,5 +185,12 @@ Shader ShaderLoader::load_basic(eBasicShaderType type)
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-    return Shader{ program };
+    Shader shader{ program };
+    shader.m_uniform_cache = _populate_uniform_cache(
+        shader.get_handle(),
+        {}
+    );
+
+    return shader;
 }
+

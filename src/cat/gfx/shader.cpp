@@ -29,44 +29,62 @@ u32& Shader::get_handle_ref()
     return m_handle;
 }
 
+void Shader::set_model_matrix(const glm::mat4& val) const
+{
+    i32 location = m_uniform_cache.model_matrix;
+    GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
+}
+
+void Shader::set_view_matrix(const glm::mat4& val) const
+{
+    i32 location = m_uniform_cache.view_matrix;
+    GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
+}
+
+void Shader::set_projection_matrix(const glm::mat4& val) const
+{
+    i32 location = m_uniform_cache.projection_matrix;
+    GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
+}
+
 void Shader::set_uniform(const std::string& name, f32 val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniform1f(location, val));
 }
 
 void Shader::set_uniform(const std::string& name, i32 val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniform1i(location, val));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::mat4& val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::mat3& val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniformMatrix3fv(location, 1, GL_FALSE, &val[0][0]));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec4& val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniform4fv(location, 1, &val[0]));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec3& val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniform3fv(location, 1, &val[0]));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec2& val) const
 {
-    i32 location = glGetUniformLocation(m_handle, name.c_str());
+    i32 location = m_uniform_cache.user_uniforms.at(std::hash<std::string>{}(name));
     GL_CALL(glUniform2fv(location, 1, &val[0]));
 }
