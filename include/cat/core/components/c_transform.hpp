@@ -1,5 +1,7 @@
+#pragma once
+
 #include <cat/config.hpp>
-#include <cat/util/math.hpp>
+#include <cat/util/math.hpp>    // IWYU pragma: export
 #include <cat/util/memory.hpp>
 
 namespace cat
@@ -7,17 +9,15 @@ namespace cat
 
 struct cTransform
 {
-	glm::vec3 position;	// global position, in pixels
-	glm::vec3 scale;	// global scale
-	glm::vec3 rotation;	// global rotation, in degrees
-};
+	glm::vec3 position;	// position in meters
+	glm::vec3 scale;
+	glm::quat rotation;
 
-struct cLocalTransform
-{
-	glm::vec3 position;		// local position, in pixels
-	glm::vec3 scale;		// local scale
-	glm::vec3 rotation;		// local rotation, in degrees
-	Watcher<cTransform> parent;	
+    static glm::mat4 as_mat4(const cTransform& self);
+    // using this instead of a ctor to keep the c-style ctor
+    static cTransform from_mat4(const glm::mat4& mat);
+
+    static cTransform inverse(const cTransform& self);
 };
 
 }

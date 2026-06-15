@@ -1,3 +1,4 @@
+#include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/util/util.hpp"
 #include <cat/gfx/gfx_engine.hpp>
@@ -70,6 +71,9 @@ GfxEngine::GfxEngine()
 
     m_main_window = std::make_unique<SdlCanvas>(window_info);
     m_sprite_renderer = std::make_unique<SpriteRenderer>();
+
+    m_render_context_map.insert(MAIN_2D_CONTEXT, RenderContext{});
+    m_render_context_map.insert(MAIN_3D_CONTEXT, RenderContext{});
     
     // TODO: load configs from a file
     _update_gl_state(CAT_DEFAULT_GFX_CONFIG);
@@ -147,4 +151,18 @@ void GfxEngine::display()
     finish_render_pass();
     m_main_window->end_frame();
     m_current_pass = eRenderPass::NONE;
+}
+
+Watcher<RenderContext> GfxEngine::get_render_context(hash_t handle)
+{
+    return m_render_context_map.get(handle);
+}
+
+void GfxEngine::bind_render_context(hash_t handle, const Shader& shader)
+{
+    Watcher<RenderContext> ctx = m_render_context_map.get(handle);
+
+    shader.set_model_matrix(glm::mat4{1});
+    shader.set_projection_matrix(ctx->projection);
+    shader.set_view_matrix(ctx->view);
 }

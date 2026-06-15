@@ -1,3 +1,6 @@
+#include "cat/core/components/c_transform.hpp"
+#include "cat/gfx/components/c_camera.hpp"
+#include "cat/gfx/components/c_sprite.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/util/memory.hpp"
 #include "cat/core/resource_manager.hpp"
@@ -17,48 +20,13 @@
 
 #include <unistd.h>
 
-void _render_triangle()
-{
-    using namespace cat;
-
-    VertexLayout layout;
-    // position
-    layout.push_f32(3);
-    // color
-    layout.push_f32(3);
-
-    static VertexBuffer vbo{6 * sizeof(float), 3, eBufferType::VERTEX};
-    static VertexArray vao{};
-
-    constexpr f32 POSITION_BUFFER[9] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
-
-    const f32 COLOR_BUFFER[9] = {
-        1, 0, 0,
-        0, 1, 0,
-        0, 0, 1
-    };
-
-    // const u32 ids[3] = {0, 1, 2};
-
-    vbo.buffer(POSITION_BUFFER, layout, 0);
-    vbo.buffer(COLOR_BUFFER, layout, 1);
-
-    vao.attr(vbo, layout);
-    vao.bind();
-
-    GL_CALL(glDrawArrays(GL_TRIANGLES, 0, 3));
-}
-
 int main(int argc, char** argv)
 {
     using namespace cat;
 
     GfxEngine::get();
 
+    // load resources
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
 
     resource_manager.register_resource<Shader, ShaderLoader>();
@@ -70,7 +38,7 @@ int main(int argc, char** argv)
         );
 
     // could also use a basic shader like this
-    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
+    // Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -78,7 +46,29 @@ int main(int argc, char** argv)
     };
 
     cSprite sprite = atlas.get_sprite({0, 0});
-    
+
+    // register entities
+    ECS& ecs = CoreEngine::get().get_ecs();
+    ecs.register_component_index<cSprite>();
+    ecs.register_component_index<cTransform>();
+    ecs.register_component_index<cCamera>();
+
+    EntityID entity = ecs.create_entity();
+
+    ecs.add_component<cTransform>(entity, {
+        .position{4, 4, 0},
+        .scale{1},
+        .rotation{}
+    });
+    ecs.add_component<cSprite>(entity, sprite);
+
+    ecs.add_component<cCamera>(entity, {
+        .projection = glm::ortho(0.f, 800.f, 0.f, 600.f, -1.f, 1.f),
+        .size = {800, 600},
+        .render_context_handle = 0,
+        .type = eCameraType::ORTHOGRAPHIC,
+    });
+
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
     {
@@ -91,38 +81,25 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
-        cTransform transform{
-            .position = {},
-            .scale = {1, 1, 1},
-            .rotation = {},
-        };
+        auto camera_view = ecs.view<cCamera, cTransform>();
 
-        GfxEngine::get().get_sprite_renderer().render_sprite(sprite, transform);
+        camera_view.foreach([](cCamera& cam, cTransform& trans){
+            cCamera::bind(cam, trans);
+        });
+
+        auto sprite_view = ecs.view<cSprite, cTransform>();
+
+        sprite_view.foreach([](cSprite& spr, cTransform& trans){
+            GfxEngine::get().get_sprite_renderer().render_sprite(spr, trans);
+        });
 
         csl_shader->bind();
+        GfxEngine::get().bind_render_context(0, *csl_shader);
 
-        _render_triangle();
+        csl_shader->set_uniform("u_my_uniform", 1);
 
         GfxEngine::get().display();
     }
 
-    { // ECS sample
-        // create ECS & register components
-        ECS& ecs = CoreEngine::get().get_ecs();
-        ecs.register_component_index<i64>();
-        
-        // creante entities and add components
-        EntityID entity_a = ecs.create_entity();
-        ecs.add_component(entity_a, 12);
-
-        // create a view and iterate trhough components
-        auto view = ecs.view<int>();
-        view.foreach([](int i){LOG_TEXTF("%d\n", i);});
-        
-        // delete components & entities
-        ecs.remove_component<int>(entity_a);
-        ecs.delete_entity(entity_a);
-    }
-    
     CAT_BENCH_DISPLAY(BENCHMARK_IN_SECONDS);
 }

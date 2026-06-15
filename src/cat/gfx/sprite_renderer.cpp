@@ -84,36 +84,42 @@ void SpriteRenderer::add_sprite_to_batch(
         (i32)((f32)(sprite.size.x) * transform.scale.x),
         (i32)((f32)(sprite.size.y) * transform.scale.y),
     };
+    size /= 2;
+
+    const glm::vec2 anchor {
+        transform.position.x,
+        transform.position.y
+    };
 
     // TODO: check if manual memcpys would perform better
 
     // bottom-left
-    m_batch_position_data.push_back(transform.position.x - (f32) size.x);
-    m_batch_position_data.push_back(transform.position.y - (f32) size.y);
+    m_batch_position_data.push_back(anchor.x - (f32) size.x);
+    m_batch_position_data.push_back(anchor.y - (f32) size.y);
     m_batch_position_data.push_back((f32) sprite.z_index);
 
     m_batch_uv_data.push_back(sprite.uv.left_x);
     m_batch_uv_data.push_back(sprite.uv.bottom_y);
 
     // bottom-right
-    m_batch_position_data.push_back(transform.position.x + (f32) size.x);
-    m_batch_position_data.push_back(transform.position.y - (f32) size.y);
+    m_batch_position_data.push_back(anchor.x + (f32) size.x);
+    m_batch_position_data.push_back(anchor.y - (f32) size.y);
     m_batch_position_data.push_back((f32) sprite.z_index);
 
     m_batch_uv_data.push_back(sprite.uv.right_x);
     m_batch_uv_data.push_back(sprite.uv.bottom_y);
 
     // top-right
-    m_batch_position_data.push_back(transform.position.x + (f32) size.x);
-    m_batch_position_data.push_back(transform.position.y + (f32) size.y);
+    m_batch_position_data.push_back(anchor.x + (f32) size.x);
+    m_batch_position_data.push_back(anchor.y + (f32) size.y);
     m_batch_position_data.push_back((f32) sprite.z_index);
 
     m_batch_uv_data.push_back(sprite.uv.right_x);
     m_batch_uv_data.push_back(sprite.uv.top_y);
 
     // top-left
-    m_batch_position_data.push_back(transform.position.x - (f32) size.x);
-    m_batch_position_data.push_back(transform.position.y + (f32) size.y);
+    m_batch_position_data.push_back(anchor.x - (f32) size.x);
+    m_batch_position_data.push_back(anchor.y + (f32) size.y);
     m_batch_position_data.push_back((f32) sprite.z_index);
 
     m_batch_uv_data.push_back(sprite.uv.left_x);

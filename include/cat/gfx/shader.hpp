@@ -54,6 +54,9 @@ public:
     };
 
 private:
+    i32 get_uniform_location(const std::string& name) const;
+
+private:
     u32 m_handle;
 
     UniformCache m_uniform_cache;

@@ -10,7 +10,6 @@
 #include "basic_shaders/preamble.hpp"   // IWYU pragma: export
 #include "basic_shaders/unlit_2d.hpp"   // IWYU pragma: export
 
-// TODO: @uniform directive
 // TODO: @output directive (should be a contract!)
 // TODO: @include directive
 

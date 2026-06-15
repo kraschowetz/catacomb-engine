@@ -2,9 +2,14 @@
 
 @section FRAGMENT
 
-@uniform int my_uniform
+@uniform int u_my_uniform
 
 void post_process_hook()
 {
     out_color = vec4(1, 0, 0, 1);
+
+    if(u_my_uniform == 1)
+    {
+        out_color = vec4(0, 0, 1, 1);
+    }
 }

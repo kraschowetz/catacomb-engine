@@ -1,11 +1,13 @@
 #pragma once
 
+#include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/gfx/sprite_renderer.hpp"
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/sdl_canvas.hpp>
 #include <cat/util/memory.hpp>
 #include <cat/util/stable_buffer.hpp>
+#include <cat/util/dense_map.hpp>
 
 #ifndef CAT_DEFAULT_GFX_CONFIG
     #define CAT_DEFAULT_GFX_CONFIG                  \
@@ -48,6 +50,9 @@ public:
 
     SpriteRenderer& get_sprite_renderer();
     Shader& get_basic_shader(eBasicShaderType type);
+    Watcher<RenderContext> get_render_context(hash_t handle);
+
+    void bind_render_context(hash_t handle, const Shader& shader);
 
     void display();
 
@@ -63,8 +68,12 @@ private:
     Unique<SpriteRenderer> m_sprite_renderer;
 
     std::array<Shader, 4> m_basic_shaders;
+    DenseMap<hash_t, RenderContext> m_render_context_map;
 
     eRenderPass m_current_pass = eRenderPass::NONE;
+
+    constexpr static hash_t MAIN_2D_CONTEXT = 0;
+    constexpr static hash_t MAIN_3D_CONTEXT = 1;
 };
 
 }

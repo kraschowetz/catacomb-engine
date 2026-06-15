@@ -28,13 +28,10 @@ inline constexpr char BASIC_UNLIT_2D_VERTEX[] = R"std_vertex_2d(
     layout (location=0) out vec3 v_position;
     layout (location=1) out vec2 v_uv;
 
-    uniform mat4 u_model;
-    uniform mat4 u_view;
-    uniform mat4 u_perspective;
-
     void main()
     {
-        vec4 position = u_perspective * u_view * u_model * vec4(a_position, 1.0f);   
+        vec4 position = 
+            u_projection_matrix * u_view_matrix * u_model_matrix * vec4(a_position, 1.0f);
 
         gl_Position = vec4(
             position.x,
@@ -43,12 +40,14 @@ inline constexpr char BASIC_UNLIT_2D_VERTEX[] = R"std_vertex_2d(
             position.w
         );
 
+    #if false
         gl_Position = vec4(
             a_position.x / 800,
             a_position.y / 600,
             0,
             1
         );
+    #endif
 
         // who knowns who might use this...
         v_position = position.xyz;
