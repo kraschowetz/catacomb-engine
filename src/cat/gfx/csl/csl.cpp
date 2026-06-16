@@ -14,8 +14,6 @@
 namespace cat::csl
 {
 
-// TODO: store default shaders outside of the core::ResourceManager
-
 static void _resolve_hooks(std::string& src, std::span<const Hook> codex)
 {
     for(const Hook& hook : codex)
@@ -42,8 +40,6 @@ void _resolve_target(ShaderSource& source, std::string_view name)
 
 ShaderSource split_file(const std::string& path)
 {
-    // TODO: array-proof this
-    
     ShaderSource result;
 
     // check if trying to load a default shader

@@ -56,6 +56,10 @@ public:
 
     void display();
 
+public:
+    constexpr static hash_t MAIN_2D_CONTEXT = 0;
+    constexpr static hash_t MAIN_3D_CONTEXT = 1;
+
 private:
     void prepare(eRenderPass pass);
     void finish_render_pass();
@@ -71,9 +75,6 @@ private:
     DenseMap<hash_t, RenderContext> m_render_context_map;
 
     eRenderPass m_current_pass = eRenderPass::NONE;
-
-    constexpr static hash_t MAIN_2D_CONTEXT = 0;
-    constexpr static hash_t MAIN_3D_CONTEXT = 1;
 };
 
 }

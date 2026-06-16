@@ -7,7 +7,6 @@
 #include "cat/core/input_manager.hpp"
 #include "cat/gfx/gfx_engine.hpp"
 #include "cat/gfx/vertex_buffer.hpp"
-#include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/core/ecs.hpp"
 #include <cat/core/engine.hpp>
@@ -65,7 +64,7 @@ int main(int argc, char** argv)
     ecs.add_component<cCamera>(entity, {
         .projection = glm::ortho(0.f, 800.f, 0.f, 600.f, -1.f, 1.f),
         .size = {800, 600},
-        .render_context_handle = 0,
+        .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
         .type = eCameraType::ORTHOGRAPHIC,
     });
 
@@ -94,7 +93,7 @@ int main(int argc, char** argv)
         });
 
         csl_shader->bind();
-        GfxEngine::get().bind_render_context(0, *csl_shader);
+        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, *csl_shader);
 
         csl_shader->set_uniform("u_my_uniform", 1);
 
