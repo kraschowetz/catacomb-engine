@@ -29,6 +29,7 @@ public:
 
 	void bind() const;
 	void unbind() const;
+    void orphan() const;
 
 	// @brief: feeds data into the buffer
 	// @param 1: pointer to src data
@@ -42,6 +43,7 @@ private:
 	u32 m_handle;
 	u32 m_target;
 	u32 m_vertex_count;
+    u32 m_vertex_size;
 
 	friend class VertexArray;
 };

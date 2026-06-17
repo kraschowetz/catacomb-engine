@@ -10,6 +10,7 @@ static constexpr u32 NULL_HANDLE = 0;
 VertexBuffer::VertexBuffer(u32 vertex_size, u32 vertex_count, eBufferType type)
 {
 	m_vertex_count = vertex_count;
+    m_vertex_size = vertex_size;
 
 	switch(type)
 	{
@@ -73,6 +74,20 @@ void VertexBuffer::bind() const
 void VertexBuffer::unbind() const
 {
 	GL_CALL(glBindBuffer(m_target, NULL_HANDLE));
+}
+
+void VertexBuffer::orphan() const
+{
+    bind();
+	GL_CALL(
+		glBufferData(
+			m_target,
+			m_vertex_count * m_vertex_size,
+			NULL,
+			GL_STREAM_DRAW
+		);
+	);
+    unbind();
 }
 
 void VertexBuffer::buffer(const void* data, VertexLayout& layout, u32 index) const

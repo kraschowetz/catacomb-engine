@@ -60,10 +60,7 @@ SpriteRenderer::SpriteRenderer()
 
 void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& transform)
 {
-    constexpr u64 BATCH_CAPACITY = 
-        SPRITE_BATCH_SIZE * SPRITE_VERTEX_COUNT * SPRITE_VERTEX_SIZE;
-
-    if(m_num_sprites_batched >= BATCH_CAPACITY ||
+    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
         sprite.texture_handle != m_current_spriteatlas_handle)
     {
         render_batch();
@@ -133,6 +130,8 @@ void SpriteRenderer::render_batch()
     VertexLayout layout;
     layout.push_f32(3); // position
     layout.push_f32(2); // uv
+    
+    m_vbo->orphan();
 
     m_vbo->buffer(m_batch_position_data.data(), layout, 0);
     m_vbo->buffer(m_batch_uv_data.data(), layout, 1);

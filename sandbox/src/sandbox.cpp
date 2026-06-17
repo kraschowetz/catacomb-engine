@@ -76,7 +76,7 @@ int main(int argc, char** argv)
         .rotation{}
     });
     ecs.add_component<cSprite>(other_entity, sprite);
-
+    
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
     // bare-bones game loop
