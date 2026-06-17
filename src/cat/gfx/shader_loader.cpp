@@ -80,6 +80,9 @@ Shader::UniformCache _populate_uniform_cache(u32 handle, const csl::ShaderSource
     cache.projection_matrix =
         glGetUniformLocation(handle, "u_projection_matrix");
 
+    cache.texture_atlas =
+        glGetUniformLocation(handle, "u_texture_atlas");
+
     for(const std::string& uname : src.custom_uniforms)
     {
         cache.user_uniforms[std::hash<std::string>{}(uname)] =

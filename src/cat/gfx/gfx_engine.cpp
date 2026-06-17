@@ -11,7 +11,7 @@
 #include <cat/gfx/csl/csl.hpp>
 
 #include <cat/core/resource_manager.hpp>
-#include <cat/core/engine.hpp>
+#include <cat/core/core_engine.hpp>
 
 #include <memory>
 

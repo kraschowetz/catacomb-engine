@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/sprite_atlas.hpp"
 #include <cat/util/math.hpp>
 #include <cat/util/util.hpp>
 
@@ -32,6 +33,7 @@ public:
     void set_model_matrix(const glm::mat4& val) const;
     void set_view_matrix(const glm::mat4& val) const;
     void set_projection_matrix(const glm::mat4& val) const;
+    void set_texture_atlas(const SpriteAtlas& sprite_atlas) const;
 
     void set_uniform(const std::string& name, f32 val) const;
     void set_uniform(const std::string& name, i32 val) const;
@@ -49,6 +51,8 @@ public:
         i32 model_matrix        = -1;
         i32 view_matrix         = -1;
         i32 projection_matrix   = -1;
+
+        i32 texture_atlas       = -1;
 
         std::unordered_map<hash_t, i32> user_uniforms;
     };

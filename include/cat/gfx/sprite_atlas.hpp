@@ -14,6 +14,8 @@ public:
 
     TextureUV get_uv(const glm::ivec2& sprite_index) const;
     cSprite get_sprite(const glm::ivec2& index, u32 z_index = 0) const;
+    
+    void bind(u32 unit = 0) const;
 
 private:
     glm::ivec2 m_sprite_size;

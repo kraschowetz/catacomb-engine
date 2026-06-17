@@ -8,6 +8,7 @@ Texture::Texture(Texture&& other) noexcept
 {
     this->m_handle = other.m_handle;
     this->m_target = other.m_target;
+    this->m_size = other.m_size;
 
     other.m_handle = 0;
     other.m_target = 0;
@@ -17,6 +18,7 @@ Texture& Texture::operator=(Texture&& other) noexcept
 {
     this->m_handle = other.m_handle;
     this->m_target = other.m_target;
+    this->m_size = other.m_size;
 
     other.m_handle = 0;
     other.m_target = 0;

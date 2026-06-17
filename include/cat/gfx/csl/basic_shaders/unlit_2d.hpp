@@ -8,13 +8,11 @@ inline constexpr char BASIC_UNLIT_2D_FRAGMENT[] = R"std_fragment_2d(
     layout (location=0) in vec3 v_position;
     layout (location=1) in vec2 v_uv;
 
-    uniform sampler2D u_sprite_atlas;
-
     layout (location=0) out vec4 out_color;
 
     void main()
     {
-        out_color = texture(u_sprite_atlas, v_uv);
+        out_color = texture(u_texture_atlas, v_uv);
 
         post_process_hook();
     }

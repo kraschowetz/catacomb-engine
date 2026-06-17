@@ -9,7 +9,7 @@
 #include "cat/gfx/vertex_buffer.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/core/ecs.hpp"
-#include <cat/core/engine.hpp>
+#include <cat/core/core_engine.hpp>
 #include <cat/util/benchmark.hpp>
 #include <cat/gfx/vertex_array.hpp>
 #include <cat/gfx/gfx_util.hpp>
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
         );
 
     // could also use a basic shader like this
-    // Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
+    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
     ecs.add_component<cTransform>(entity, {
         .position{4, 4, 0},
-        .scale{1},
+        .scale{4},
         .rotation{}
     });
     ecs.add_component<cSprite>(entity, sprite);
@@ -86,16 +86,16 @@ int main(int argc, char** argv)
             cCamera::bind(cam, trans);
         });
 
-        auto sprite_view = ecs.view<cSprite, cTransform>();
+        basic_shader.bind();
+        basic_shader.set_texture_atlas(atlas);
+        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, basic_shader);
 
+        auto sprite_view = ecs.view<cSprite, cTransform>();
         sprite_view.foreach([](cSprite& spr, cTransform& trans){
             GfxEngine::get().get_sprite_renderer().render_sprite(spr, trans);
         });
 
-        csl_shader->bind();
-        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, *csl_shader);
-
-        csl_shader->set_uniform("u_my_uniform", 1);
+        // csl_shader->set_uniform("u_my_uniform", 1);
 
         GfxEngine::get().display();
     }

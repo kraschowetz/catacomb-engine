@@ -12,7 +12,7 @@ using namespace cat;
 
 TextureLoader::TextureLoader()
 {
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(false);
 }
 
 Texture TextureLoader::load(const std::string &path) const THROWS

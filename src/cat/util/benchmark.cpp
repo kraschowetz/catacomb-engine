@@ -4,7 +4,7 @@
 #include <cat/util/benchmark.hpp>
 
 #include <cat/util/logger.hpp>
-#include <cat/core/engine.hpp>
+#include <cat/core/core_engine.hpp>
 #include <cmath>
 #include <numeric>
 

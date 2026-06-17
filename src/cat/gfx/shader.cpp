@@ -1,3 +1,4 @@
+#include "cat/gfx/sprite_atlas.hpp"
 #include <cat/gfx/shader.hpp>
 
 #include <SDL2/SDL.h>
@@ -51,6 +52,17 @@ void Shader::set_projection_matrix(const glm::mat4& val) const
 {
     i32 location = m_uniform_cache.projection_matrix;
     GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
+}
+
+void Shader::set_texture_atlas(const SpriteAtlas& atlas) const
+{
+    constexpr u32 TEXTURE_ATLAS_UNIT = 0;
+    // TODO: manage texture units properly
+    i32 location = m_uniform_cache.texture_atlas;
+
+    atlas.bind(TEXTURE_ATLAS_UNIT);
+    
+    GL_CALL(glUniform1i(location, TEXTURE_ATLAS_UNIT));
 }
 
 void Shader::set_uniform(const std::string& name, f32 val) const
