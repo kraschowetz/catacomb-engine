@@ -77,6 +77,18 @@ int main(int argc, char** argv)
     });
     ecs.add_component<cSprite>(other_entity, sprite);
     
+    constexpr u64 MAX = 10000;
+    for(u64 i = 0; i < MAX; ++i)
+    {
+        EntityID id = ecs.create_entity();
+        ecs.add_component<cTransform>(id, {
+            .position{400, 0, 0},
+            .scale{4},
+            .rotation{}
+        });
+        ecs.add_component<cSprite>(id, sprite);
+    }
+
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
     // bare-bones game loop
