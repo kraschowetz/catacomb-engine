@@ -247,7 +247,7 @@ public:
 		foreach_impl(func);
 	}
 
-	void foreac(ForeachFuncWithID func)
+	void foreach(ForeachFuncWithID func)
 	{
 		foreach_impl(func);
 	}
