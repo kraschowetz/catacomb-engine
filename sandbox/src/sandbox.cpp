@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     EntityID entity = ecs.create_entity();
 
     ecs.add_component<cTransform>(entity, {
-        .position{4, 4, 0},
+        .position{0, 0, 0},
         .scale{4},
         .rotation{}
     });
@@ -67,6 +67,14 @@ int main(int argc, char** argv)
         .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
         .type = eCameraType::ORTHOGRAPHIC,
     });
+
+    EntityID other_entity = ecs.create_entity();
+    ecs.add_component<cTransform>(other_entity, {
+        .position{400, 0, 0},
+        .scale{4},
+        .rotation{}
+    });
+    ecs.add_component<cSprite>(other_entity, sprite);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -89,6 +97,8 @@ int main(int argc, char** argv)
         basic_shader.bind();
         basic_shader.set_texture_atlas(atlas);
         GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, basic_shader);
+
+        GfxEngine::get().prepare(eRenderPass::MAIN_2D);
 
         auto sprite_view = ecs.view<cSprite, cTransform>();
         sprite_view.foreach([](cSprite& spr, cTransform& trans){

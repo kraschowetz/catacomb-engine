@@ -106,16 +106,25 @@ void GfxEngine::prepare(eRenderPass pass)
 
     switch(pass)
     {
-        case eRenderPass::PASS_2D:
-            glDisable(GL_DEPTH_TEST);
-            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-            break;
-
-        case eRenderPass::PASS_3D:
+        case eRenderPass::MAIN_2D:
+        case eRenderPass::AUX_2D:
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             break;
+
+        case eRenderPass::MAIN_3D:
+        case eRenderPass::AUX_3D:
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LEQUAL);
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+            break;
+
+        case eRenderPass::UI_2D:
+        case eRenderPass::UI_3D:
+            glDisable(GL_DEPTH_TEST);
+            break;
+
         default: break;
     }
 
@@ -125,7 +134,9 @@ void GfxEngine::prepare(eRenderPass pass)
 void GfxEngine::finish_render_pass()
 {
     switch (m_current_pass) {
-        case eRenderPass::PASS_2D:
+        case eRenderPass::MAIN_2D:
+        case eRenderPass::AUX_2D:
+        case eRenderPass::UI_2D:
             m_sprite_renderer->render_batch();
             break;
 
@@ -135,9 +146,6 @@ void GfxEngine::finish_render_pass()
 
 SpriteRenderer& GfxEngine::get_sprite_renderer()
 {
-    if(m_current_pass != eRenderPass::PASS_2D)
-        prepare(eRenderPass::PASS_2D);
-
     return *m_sprite_renderer;
 }
 

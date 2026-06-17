@@ -33,8 +33,12 @@ namespace cat
 enum class eRenderPass : u8
 {
     NONE = 0,
-    PASS_2D,
-    PASS_3D,
+    MAIN_2D,
+    MAIN_3D,
+    UI_2D,
+    UI_3D,
+    AUX_2D,
+    AUX_3D
 };
 
 class GfxEngine
@@ -54,6 +58,7 @@ public:
 
     void bind_render_context(hash_t handle, const Shader& shader);
 
+    void prepare(eRenderPass pass);
     void display();
 
 public:
@@ -61,7 +66,6 @@ public:
     constexpr static hash_t MAIN_3D_CONTEXT = 1;
 
 private:
-    void prepare(eRenderPass pass);
     void finish_render_pass();
 
     void load_basic_shaders();
@@ -70,6 +74,8 @@ private:
 private:
     Unique<SdlCanvas> m_main_window;
     Unique<SpriteRenderer> m_sprite_renderer;
+
+    Weak<Shader> m_current_shader;
 
     std::array<Shader, 4> m_basic_shaders;
     DenseMap<hash_t, RenderContext> m_render_context_map;
