@@ -15,6 +15,7 @@ static inline millis_t _get_now_millis()
 Chrono::Chrono()
 {
 	m_epoch = _get_now_millis();
+    m_last_second = current_millis();
 }
 
 void Chrono::update()
@@ -22,8 +23,16 @@ void Chrono::update()
 	millis_t now = _get_now_millis();
 	millis_t ms_delta = now - m_last_millis;
 
+    if(now >= m_last_second + 1000)
+    {
+        m_last_frames = m_current_frames;
+        m_current_frames = 0;
+        m_last_second = now;
+    }
+
 	m_delta = static_cast<seconds_t>(ms_delta) / 1000.f;
 	m_last_millis = now;
+    m_current_frames++;
 }
 
 millis_t Chrono::current_millis() const
@@ -39,4 +48,9 @@ seconds_t Chrono::current_seconds() const
 seconds_t Chrono::get_delta() const
 {
 	return m_delta;
+}
+
+u16 Chrono::get_fps() const
+{
+    return m_last_frames;
 }

@@ -2,6 +2,7 @@
 #include "cat/gfx/components/c_camera.hpp"
 #include "cat/gfx/components/c_sprite.hpp"
 #include "cat/gfx/shader.hpp"
+#include "cat/util/chrono.hpp"
 #include "cat/util/memory.hpp"
 #include "cat/core/resource_manager.hpp"
 #include "cat/core/input_manager.hpp"
@@ -76,6 +77,8 @@ int main(int argc, char** argv)
     });
     ecs.add_component<cSprite>(other_entity, sprite);
 
+    seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
+
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
     {
@@ -108,6 +111,13 @@ int main(int argc, char** argv)
         // csl_shader->set_uniform("u_my_uniform", 1);
 
         GfxEngine::get().display();
+
+        // print fps each second
+        if(CoreEngine::get().get_chrono().current_seconds() >= last_time + 1.f)
+        {
+            last_time = CoreEngine::get().get_chrono().current_seconds();
+            LOG_TEXTF("FPS: %u\n", CoreEngine::get().get_chrono().get_fps());
+        }
     }
 
     CAT_BENCH_DISPLAY(BENCHMARK_IN_SECONDS);
