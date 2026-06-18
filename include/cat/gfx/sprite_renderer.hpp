@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/vertex_buffer.hpp"
 #include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/util.hpp"
 #include <cat/gfx/components/c_sprite.hpp>
@@ -26,9 +27,13 @@ private:
     void render_batch();
 
 private:
-    Unique<VertexBuffer> m_vbo;
+    static constexpr u64 BUFFER_RING_SIZE = 3;
+
+    std::array<Unique<VertexBuffer>, BUFFER_RING_SIZE> m_vbo_ring;
+    std::array<Unique<VertexArray>, BUFFER_RING_SIZE> m_vao_ring;
+    u32 m_ring_index = 0;
+
     Unique<VertexBuffer> m_ibo;
-    Unique<VertexArray> m_vao;
     VertexLayout m_sprite_layout;
     
     std::vector<f32> m_batch_position_data;
@@ -36,8 +41,9 @@ private:
     u32 m_current_spriteatlas_handle;
     u32 m_num_sprites_batched = 0;
 
-    static constexpr u32 SPRITE_BATCH_SIZE = 16;
+    static constexpr u32 SPRITE_BATCH_SIZE = 64;
     static constexpr u32 SPRITE_VERTEX_SIZE = (sizeof(f32)*3)+(sizeof(f32)*2);
+
 
     friend class GfxEngine;
 };

@@ -7,7 +7,17 @@ using namespace cat;
 
 static constexpr u32 NULL_HANDLE = 0;
 
-VertexBuffer::VertexBuffer(u32 vertex_size, u32 vertex_count, eBufferType type)
+GLenum _buffer_usage_to_gl_enum(eBufferUsage usage)
+{
+    switch (usage) {
+        case eBufferUsage::STATIC: return GL_STATIC_DRAW;
+        case eBufferUsage::DYNAMIC: return GL_DYNAMIC_DRAW;
+        case eBufferUsage::STREAM: return GL_STREAM_DRAW;
+    }
+}
+
+VertexBuffer::VertexBuffer(u32 vertex_size, u32 vertex_count, 
+    eBufferType type, eBufferUsage usage)
 {
 	m_vertex_count = vertex_count;
     m_vertex_size = vertex_size;
@@ -32,7 +42,7 @@ VertexBuffer::VertexBuffer(u32 vertex_size, u32 vertex_count, eBufferType type)
 			m_target,
 			vertex_count * vertex_size,
 			NULL,
-			GL_STATIC_DRAW
+            _buffer_usage_to_gl_enum(usage)
 		);
 	);
 

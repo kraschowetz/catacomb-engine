@@ -1,4 +1,5 @@
 #include "cat/error.hpp"
+#include "cat/util/memory.hpp"
 #include <cat/gfx/sprite_renderer.hpp>
 
 #include <cat/gfx/gfx_engine.hpp>
@@ -21,19 +22,33 @@ SpriteRenderer::SpriteRenderer()
         throw Exception{eErrorCode::UNKNOWN};
     }
 
-    m_vbo = std::make_unique<VertexBuffer>(
-        SPRITE_VERTEX_SIZE,
-        SPRITE_BATCH_SIZE * SPRITE_VERTEX_COUNT,
-        eBufferType::VERTEX
-    );
+    m_sprite_layout.push_f32(3); // position
+    m_sprite_layout.push_f32(2); // uv
+
+    for(u64 i = 0; i < BUFFER_RING_SIZE; ++i)
+    {
+        m_vbo_ring[i] = std::make_unique<VertexBuffer>(
+            SPRITE_VERTEX_SIZE,
+            SPRITE_BATCH_SIZE * SPRITE_VERTEX_COUNT,
+            eBufferType::VERTEX,
+            eBufferUsage::DYNAMIC
+        );
+        m_vao_ring[i] = std::make_unique<VertexArray>();
+        
+        m_vao_ring[i]->bind();
+        m_vbo_ring[i]->bind();
+
+        m_vao_ring[i]->attr(*m_vbo_ring[i], m_sprite_layout);
+
+        m_vao_ring[i]->unbind();
+        m_vbo_ring[i]->unbind();
+    }
 
     m_ibo = std::make_unique<VertexBuffer>(
         sizeof(u32),
         SPRITE_BATCH_SIZE * SPRITE_INDEX_COUNT,
         eBufferType::INDEX
     );
-
-    m_vao = std::make_unique<VertexArray>();
 
     m_batch_position_data.reserve(
         SPRITE_BATCH_SIZE * SPRITE_VERTEX_COUNT * 3);
@@ -58,9 +73,6 @@ SpriteRenderer::SpriteRenderer()
     m_ibo->bind();
     m_ibo->upload_indices(indices.data(), SPRITE_BATCH_SIZE * SPRITE_INDEX_COUNT);
     m_ibo->unbind();
-
-    m_sprite_layout.push_f32(3); // position
-    m_sprite_layout.push_f32(2); // uv
 }
 
 void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& transform)
@@ -71,6 +83,7 @@ void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& tran
         render_batch();
     }
 
+    m_current_spriteatlas_handle = sprite.texture_handle;
     add_sprite_to_batch(sprite, transform);
 }
 
@@ -92,8 +105,6 @@ void SpriteRenderer::add_sprite_to_batch(
         transform.position.x,
         transform.position.y
     };
-
-    // TODO: check if manual memcpys would perform better
 
     u64 i = m_batch_position_data.size();
     u64 j = m_batch_uv_data.size();
@@ -141,15 +152,14 @@ void SpriteRenderer::add_sprite_to_batch(
 
 void SpriteRenderer::render_batch()
 {
-    m_vbo->bind();
-    m_vao->bind();
+    const VertexBuffer& vbo = *m_vbo_ring[m_ring_index];
+    const VertexArray& vao = *m_vao_ring[m_ring_index];
 
-    m_vbo->orphan();
+    vbo.bind();
+    vao.bind();
 
-    m_vbo->buffer(m_batch_position_data.data(), m_sprite_layout, 0);
-    m_vbo->buffer(m_batch_uv_data.data(), m_sprite_layout, 1);
-
-    m_vao->attr(*m_vbo, m_sprite_layout);
+    vbo.buffer(m_batch_position_data.data(), m_sprite_layout, 0);
+    vbo.buffer(m_batch_uv_data.data(), m_sprite_layout, 1);
 
     // unbinds m_vbo
     m_ibo->bind();
@@ -162,10 +172,12 @@ void SpriteRenderer::render_batch()
     ));
 
     m_ibo->unbind();
-    m_vao->unbind();
+    vao.unbind();
 
     m_num_sprites_batched = 0;
 
     m_batch_position_data.clear();
     m_batch_uv_data.clear();
+
+    m_ring_index = (m_ring_index + 1) % BUFFER_RING_SIZE;
 }
