@@ -106,6 +106,23 @@ void SpriteRenderer::add_sprite_to_batch(
         transform.position.y
     };
 
+    const glm::vec2 half_size {
+        (f32)sprite.size.x * 0.5f,
+        (f32)sprite.size.y * 0.5f
+    };
+
+    glm::mat4 model = cTransform::as_mat4(transform);
+
+    auto _transform_corner = [&](f32 _x, f32 _y) -> glm::vec2 {
+        glm::vec4 world = model * glm::vec4(_x, _y, 0.f, 1.f);
+        return glm::vec2{world.x, world.y};
+    };
+
+    glm::vec2 bottom_left = _transform_corner(-half_size.x, -half_size.y);
+    glm::vec2 bottom_right = _transform_corner(half_size.x, -half_size.y);
+    glm::vec2 top_right = _transform_corner(half_size.x, half_size.y);
+    glm::vec2 top_left = _transform_corner(-half_size.x, half_size.y); 
+
     u64 i = m_batch_position_data.size();
     u64 j = m_batch_uv_data.size();
 
@@ -115,33 +132,32 @@ void SpriteRenderer::add_sprite_to_batch(
     m_batch_position_data.resize(i + NUM_POSITIONS);
     m_batch_uv_data.resize(j + NUM_UVS);
 
-    // bottom-left
-    m_batch_position_data[i] = anchor.x - (f32) size.x;
-    m_batch_position_data[i+1] = anchor.y - (f32) size.y;
+    m_batch_position_data[i] = bottom_left.x;
+    m_batch_position_data[i+1] = bottom_left.y;
     m_batch_position_data[i+2] = (f32) sprite.z_index;
 
     m_batch_uv_data[j] = sprite.uv.left_x;
     m_batch_uv_data[j+1] = sprite.uv.bottom_y;
 
     // bottom-right
-    m_batch_position_data[i+3] = anchor.x + (f32) size.x;
-    m_batch_position_data[i+4] = anchor.y - (f32) size.y;
+    m_batch_position_data[i+3] = bottom_right.x;
+    m_batch_position_data[i+4] = bottom_right.y;
     m_batch_position_data[i+5] = (f32) sprite.z_index;
 
     m_batch_uv_data[j+2] = sprite.uv.right_x;
     m_batch_uv_data[j+3] = sprite.uv.bottom_y;
 
     // top-right
-    m_batch_position_data[i+6] = anchor.x + (f32) size.x;
-    m_batch_position_data[i+7] = anchor.y + (f32) size.y;
+    m_batch_position_data[i+6] = top_right.x;
+    m_batch_position_data[i+7] = top_right.y;
     m_batch_position_data[i+8] = (f32) sprite.z_index;
 
     m_batch_uv_data[j+4] = sprite.uv.right_x;
     m_batch_uv_data[j+5] = sprite.uv.top_y;
 
     // top-left
-    m_batch_position_data[i+9] = anchor.x - (f32) size.x;
-    m_batch_position_data[i+10] = anchor.y + (f32) size.y;
+    m_batch_position_data[i+9] = top_left.x;
+    m_batch_position_data[i+10] = top_left.y;
     m_batch_position_data[i+11] = (f32) sprite.z_index;
 
     m_batch_uv_data[j+6] = sprite.uv.left_x;

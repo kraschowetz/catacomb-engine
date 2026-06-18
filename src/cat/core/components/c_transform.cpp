@@ -1,27 +1,23 @@
 #include <cat/core/components/c_transform.hpp>
 
 #include "cat/util/math.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/gtc/quaternion.hpp"
 
 using namespace cat;
 
 glm::mat4 cTransform::as_mat4(const cTransform& self)
 {
-    glm::vec3 x = self.rotation * glm::vec3(1, 0, 0);
-    glm::vec3 y = self.rotation * glm::vec3(0, 1, 0);
-    glm::vec3 z = self.rotation * glm::vec3(0, 0, 1);
+    glm::mat4 mat{1};
+    mat = glm::translate(mat, self.position);
+    mat = glm::scale(mat, self.scale);
 
-    x *= self.scale.x;
-    y *= self.scale.y;
-    z *= self.scale.z;
+    glm::vec3 euler = glm::eulerAngles(self.rotation);
+    mat = glm::rotate(mat, euler.x, glm::vec3{1, 0, 0});
+    mat = glm::rotate(mat, euler.y, glm::vec3{0, 1, 0});
+    mat = glm::rotate(mat, euler.z, glm::vec3{0, 0, 1});
 
-    const glm::vec3& p = self.position;
-
-    return glm::mat4{
-        x.x, x.y, x.z, 0.f,
-        y.x, y.y, z.z, 0.f,
-        z.x, z.y, z.z, 0.f,
-        p.x, p.y, p.z, 1.f
-    };
+    return mat;
 }
 
 cTransform cTransform::from_mat4(const glm::mat4 &mat)
