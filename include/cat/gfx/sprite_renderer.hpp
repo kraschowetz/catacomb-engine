@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/vertex_layout.hpp"
 #include "cat/util/util.hpp"
 #include <cat/gfx/components/c_sprite.hpp>
 #include <cat/gfx/vertex_array.hpp>
@@ -28,6 +29,7 @@ private:
     Unique<VertexBuffer> m_vbo;
     Unique<VertexBuffer> m_ibo;
     Unique<VertexArray> m_vao;
+    VertexLayout m_sprite_layout;
     
     std::vector<f32> m_batch_position_data;
     std::vector<f32> m_batch_uv_data;

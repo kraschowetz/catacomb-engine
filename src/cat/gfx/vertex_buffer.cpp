@@ -78,7 +78,6 @@ void VertexBuffer::unbind() const
 
 void VertexBuffer::orphan() const
 {
-    bind();
 	GL_CALL(
 		glBufferData(
 			m_target,
@@ -87,13 +86,10 @@ void VertexBuffer::orphan() const
 			GL_STREAM_DRAW
 		);
 	);
-    unbind();
 }
 
 void VertexBuffer::buffer(const void* data, VertexLayout& layout, u32 index) const
 {
-	bind();
-	
 	u32 offset = layout.get_offset(index);
 	const VertexElement& element = layout.get_element(index);
 
@@ -108,20 +104,14 @@ void VertexBuffer::buffer(const void* data, VertexLayout& layout, u32 index) con
 			)
 		);
 	}
-
-	unbind();
 }
 
 void VertexBuffer::upload_indices(const u32* src, u64 num_indices) const
 {
-    bind();
-
     GL_CALL(glBufferSubData(
         m_target,
         0, 
         (i64)(num_indices * sizeof(u32)), 
         src)
     );
-
-    unbind();
 }

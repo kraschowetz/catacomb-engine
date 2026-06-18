@@ -40,9 +40,6 @@ void VertexArray::unbind() const
 
 void VertexArray::attr(const VertexBuffer &vbo, const VertexLayout &layout) const
 {
-    bind();
-    vbo.bind();
-    
     const std::vector<VertexElement>& elements = layout.get_elements();
     u32 offset = 0;
     
@@ -80,7 +77,4 @@ void VertexArray::attr(const VertexBuffer &vbo, const VertexLayout &layout) cons
 
         offset += element.get_size() * element.count * vbo.m_vertex_count;
     }
-
-    vbo.unbind();
-    unbind();
 }

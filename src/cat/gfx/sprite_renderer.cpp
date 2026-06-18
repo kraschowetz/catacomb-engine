@@ -55,7 +55,12 @@ SpriteRenderer::SpriteRenderer()
         indices[base_index + 5] = base_vertex + 0;
     }
 
+    m_ibo->bind();
     m_ibo->upload_indices(indices.data(), SPRITE_BATCH_SIZE * SPRITE_INDEX_COUNT);
+    m_ibo->unbind();
+
+    m_sprite_layout.push_f32(3); // position
+    m_sprite_layout.push_f32(2); // uv
 }
 
 void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& transform)
@@ -90,55 +95,63 @@ void SpriteRenderer::add_sprite_to_batch(
 
     // TODO: check if manual memcpys would perform better
 
-    // bottom-left
-    m_batch_position_data.push_back(anchor.x - (f32) size.x);
-    m_batch_position_data.push_back(anchor.y - (f32) size.y);
-    m_batch_position_data.push_back((f32) sprite.z_index);
+    u64 i = m_batch_position_data.size();
+    u64 j = m_batch_uv_data.size();
 
-    m_batch_uv_data.push_back(sprite.uv.left_x);
-    m_batch_uv_data.push_back(sprite.uv.bottom_y);
+    constexpr u64 NUM_POSITIONS = 12;
+    constexpr u64 NUM_UVS = 8;
+
+    m_batch_position_data.resize(i + NUM_POSITIONS);
+    m_batch_uv_data.resize(j + NUM_UVS);
+
+    // bottom-left
+    m_batch_position_data[i] = anchor.x - (f32) size.x;
+    m_batch_position_data[i+1] = anchor.y - (f32) size.y;
+    m_batch_position_data[i+2] = (f32) sprite.z_index;
+
+    m_batch_uv_data[j] = sprite.uv.left_x;
+    m_batch_uv_data[j+1] = sprite.uv.bottom_y;
 
     // bottom-right
-    m_batch_position_data.push_back(anchor.x + (f32) size.x);
-    m_batch_position_data.push_back(anchor.y - (f32) size.y);
-    m_batch_position_data.push_back((f32) sprite.z_index);
+    m_batch_position_data[i+3] = anchor.x + (f32) size.x;
+    m_batch_position_data[i+4] = anchor.y - (f32) size.y;
+    m_batch_position_data[i+5] = (f32) sprite.z_index;
 
-    m_batch_uv_data.push_back(sprite.uv.right_x);
-    m_batch_uv_data.push_back(sprite.uv.bottom_y);
+    m_batch_uv_data[j+2] = sprite.uv.right_x;
+    m_batch_uv_data[j+3] = sprite.uv.bottom_y;
 
     // top-right
-    m_batch_position_data.push_back(anchor.x + (f32) size.x);
-    m_batch_position_data.push_back(anchor.y + (f32) size.y);
-    m_batch_position_data.push_back((f32) sprite.z_index);
+    m_batch_position_data[i+6] = anchor.x + (f32) size.x;
+    m_batch_position_data[i+7] = anchor.y + (f32) size.y;
+    m_batch_position_data[i+8] = (f32) sprite.z_index;
 
-    m_batch_uv_data.push_back(sprite.uv.right_x);
-    m_batch_uv_data.push_back(sprite.uv.top_y);
+    m_batch_uv_data[j+4] = sprite.uv.right_x;
+    m_batch_uv_data[j+5] = sprite.uv.top_y;
 
     // top-left
-    m_batch_position_data.push_back(anchor.x - (f32) size.x);
-    m_batch_position_data.push_back(anchor.y + (f32) size.y);
-    m_batch_position_data.push_back((f32) sprite.z_index);
+    m_batch_position_data[i+9] = anchor.x - (f32) size.x;
+    m_batch_position_data[i+10] = anchor.y + (f32) size.y;
+    m_batch_position_data[i+11] = (f32) sprite.z_index;
 
-    m_batch_uv_data.push_back(sprite.uv.left_x);
-    m_batch_uv_data.push_back(sprite.uv.top_y);
+    m_batch_uv_data[j+6] = sprite.uv.left_x;
+    m_batch_uv_data[j+7] = sprite.uv.top_y;
 
     ++m_num_sprites_batched;
 }
 
 void SpriteRenderer::render_batch()
 {
-    VertexLayout layout;
-    layout.push_f32(3); // position
-    layout.push_f32(2); // uv
-    
+    m_vbo->bind();
+    m_vao->bind();
+
     m_vbo->orphan();
 
-    m_vbo->buffer(m_batch_position_data.data(), layout, 0);
-    m_vbo->buffer(m_batch_uv_data.data(), layout, 1);
+    m_vbo->buffer(m_batch_position_data.data(), m_sprite_layout, 0);
+    m_vbo->buffer(m_batch_uv_data.data(), m_sprite_layout, 1);
 
-    m_vao->attr(*m_vbo, layout);
+    m_vao->attr(*m_vbo, m_sprite_layout);
 
-    m_vao->bind();
+    // unbinds m_vbo
     m_ibo->bind();
 
     GL_CALL(glDrawElements(
