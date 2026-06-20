@@ -13,7 +13,7 @@ public:
 	virtual void end_frame() override;
 	virtual void poll_events() override;
 
-	SdlCanvas(CanvasInfo& info);
+	SdlCanvas();
 	~SdlCanvas();
 
 private:

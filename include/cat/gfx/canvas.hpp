@@ -2,14 +2,14 @@
 
 // @file Canvas is an interface that represents a rendering target
 
-#include <string_view>
+#include <string>
 #include <cat/config.hpp>
 
 namespace cat
 {
 struct CanvasInfo
 {
-	std::string_view title;
+	std::string title;
 	u32 width, height; 
 
 	struct {

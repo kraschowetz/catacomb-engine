@@ -19,11 +19,6 @@ TextureUV SpriteAtlas::get_uv(const glm::ivec2& sprite_index) const
     uv.left_x = (f32)(sprite_index.x * m_sprite_size.x) / (f32)texture_size.x;
     uv.right_x = (f32)((sprite_index.x + 1) * m_sprite_size.x) / (f32)texture_size.x;
 
-    LOG_TEXTF("texture size: %dx%d\n", texture_size.x, texture_size.y);
-    LOG_TEXTF("spriteid: %d, %d\n", sprite_index.x, sprite_index.y);
-    LOG_TEXTF("left: %.2f, right: %.2f\n", uv.left_x, uv.right_x);
-    LOG_TEXTF("bottom: %.2f, top: %.2f\n", uv.bottom_y, uv.top_y);
-
     return uv;
 }
 

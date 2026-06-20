@@ -4,6 +4,13 @@
 #include <cat/config.hpp>
 #include <cat/util/logger.hpp>
 
+#ifndef CAT_WINDOW_CONFIG_FILE_PATH
+
+#define CAT_WINDOW_CONFIG_FILE_PATH "./config/window.cconf"
+#define CAT_GFX_CONFIG_FILE_PATH "./config/gfx.cconf"
+
+#endif
+
 static inline void gl_clear_all_errors()
 {
 	while(glGetError() != GL_NO_ERROR) { ;; }

@@ -1,0 +1,5 @@
+resolution.x;i32;800
+resolution.y;i32;600
+clear_color.r;f32;0
+clear_color.g;f32;0
+clear_color.b;f32;0

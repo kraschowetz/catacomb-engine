@@ -1,3 +1,4 @@
+#include "cat/error.hpp"
 #include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/util/util.hpp"
@@ -13,13 +14,38 @@
 #include <cat/core/resource_manager.hpp>
 #include <cat/core/core_engine.hpp>
 
+#include <cat/util/cconf.hpp>
+
 #include <memory>
 
 using namespace cat;
 
+static GfxConfig _load_config_file()
+{
+    try {
+        BasicConfMap map = load_conf_file(CAT_GFX_CONFIG_FILE_PATH);
+
+        GfxConfig config;
+        config.resolution.x = std::get<i32>(map.at("resolution.x").data);
+        config.resolution.y = std::get<i32>(map.at("resolution.y").data);
+
+        config.clear_color.r = std::get<f32>(map.at("clear_color.r").data);
+        config.clear_color.g = std::get<f32>(map.at("clear_color.g").data);
+        config.clear_color.b = std::get<f32>(map.at("clear_color.b").data);
+        config.clear_color.a = 1.f;
+
+        return config;
+    }
+    catch(Exception e)
+    {
+        // TODO: write default conf into a file
+        return CAT_DEFAULT_GFX_CONFIG;
+    }
+}
+
 static void _update_gl_state(const GfxConfig& config)
 {
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, config.resolution.x, config.resolution.y);
     glClearColor(
         config.clear_color.r,
         config.clear_color.g,
@@ -67,16 +93,14 @@ void GfxEngine::unload_basic_shaders()
 
 GfxEngine::GfxEngine()
 {
-    CanvasInfo window_info = CAT_DEFAULT_WINDOW_CONFIG;
-
-    m_main_window = std::make_unique<SdlCanvas>(window_info);
+    m_main_window = std::make_unique<SdlCanvas>();
     m_sprite_renderer = std::make_unique<SpriteRenderer>();
 
     m_render_context_map.insert(MAIN_2D_CONTEXT, RenderContext{});
     m_render_context_map.insert(MAIN_3D_CONTEXT, RenderContext{});
     
-    // TODO: load configs from a file
-    _update_gl_state(CAT_DEFAULT_GFX_CONFIG);
+    GfxConfig config = _load_config_file();
+    _update_gl_state(config);
 
     load_basic_shaders();
 }
