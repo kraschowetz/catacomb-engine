@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 #include <cat/error.hpp>
@@ -10,6 +11,32 @@
 
 namespace cat
 {
+
+static constexpr std::string _get_entry_type_str(const BasicConfEntry& entry)
+{
+    switch (entry.data.index())
+    {
+        case 0: return "f32";
+        case 1: return "i32";
+        case 2: return "u32";
+        case 3: return "u64";
+        case 4: return "bool";
+        default: return "str";
+    }
+}
+
+static constexpr std::string _get_entry_value_str(const BasicConfEntry& entry)
+{
+    switch (entry.data.index())
+    {
+        case 0: return std::to_string(std::get<f32>(entry.data));
+        case 1: return std::to_string(std::get<i32>(entry.data));
+        case 2: return std::to_string(std::get<u32>(entry.data));
+        case 3: return std::to_string(std::get<u64>(entry.data));
+        case 4: return std::to_string(std::get<bool>(entry.data));
+        default: return std::get<std::string>(entry.data);
+    }
+}
 
 static eTypeID _get_type_id(const std::string& type_str)
 {
@@ -59,19 +86,35 @@ BasicConfMap load_conf_file(const std::string &path) THROWS
         if(current_line.length() <= 1) continue;
 
         std::string name = std::strtok(
-            const_cast<char*>(current_line.c_str()), ";"
+            const_cast<char*>(current_line.c_str()), CAT_CCONF_DELIMETER
         );
         std::string type = std::strtok(
-            NULL, ";"
+            NULL, CAT_CCONF_DELIMETER
         );
         std::string value = std::strtok(
-            NULL, ";"
+            NULL, CAT_CCONF_DELIMETER
         );
 
         map[name] = _parse_value(_get_type_id(type), value);
     }
 
     return map;
+}
+
+void save_conf_file(const BasicConfMap &map, const std::string &path)
+{
+    std::ofstream file{path};
+    std::stringstream stream;
+
+    for(std::pair<std::string, BasicConfEntry> pair : map)
+    {
+        stream << pair.first << CAT_CCONF_DELIMETER;
+        stream << _get_entry_type_str(pair.second) << CAT_CCONF_DELIMETER;
+        stream << _get_entry_value_str(pair.second) << CAT_CCONF_END_DELIMETER;
+    }
+
+    file << stream.str();
+    file.close();
 }
 
 }

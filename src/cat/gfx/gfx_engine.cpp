@@ -20,6 +20,20 @@
 
 using namespace cat;
 
+static void _save_config_file(const GfxConfig& config)
+{
+
+    BasicConfMap map;
+    map["resolution.x"] = config.resolution.x;
+    map["resolution.y"] = config.resolution.y;
+
+    map["clear_color.r"] = config.clear_color.r;
+    map["clear_color.g"] = config.clear_color.g;
+    map["clear_color.b"] = config.clear_color.b;
+
+    save_conf_file(map, CAT_GFX_CONFIG_FILE_PATH);
+}
+
 static GfxConfig _load_config_file()
 {
     try {
@@ -38,7 +52,7 @@ static GfxConfig _load_config_file()
     }
     catch(Exception e)
     {
-        // TODO: write default conf into a file
+        _save_config_file(CAT_DEFAULT_GFX_CONFIG);
         return CAT_DEFAULT_GFX_CONFIG;
     }
 }
@@ -59,6 +73,7 @@ static void _update_gl_state(const GfxConfig& config)
 
     glEnable(GL_TEXTURE_CUBE_MAP);  // futureproofing for 3D games
 }
+
 
 void GfxEngine::load_basic_shaders()
 {
@@ -113,8 +128,7 @@ GfxEngine::~GfxEngine()
 void GfxEngine::update_settings(const GfxConfig& config)
 {
     _update_gl_state(config);
-
-    // TODO: write `config` into a file
+    _save_config_file(config);
 }
 
 void GfxEngine::prepare(eRenderPass pass)

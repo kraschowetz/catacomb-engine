@@ -1,11 +1,13 @@
 #pragma once
 
-#include <new>
 #include <string>
 #include <unordered_map>
 
 #include <cat/config.hpp>
 #include <variant>
+
+#define CAT_CCONF_DELIMETER "|"
+#define CAT_CCONF_END_DELIMETER "\n"
 
 namespace cat
 {
@@ -46,5 +48,6 @@ public:
 using BasicConfMap = std::unordered_map<std::string, BasicConfEntry>;
 
 BasicConfMap load_conf_file(const std::string& path) THROWS;
+void save_conf_file(const BasicConfMap& map, const std::string& path);
 
 }

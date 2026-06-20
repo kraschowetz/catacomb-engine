@@ -15,6 +15,18 @@
 namespace cat
 {
 
+static void _save_conf_file(const CanvasInfo& info)
+{
+    BasicConfMap map;
+    map["height"] = info.height;
+    map["width"] = info.width;
+    map["title"] = info.title;
+    map["version.major"] = info.version.major;
+    map["version.minor"] = info.version.minor;
+
+    save_conf_file(map, CAT_WINDOW_CONFIG_FILE_PATH);
+}
+
 static CanvasInfo _load_canvas_info_file()
 {
     try {
@@ -30,7 +42,7 @@ static CanvasInfo _load_canvas_info_file()
         return info;
     } 
     catch (Exception e) {
-        // TODO: write windowconf file
+        _save_conf_file(CAT_DEFAULT_WINDOW_CONFIG);
         return CAT_DEFAULT_WINDOW_CONFIG;
     }
 }
