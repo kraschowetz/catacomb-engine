@@ -6,6 +6,7 @@
 #include <cat/gfx/components/c_sprite.hpp>
 #include <cat/gfx/vertex_array.hpp>
 #include <cat/core/components/c_transform.hpp>
+#include <cat/core/components/c_world_transform.hpp>
 #include <cat/util/memory.hpp>
 #include <vector>
 
@@ -20,10 +21,11 @@ public:
     NO_COPY(SpriteRenderer);
 
     void render_sprite(const cSprite& sprite, const cTransform& transform);
+    void render_sprite(const cSprite& sprite, const cWorldTransform& transform);
     bool has_sprites_batched() const;
 
 private:
-    void add_sprite_to_batch(const cSprite& sprite, const cTransform& transform);
+    void add_sprite_to_batch(const cSprite& sprite, const glm::mat4& model);
     void render_batch();
 
 private:

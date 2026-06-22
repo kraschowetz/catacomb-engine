@@ -110,10 +110,25 @@ public:
 		Watcher<Component> added = sparse_set->set(entity, comp);
 
 		// set component bit to 1
-		m_entity_masks.get(entity).get()[index] = 0;
+		(*m_entity_masks.get(entity))[index] = 1;
 
 		return added;
 	}
+
+    template<typename Component>
+    Watcher<Component> get_component(EntityID entity)
+    {
+        if(!has_component<Component>(entity)) return nullptr;
+        u64 index = get_component_index<Component>();
+
+        if(index == NULLID) return nullptr;
+
+		SparseSet<Component>* sparse_set = reinterpret_cast<SparseSet<Component>*>(
+			m_component_pools[index].get()
+		);
+
+        return sparse_set->get(entity);
+    }
 
 	template<typename Component>
 	void remove_component(EntityID entity)

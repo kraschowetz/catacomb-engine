@@ -84,7 +84,20 @@ void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& tran
     }
 
     m_current_spriteatlas_handle = sprite.texture_handle;
-    add_sprite_to_batch(sprite, transform);
+    add_sprite_to_batch(sprite, transform.as_mat4());
+}
+
+void SpriteRenderer::render_sprite(
+    const cSprite &sprite, const cWorldTransform& transform)
+{
+    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
+        sprite.texture_handle != m_current_spriteatlas_handle)
+    {
+        render_batch();
+    }
+
+    m_current_spriteatlas_handle = sprite.texture_handle;
+    add_sprite_to_batch(sprite, transform.matrix);
 }
 
 bool SpriteRenderer::has_sprites_batched() const
@@ -93,8 +106,10 @@ bool SpriteRenderer::has_sprites_batched() const
 }
 
 void SpriteRenderer::add_sprite_to_batch(
-    const cSprite& sprite, const cTransform& transform)
+    const cSprite& sprite, const glm::mat4& model)
 {
+    cTransform transform = cTransform::from_mat4(model);
+
     glm::ivec2 size = glm::ivec2{
         (i32)((f32)(sprite.size.x) * transform.scale.x),
         (i32)((f32)(sprite.size.y) * transform.scale.y),
@@ -110,8 +125,6 @@ void SpriteRenderer::add_sprite_to_batch(
         (f32)sprite.size.x * 0.5f,
         (f32)sprite.size.y * 0.5f
     };
-
-    glm::mat4 model = cTransform::as_mat4(transform);
 
     auto _transform_corner = [&](f32 _x, f32 _y) -> glm::vec2 {
         glm::vec4 world = model * glm::vec4(_x, _y, 0.f, 1.f);

@@ -6,13 +6,13 @@
 
 using namespace cat;
 
-glm::mat4 cTransform::as_mat4(const cTransform& self)
+glm::mat4 cTransform::as_mat4() const
 {
     glm::mat4 mat{1};
-    mat = glm::translate(mat, self.position);
-    mat = glm::scale(mat, self.scale);
+    mat = glm::translate(mat, this->position);
+    mat = glm::scale(mat, this->scale);
 
-    glm::vec3 euler = glm::eulerAngles(self.rotation);
+    glm::vec3 euler = glm::eulerAngles(this->rotation);
     mat = glm::rotate(mat, euler.x, glm::vec3{1, 0, 0});
     mat = glm::rotate(mat, euler.y, glm::vec3{0, 1, 0});
     mat = glm::rotate(mat, euler.z, glm::vec3{0, 0, 1});
@@ -62,17 +62,17 @@ cTransform cTransform::from_mat4(const glm::mat4 &mat)
     return trans;
 }
 
-cTransform cTransform::inverse(const cTransform &self)
+cTransform cTransform::inverse() const
 {
     cTransform inv;
 
-    inv.rotation = glm::inverse(self.rotation);
+    inv.rotation = glm::inverse(this->rotation);
 
-    inv.scale.x = fabs(self.scale.x) < VEC3_EPSILON ? 0.f : 1.f / self.scale.x;
-    inv.scale.y = fabs(self.scale.y) < VEC3_EPSILON ? 0.f : 1.f / self.scale.y;
-    inv.scale.z = fabs(self.scale.z) < VEC3_EPSILON ? 0.f : 1.f / self.scale.z;
+    inv.scale.x = fabs(this->scale.x) < VEC3_EPSILON ? 0.f : 1.f / this->scale.x;
+    inv.scale.y = fabs(this->scale.y) < VEC3_EPSILON ? 0.f : 1.f / this->scale.y;
+    inv.scale.z = fabs(this->scale.z) < VEC3_EPSILON ? 0.f : 1.f / this->scale.z;
 
-    glm::vec3 inv_translation = self.position * -1.f;
+    glm::vec3 inv_translation = this->position * -1.f;
     inv.position = inv.rotation * (inv.scale * inv_translation);
 
     return inv;

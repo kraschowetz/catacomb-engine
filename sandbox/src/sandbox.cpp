@@ -1,4 +1,6 @@
+#include "cat/core/components/c_scene_tag.hpp"
 #include "cat/core/components/c_transform.hpp"
+#include "cat/core/scene.hpp"
 #include "cat/gfx/components/c_camera.hpp"
 #include "cat/gfx/components/c_sprite.hpp"
 #include "cat/gfx/shader.hpp"
@@ -20,7 +22,6 @@
 
 #include <cat/util/cconf.hpp>
 
-#include <iostream>
 #include <unistd.h>
 
 int main(int argc, char** argv)
@@ -55,14 +56,14 @@ int main(int argc, char** argv)
     ecs.register_component_index<cSprite>();
     ecs.register_component_index<cTransform>();
     ecs.register_component_index<cCamera>();
+    ecs.register_component_index<cWorldTransform>();
+    ecs.register_component_index<cWorldHierarchy>();
+    ecs.register_component_index<cSceneTag>();
 
-    EntityID entity = ecs.create_entity();
+    Scene scene;
+
+    EntityID entity = scene.create_entity();
     
-    ecs.add_component<cTransform>(entity, {
-        .position{0, 0, 0},
-        .scale{4},
-        .rotation{glm::vec3{0, 0, glm::radians(45.f)}}
-    });
     ecs.add_component<cSprite>(entity, sprite);
 
     ecs.add_component<cCamera>(entity, {
@@ -72,6 +73,7 @@ int main(int argc, char** argv)
         .type = eCameraType::ORTHOGRAPHIC,
     });
 
+    /*
     EntityID other_entity = ecs.create_entity();
     ecs.add_component<cTransform>(other_entity, {
         .position{400, 0, 0},
@@ -79,8 +81,11 @@ int main(int argc, char** argv)
         .rotation{}
     });
     ecs.add_component<cSprite>(other_entity, sprite);
+    */
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
+
+    scene.set_transform_scale(entity, glm::vec3{3.f, 1.f, 0.f});
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -88,6 +93,7 @@ int main(int argc, char** argv)
         CAT_BENCH_SCOPE("update loop", bench_marker);
 
         CoreEngine::get().update();
+        scene.update();
 
         if(CoreEngine::get().get_input_manager().is_key_just_released(eKeyType::SPACE))
         {
@@ -106,8 +112,8 @@ int main(int argc, char** argv)
 
         GfxEngine::get().prepare(eRenderPass::MAIN_2D);
 
-        auto sprite_view = ecs.view<cSprite, cTransform>();
-        sprite_view.foreach([](cSprite& spr, cTransform& trans){
+        auto sprite_view = ecs.view<cSprite, cWorldTransform>();
+        sprite_view.foreach([](cSprite& spr, cWorldTransform& trans){
             GfxEngine::get().get_sprite_renderer().render_sprite(spr, trans);
         });
 
