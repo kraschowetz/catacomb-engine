@@ -9,6 +9,8 @@ struct cWorldTransform
 {
     glm::mat4 matrix {1};
     bool dirty = true;
+
+    glm::vec3 get_position() const;
 };
 
 }

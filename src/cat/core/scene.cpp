@@ -134,56 +134,8 @@ void Scene::update_transform_subtree(
     }
 }
 
-
 void Scene::make_dirty(EntityID entity)
 {
     CoreEngine::get().get_ecs().get_component<cWorldTransform>(entity)->dirty = true;
 }
 
-void Scene::translate_transform(EntityID entity, const glm::vec3& delta)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->position += delta;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}
-
-void Scene::scale_transform(EntityID entity, const glm::vec3& delta)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->scale += delta;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}
-
-void Scene::rotate_transform(EntityID entity, const glm::quat& delta)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->rotation += delta;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}
-
-void Scene::set_transform_position(EntityID entity, const glm::vec3& val)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->position = val;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}
-
-void Scene::set_transform_scale(EntityID entity, const glm::vec3& val)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->scale = val;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}
-
-void Scene::set_transform_rotation(EntityID entity, const glm::quat& val)
-{
-    ECS& ecs = _get_ecs();
-    
-    ecs.get_component<cTransform>(entity)->rotation = val;
-    ecs.get_component<cWorldTransform>(entity)->dirty = true;
-}

@@ -22,7 +22,7 @@ TextureUV SpriteAtlas::get_uv(const glm::ivec2& sprite_index) const
     return uv;
 }
 
-cSprite SpriteAtlas::get_sprite(const glm::ivec2& index, u32 z_index) const
+cSprite SpriteAtlas::get_sprite(const glm::ivec2& index, u8 z_index) const
 {
     return cSprite
     {

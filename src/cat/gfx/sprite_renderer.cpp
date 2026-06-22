@@ -1,4 +1,5 @@
 #include "cat/error.hpp"
+#include "cat/gfx/components/c_sprite.hpp"
 #include "cat/util/memory.hpp"
 #include <cat/gfx/sprite_renderer.hpp>
 
@@ -142,12 +143,14 @@ void SpriteRenderer::add_sprite_to_batch(
     constexpr u64 NUM_POSITIONS = 12;
     constexpr u64 NUM_UVS = 8;
 
+    f32 _z_index = convert_z_index_to_position(sprite.z_index);
+
     m_batch_position_data.resize(i + NUM_POSITIONS);
     m_batch_uv_data.resize(j + NUM_UVS);
 
     m_batch_position_data[i] = bottom_left.x;
     m_batch_position_data[i+1] = bottom_left.y;
-    m_batch_position_data[i+2] = (f32) sprite.z_index;
+    m_batch_position_data[i+2] = _z_index;
 
     m_batch_uv_data[j] = sprite.uv.left_x;
     m_batch_uv_data[j+1] = sprite.uv.bottom_y;
@@ -155,7 +158,7 @@ void SpriteRenderer::add_sprite_to_batch(
     // bottom-right
     m_batch_position_data[i+3] = bottom_right.x;
     m_batch_position_data[i+4] = bottom_right.y;
-    m_batch_position_data[i+5] = (f32) sprite.z_index;
+    m_batch_position_data[i+5] = _z_index;
 
     m_batch_uv_data[j+2] = sprite.uv.right_x;
     m_batch_uv_data[j+3] = sprite.uv.bottom_y;
@@ -163,7 +166,7 @@ void SpriteRenderer::add_sprite_to_batch(
     // top-right
     m_batch_position_data[i+6] = top_right.x;
     m_batch_position_data[i+7] = top_right.y;
-    m_batch_position_data[i+8] = (f32) sprite.z_index;
+    m_batch_position_data[i+8] = _z_index;
 
     m_batch_uv_data[j+4] = sprite.uv.right_x;
     m_batch_uv_data[j+5] = sprite.uv.top_y;
@@ -171,7 +174,7 @@ void SpriteRenderer::add_sprite_to_batch(
     // top-left
     m_batch_position_data[i+9] = top_left.x;
     m_batch_position_data[i+10] = top_left.y;
-    m_batch_position_data[i+11] = (f32) sprite.z_index;
+    m_batch_position_data[i+11] = _z_index;
 
     m_batch_uv_data[j+6] = sprite.uv.left_x;
     m_batch_uv_data[j+7] = sprite.uv.top_y;

@@ -15,14 +15,6 @@ public:
     EntityID create_entity(EntityID parent = NULL_ENTITY);
     void update();
 
-    void translate_transform(EntityID entity, const glm::vec3& delta);
-    void scale_transform(EntityID entity, const glm::vec3& delta);
-    void rotate_transform(EntityID entity, const glm::quat& delta);
-
-    void set_transform_position(EntityID entity, const glm::vec3& val);
-    void set_transform_scale(EntityID entity, const glm::vec3& val);
-    void set_transform_rotation(EntityID entity, const glm::quat& val);
-
 private:
     void update_transform_system();
     void update_transform_subtree(

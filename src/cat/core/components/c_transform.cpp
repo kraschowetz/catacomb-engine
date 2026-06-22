@@ -1,10 +1,14 @@
 #include <cat/core/components/c_transform.hpp>
 
+#include "cat/core/components/c_world_transform.hpp"
+#include "cat/core/core_engine.hpp"
 #include "cat/util/math.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "glm/trigonometric.hpp"
 
-using namespace cat;
+namespace cat
+{
 
 glm::mat4 cTransform::as_mat4() const
 {
@@ -76,4 +80,115 @@ cTransform cTransform::inverse() const
     inv.position = inv.rotation * (inv.scale * inv_translation);
 
     return inv;
+}
+
+static ECS& _get_ecs()
+{
+    return CoreEngine::get().get_ecs();
+}
+
+void translate_transform(EntityID entity, const glm::vec3& delta)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->position += delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void scale_transform(EntityID entity, const glm::vec3& delta)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->scale += delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void rotate_transform(EntityID entity, const glm::quat& delta)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->rotation += delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void translate_transform(EntityID entity, const glm::vec2& delta)
+{
+    ECS& ecs = _get_ecs();
+
+    glm::vec3 _delta = {delta, 0.0};
+    
+    ecs.get_component<cTransform>(entity)->position += _delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void scale_transform(EntityID entity, const glm::vec2& delta)
+{
+    ECS& ecs = _get_ecs();
+
+    glm::vec3 _delta = {delta, 0.0};
+    
+    ecs.get_component<cTransform>(entity)->scale += _delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void rotate_transform(EntityID entity, f32 delta)
+{
+    ECS& ecs = _get_ecs();
+
+    glm::quat _delta = glm::quat{glm::vec3{0.f, 0.f, glm::radians(delta)}};
+    
+    ecs.get_component<cTransform>(entity)->rotation += _delta;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_position(EntityID entity, const glm::vec3& val)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->position = val;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_scale(EntityID entity, const glm::vec3& val)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->scale = val;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_rotation(EntityID entity, const glm::quat& val)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->rotation = val;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_position(EntityID entity, const glm::vec2& val)
+{
+    ECS& ecs = _get_ecs();
+    
+    ecs.get_component<cTransform>(entity)->position = glm::vec3{val, 0.f};
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_scale(EntityID entity, const glm::vec2& val)
+{
+    ECS& ecs = _get_ecs();
+
+    ecs.get_component<cTransform>(entity)->scale = glm::vec3{val, 0.f};
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
+void set_transform_rotation(EntityID entity, f32 val)
+{
+    ECS& ecs = _get_ecs();
+
+    glm::quat _val = glm::quat{glm::vec3{0.f, 0.f, glm::radians(val)}};
+    
+    ecs.get_component<cTransform>(entity)->rotation = _val;
+    ecs.get_component<cWorldTransform>(entity)->dirty = true;
+}
+
 }

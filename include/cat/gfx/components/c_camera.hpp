@@ -20,8 +20,10 @@ struct cCamera
     hash_t render_context_handle;
     eCameraType type;
 
+    void bind(const struct cWorldTransform& transform);
+    void bind(const struct cTransform& transform);
 
-    static void bind(const cCamera& self, const struct cTransform& transform);
+    static cCamera create_ortho(const glm::ivec2& size);
 };
 
 }

@@ -66,26 +66,12 @@ int main(int argc, char** argv)
     
     ecs.add_component<cSprite>(entity, sprite);
 
-    ecs.add_component<cCamera>(entity, {
-        .projection = glm::ortho(0.f, 800.f, 0.f, 600.f, -1.f, 1.f),
-        .size = {800, 600},
-        .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
-        .type = eCameraType::ORTHOGRAPHIC,
-    });
-
-    /*
-    EntityID other_entity = ecs.create_entity();
-    ecs.add_component<cTransform>(other_entity, {
-        .position{400, 0, 0},
-        .scale{4},
-        .rotation{}
-    });
-    ecs.add_component<cSprite>(other_entity, sprite);
-    */
+    ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
-    scene.set_transform_scale(entity, glm::vec3{3.f, 1.f, 0.f});
+    set_transform_scale(entity, glm::vec2{4.f, 4.f});
+    set_transform_rotation(entity, 45.f);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -100,10 +86,10 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
-        auto camera_view = ecs.view<cCamera, cTransform>();
+        auto camera_view = ecs.view<cCamera, cWorldTransform>();
 
-        camera_view.foreach([](cCamera& cam, cTransform& trans){
-            cCamera::bind(cam, trans);
+        camera_view.foreach([](cCamera& cam, cWorldTransform& trans){
+            cam.bind(trans);
         });
 
         basic_shader.bind();
