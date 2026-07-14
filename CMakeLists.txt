@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 
+set(CMAKE_CXX_COMPILER /usr/bin/g++-13)
+
 project(catacomb CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+include(FetchContent)
+
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)     # hard error if compiler doesn't support it
 set(CMAKE_CXX_EXTENSIONS OFF)           # use -std=c++20, not -std=gnu++20
 
@@ -18,6 +22,16 @@ file(GLOB_RECURSE CAT_SOURCES
 
 # ── define the library target ─────────────────────────────────
 add_library(catacomb STATIC ${CAT_SOURCES})
+
+# -- glaze
+FetchContent_Declare(
+    glaze
+    GIT_REPOSITORY https://github.com/stephenberry/glaze.git
+    GIT_TAG v7.9.0
+)
+FetchContent_MakeAvailable(glaze)
+
+target_link_libraries(catacomb PRIVATE glaze::glaze)
 
 # ── include directories ───────────────────────────────────────
 target_include_directories(catacomb PUBLIC

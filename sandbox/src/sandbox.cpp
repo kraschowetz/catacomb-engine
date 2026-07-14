@@ -1,4 +1,3 @@
-#include "cat/core/components/c_scene_tag.hpp"
 #include "cat/core/components/c_transform.hpp"
 #include "cat/core/scene.hpp"
 #include "cat/gfx/components/c_camera.hpp"
@@ -21,14 +20,13 @@
 #include <cat/gfx/sprite_atlas.hpp>
 
 #include <cat/util/cconf.hpp>
+#include <glaze/glaze.hpp>
 
 #include <unistd.h>
 
 int main(int argc, char** argv)
 {
     using namespace cat;
-
-    GfxEngine::get();
 
     // load resources
     ResourceManager& resource_manager = CoreEngine::get().get_resource_manager();
@@ -51,16 +49,9 @@ int main(int argc, char** argv)
 
     cSprite sprite = atlas.get_sprite({0, 0});
 
-    // register entities
     ECS& ecs = CoreEngine::get().get_ecs();
-    ecs.register_component_index<cSprite>();
-    ecs.register_component_index<cTransform>();
-    ecs.register_component_index<cCamera>();
-    ecs.register_component_index<cWorldTransform>();
-    ecs.register_component_index<cWorldHierarchy>();
-    ecs.register_component_index<cSceneTag>();
 
-    Scene scene;
+    Scene& scene = CoreEngine::get().create_scene();
 
     EntityID entity = scene.create_entity();
     

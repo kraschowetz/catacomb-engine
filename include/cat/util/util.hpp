@@ -17,7 +17,7 @@ inline std::underlying_type_t<E> enum_val(E e)
 	return static_cast<T>(e);
 }
 
-constexpr u32 str_hash(const std::string& str) 
+constexpr u32 str_hash(std::string_view str) 
 {
     uint32_t hash = 2166136261u;
     for (char c : str) {

@@ -8,12 +8,28 @@
 #include <cat/core/components/c_world_hierarchy.hpp>
 #include <cat/core/components/c_transform.hpp>
 #include <cat/core/components/c_scene_tag.hpp>
+#include <set>
 
 using namespace cat;
 
 static ECS& _get_ecs()
 {
     return CoreEngine::get().get_ecs();
+}
+
+Scene::~Scene()
+{
+    std::set<EntityID> delete_list;
+    auto view = _get_ecs().view<cSceneTag>();
+
+    view.foreach([this, &delete_list](EntityID id, const cSceneTag& tag){
+        if(tag.tag == m_id) delete_list.insert(id);
+    });
+
+    for(EntityID id : delete_list)
+    {
+        _get_ecs().delete_entity(id);
+    }
 }
 
 void Scene::set_parent_transform(EntityID child, EntityID parent)
@@ -49,16 +65,34 @@ void Scene::set_parent_transform(EntityID child, EntityID parent)
     child_hierarchy->prev_sibling = NULL_ENTITY;
     child_hierarchy->next_sibling = NULL_ENTITY;
 
-    Watcher<cWorldHierarchy> new_parent_hierarchy = 
-        ecs.get_component<cWorldHierarchy>(parent);
-
-    child_hierarchy->next_sibling = new_parent_hierarchy->first_child;
-    if(new_parent_hierarchy->first_child != NULL_ENTITY)
+    if(parent != NULL_ENTITY)
     {
-        ecs.get_component<cWorldHierarchy>(new_parent_hierarchy->first_child)
-            ->prev_sibling = child;
+        Watcher<cWorldHierarchy> new_parent_hierarchy = 
+            ecs.get_component<cWorldHierarchy>(parent);
+
+        child_hierarchy->next_sibling = new_parent_hierarchy->first_child;
+        if(new_parent_hierarchy->first_child != NULL_ENTITY)
+        {
+            ecs.get_component<cWorldHierarchy>(new_parent_hierarchy->first_child)
+                ->prev_sibling = child;
+        }
+        new_parent_hierarchy->first_child = child;
+
+        // check if adding a parent to a root entity
+        auto removed = std::remove_if(
+            m_root_entities.begin(),
+            m_root_entities.end(),
+            [child](EntityID i)
+            {
+                return i == child;
+            }
+        );
+
+        m_root_entities.erase(removed, m_root_entities.end());
     }
-    new_parent_hierarchy->first_child = child;
+    else{
+        m_root_entities.push_back(child);
+    }
     
     make_dirty(child);
 }
@@ -80,6 +114,10 @@ EntityID Scene::create_entity(EntityID parent)
     if(parent != NULL_ENTITY)
     {
         set_parent_transform(entity, parent);
+    }
+    else
+    {
+        m_root_entities.push_back(entity);
     }
 
     return entity;
@@ -139,3 +177,7 @@ void Scene::make_dirty(EntityID entity)
     CoreEngine::get().get_ecs().get_component<cWorldTransform>(entity)->dirty = true;
 }
 
+u32 Scene::get_scene_id() const
+{
+    return m_id;
+}
