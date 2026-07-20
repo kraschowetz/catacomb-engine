@@ -85,6 +85,7 @@ ShaderSource split_file(const std::string& path)
             constexpr u64 DIRECTIVE_SIZE = 8;
             std::string_view name = std::string_view(current_line).substr(DIRECTIVE_SIZE);
             _resolve_target(result, name);
+
             continue;
         }
         else if(current_line.find(CAT_CSL_UNIFORM_DIRECTIVE) != std::string::npos)

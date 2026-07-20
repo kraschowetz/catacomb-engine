@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.25)
 
 set(CMAKE_CXX_COMPILER /usr/bin/g++-13)
 
@@ -28,6 +28,7 @@ FetchContent_Declare(
     glaze
     GIT_REPOSITORY https://github.com/stephenberry/glaze.git
     GIT_TAG v7.9.0
+    SYSTEM
 )
 FetchContent_MakeAvailable(glaze)
 

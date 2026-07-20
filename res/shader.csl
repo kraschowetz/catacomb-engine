@@ -1,4 +1,4 @@
-@target 2D_UNLIT
+@target UNLIT_2D
 
 @section FRAGMENT
 

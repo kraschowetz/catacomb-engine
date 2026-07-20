@@ -5,6 +5,9 @@
 #include <cat/core/ecs.hpp>
 #include <cat/util/memory.hpp>
 
+#include <cat/core/component_io.hpp>
+#include <cat/core/glz_meta.hpp>
+
 namespace cat
 {
 
@@ -20,6 +23,8 @@ struct cTransform
     cTransform inverse() const;
     glm::mat4 as_mat4() const;
 };
+
+static_assert(GlazeReflectable<cTransform>);
 
 // use these methods when dealing with transforms with parenting
 // they will handle all backend related with the cWorldTransform components

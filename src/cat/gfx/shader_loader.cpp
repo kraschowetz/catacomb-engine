@@ -97,6 +97,10 @@ Shader ShaderLoader::load(
 ) const THROWS
 {
     csl::ShaderSource source = csl::split_file(path);
+
+    u32 idx = enum_val(source.base_behaviour);
+    LOG_TEXTF("id: %u\n", idx);
+    CAT_ASSERT(idx < 1);
     
     std::string vert_src;
         vert_src.append(csl::PREAMBLE);
@@ -158,6 +162,7 @@ Shader ShaderLoader::load_basic(eBasicShaderType type)
     // call split_file to automatically resolve all hooks
     csl::ShaderSource resolved_hooks = csl::split_file(CSL_BASIC_SHADER_PATH);
     csl::ShaderSource src;
+    src.base_behaviour = type;
 
     csl::BasicShaderDef def = csl::BASIC_SHADERS_LIST[enum_val(type)];
 
