@@ -4,6 +4,17 @@
 #include <cat/util/math.hpp>
 
 template <>
+struct glz::meta<glm::vec4> {
+    using T = glm::vec4;
+    static constexpr auto value = glz::object(
+        "x", &T::x,
+        "y", &T::y,
+        "z", &T::z,
+        "w", &T::w
+    );
+};
+
+template <>
 struct glz::meta<glm::vec3> {
     using T = glm::vec3;
     static constexpr auto value = glz::object(
@@ -16,6 +27,36 @@ struct glz::meta<glm::vec3> {
 template <>
 struct glz::meta<glm::vec2> {
     using T = glm::vec2;
+    static constexpr auto value = glz::object(
+        "x", &T::x,
+        "y", &T::y
+    );
+};
+
+template <>
+struct glz::meta<glm::ivec4> {
+    using T = glm::ivec4;
+    static constexpr auto value = glz::object(
+        "x", &T::x,
+        "y", &T::y,
+        "z", &T::z,
+        "w", &T::w
+    );
+};
+
+template <>
+struct glz::meta<glm::ivec3> {
+    using T = glm::ivec3;
+    static constexpr auto value = glz::object(
+        "x", &T::x,
+        "y", &T::y,
+        "z", &T::z
+    );
+};
+
+template <>
+struct glz::meta<glm::ivec2> {
+    using T = glm::ivec2;
     static constexpr auto value = glz::object(
         "x", &T::x,
         "y", &T::y

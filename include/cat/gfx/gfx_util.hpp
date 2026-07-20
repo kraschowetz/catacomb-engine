@@ -6,8 +6,8 @@
 
 #ifndef CAT_WINDOW_CONFIG_FILE_PATH
 
-#define CAT_WINDOW_CONFIG_FILE_PATH "./config/window.cconf"
-#define CAT_GFX_CONFIG_FILE_PATH "./config/gfx.cconf"
+#define CAT_WINDOW_CONFIG_FILE_PATH "./config/window.json"
+#define CAT_GFX_CONFIG_FILE_PATH "./config/gfx.json"
 
 #endif
 

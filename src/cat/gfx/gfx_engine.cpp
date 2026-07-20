@@ -1,7 +1,11 @@
 #include "cat/error.hpp"
 #include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
+#include "cat/util/logger.hpp"
 #include "cat/util/util.hpp"
+#include "glaze/core/context.hpp"
+#include "glaze/json/read.hpp"
+#include "glaze/json/write.hpp"
 #include <cat/gfx/gfx_engine.hpp>
 
 #include <cat/gfx/gfx_config.hpp>
@@ -14,47 +18,34 @@
 #include <cat/core/resource_manager.hpp>
 #include <cat/core/core_engine.hpp>
 
-#include <cat/util/cconf.hpp>
-
+#include <glaze/glaze.hpp>
 #include <memory>
 
 using namespace cat;
 
 static void _save_config_file(const GfxConfig& config)
 {
+    glz::error_ctx error = glz::write_file_json(config, CAT_GFX_CONFIG_FILE_PATH, std::string{});
 
-    BasicConfMap map;
-    map["resolution.x"] = config.resolution.x;
-    map["resolution.y"] = config.resolution.y;
-
-    map["clear_color.r"] = config.clear_color.r;
-    map["clear_color.g"] = config.clear_color.g;
-    map["clear_color.b"] = config.clear_color.b;
-
-    save_conf_file(map, CAT_GFX_CONFIG_FILE_PATH);
+    if(error.ec != glz::error_code::none)
+    {
+        throw Exception{eErrorCode::FAILED};
+    }
 }
 
 static GfxConfig _load_config_file()
 {
-    try {
-        BasicConfMap map = load_conf_file(CAT_GFX_CONFIG_FILE_PATH);
+    GfxConfig config; 
+    glz::error_ctx error = glz::read_file_json(config, CAT_GFX_CONFIG_FILE_PATH, std::string{});
 
-        GfxConfig config;
-        config.resolution.x = std::get<i32>(map.at("resolution.x").data);
-        config.resolution.y = std::get<i32>(map.at("resolution.y").data);
-
-        config.clear_color.r = std::get<f32>(map.at("clear_color.r").data);
-        config.clear_color.g = std::get<f32>(map.at("clear_color.g").data);
-        config.clear_color.b = std::get<f32>(map.at("clear_color.b").data);
-        config.clear_color.a = 1.f;
-
-        return config;
-    }
-    catch(Exception e)
+    if(error.ec != glz::error_code::none)
     {
+        LOG_ERR("failed to load gfx_config file! using default settings instead!\n");
         _save_config_file(CAT_DEFAULT_GFX_CONFIG);
         return CAT_DEFAULT_GFX_CONFIG;
     }
+
+    return config;
 }
 
 static void _update_gl_state(const GfxConfig& config)

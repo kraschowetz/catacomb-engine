@@ -19,9 +19,6 @@
 #include <cat/gfx/texture_loader.hpp>
 #include <cat/gfx/sprite_atlas.hpp>
 
-#include <cat/util/cconf.hpp>
-#include <glaze/glaze.hpp>
-
 #include <unistd.h>
 
 int main(int argc, char** argv)

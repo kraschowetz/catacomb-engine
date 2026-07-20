@@ -6,45 +6,42 @@
 #include "cat/gfx/gfx_util.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/gfx/gfx_engine.hpp"
+#include "glaze/core/context.hpp"
+#include "glaze/json/read.hpp"
+#include "glaze/json/write.hpp"
 #include <SDL2/SDL_video.h>
 #include <cat/core/input_manager.hpp>
 #include <SDL2/SDL.h>
 
-#include <cat/util/cconf.hpp>
+#include <glaze/glaze.hpp>
 
 namespace cat
 {
 
 static void _save_conf_file(const CanvasInfo& info)
 {
-    BasicConfMap map;
-    map["height"] = info.height;
-    map["width"] = info.width;
-    map["title"] = info.title;
-    map["version.major"] = info.version.major;
-    map["version.minor"] = info.version.minor;
+    glz::error_ctx error = glz::write_file_json(info, CAT_WINDOW_CONFIG_FILE_PATH, std::string{});
 
-    save_conf_file(map, CAT_WINDOW_CONFIG_FILE_PATH);
+    if(error.ec != glz::error_code::none)
+    {
+        throw Exception{eErrorCode::FAILED};
+    }
 }
 
 static CanvasInfo _load_canvas_info_file()
 {
-    try {
-        BasicConfMap map = load_conf_file(CAT_WINDOW_CONFIG_FILE_PATH);
+    CanvasInfo info;
+    glz::error_ctx error = glz::read_file_json(info, CAT_WINDOW_CONFIG_FILE_PATH, std::string{});
+    
+    if(error.ec != glz::error_code::none)
+    {
+        LOG_ERR("failed to laod window config file! using default config instead!\n");
 
-        CanvasInfo info;
-        info.height = std::get<u32>(map.at("height").data);
-        info.width = std::get<u32>(map.at("width").data);
-        info.title = std::get<std::string>(map.at("title").data);
-        info.version.major = std::get<u32>(map.at("gl.major").data);
-        info.version.minor = std::get<u32>(map.at("gl.minor").data);
-
-        return info;
-    } 
-    catch (Exception e) {
         _save_conf_file(CAT_DEFAULT_WINDOW_CONFIG);
         return CAT_DEFAULT_WINDOW_CONFIG;
     }
+
+    return info;
 }
 
 SdlCanvas::SdlCanvas()
