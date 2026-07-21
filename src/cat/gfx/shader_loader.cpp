@@ -22,7 +22,7 @@ using namespace cat;
         throw Exception{"failed to compile shader"};                                    \
         } while(false)
 #else
-    throw Exception{"failed to compile shader"}
+    #define LOG_SHADER_COMPILE_ERROR(...) throw Exception{"failed to compile shader"}
 #endif
 
 static void _log_err(
@@ -98,10 +98,6 @@ Shader ShaderLoader::load(
 {
     csl::ShaderSource source = csl::split_file(path);
 
-    u32 idx = enum_val(source.base_behaviour);
-    LOG_TEXTF("id: %u\n", idx);
-    CAT_ASSERT(idx < 1);
-    
     std::string vert_src;
         vert_src.append(csl::PREAMBLE);
         vert_src.append(

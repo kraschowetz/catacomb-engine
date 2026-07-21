@@ -34,6 +34,12 @@ FetchContent_MakeAvailable(glaze)
 
 target_link_libraries(catacomb PRIVATE glaze::glaze)
 
+get_target_property(GLAZE_INCLUDE_DIRS glaze_glaze INTERFACE_INCLUDE_DIRECTORIES)
+
+if(GLAZE_INCLUDE_DIRS)
+    target_include_directories(catacomb SYSTEM PRIVATE ${GLAZE_INCLUDE_DIRS})
+endif()
+
 # ── include directories ───────────────────────────────────────
 target_include_directories(catacomb PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

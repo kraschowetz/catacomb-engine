@@ -55,47 +55,47 @@ u32 VertexLayout::get_offset(u32 index) const
 void VertexLayout::push_f64(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_DOUBLE, count, normalized);
-	m_stride += sizeof(f64) * count;
+	m_stride += (u32)(sizeof(f64) * count);
 }
 
 void VertexLayout::push_f32(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_FLOAT, count, normalized);
-	m_stride += sizeof(f32) * count;
+	m_stride += (u32)(sizeof(f32) * count);
 }
 
 void VertexLayout::push_u32(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_UNSIGNED_INT, count, normalized);
-	m_stride += sizeof(u32) * count;
+	m_stride += (u32)(sizeof(u32) * count);
 }
 
 void VertexLayout::push_u16(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_UNSIGNED_SHORT, count, normalized);
-	m_stride += sizeof(u16) * count;
+	m_stride += (u32)(sizeof(u16) * count);
 }
 
 void VertexLayout::push_u8(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_UNSIGNED_BYTE, count, normalized);
-	m_stride += sizeof(u8) * count;
+	m_stride += (u32)(sizeof(u8) * count);
 }
 
 void VertexLayout::push_i32(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_INT, count, normalized);
-	m_stride += sizeof(i32) * count;
+	m_stride += (u32)(sizeof(i32) * count);
 }
 
 void VertexLayout::push_i16(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_SHORT, count, normalized);
-	m_stride += sizeof(i16) * count;
+	m_stride += (u32)(sizeof(i16) * count);
 }
 
 void VertexLayout::push_i8(u32 count, u8 normalized)
 {
 	m_elements.emplace_back(GL_BYTE, count, normalized);
-	m_stride += sizeof(i8) * count;
+	m_stride += (u32)(sizeof(i8) * count);
 }
