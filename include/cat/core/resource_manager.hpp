@@ -130,7 +130,7 @@ public:
         CAT_ASSERT(m_resource_pools.contains(hash));
 
         iResourcePool* interface_ptr = m_resource_pools.get(hash).get()->get();
-        ResourcePool<ResourceT, LoaderT>* pool = reinterpret_cast<ResourcePool<ResourceT, LoaderT>*>(interface_ptr);
+        ResourcePool<ResourceT, LoaderT>* pool = static_cast<ResourcePool<ResourceT, LoaderT>*>(interface_ptr);
 
         return pool->load_or_get(std::forward<Args>(args)...);
     }

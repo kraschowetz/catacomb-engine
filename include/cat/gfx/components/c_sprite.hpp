@@ -2,6 +2,7 @@
 
 #include <cat/config.hpp>
 #include "cat/gfx/texture.hpp"
+#include <cat/core/component_io.hpp>
 
 namespace cat
 {
@@ -12,6 +13,8 @@ struct cSprite
     glm::ivec2 size;
     u32 texture_handle;
     u8 z_index;
+
+    static cSprite from_json(const glz::generic&);
 };
 
 f32 convert_z_index_to_position(u8 z_index);

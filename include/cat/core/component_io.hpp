@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glaze/json/generic_fwd.hpp"   // IWYU pragma: export
-#include <glaze/json.hpp>
+#include <glaze/json.hpp>               // IWYU pragma: export
 
 namespace cat
 {
@@ -17,7 +17,10 @@ concept HasFromJson = requires (const glz::generic& json) {
 };
 
 template<typename T>
-concept LoadableComponent = HasFromJson<T> || GlazeReflectable<T>;
+concept AutoLoadable = GlazeReflectable<T> && !HasFromJson<T>;
+
+template<typename T>
+concept LoadableComponent = HasFromJson<T> || AutoLoadable<T>;
 
 template<typename T>
 concept HasAsJson = requires (const T& val) {
@@ -25,6 +28,9 @@ concept HasAsJson = requires (const T& val) {
 };
 
 template<typename T>
-concept WritableComponent = HasAsJson<T> || GlazeReflectable<T>;
+concept AutoWriteable = GlazeReflectable<T> && !HasAsJson<T>;
+
+template<typename T>
+concept WritableComponent = HasAsJson<T> || AutoWriteable<T>;
 
 }
