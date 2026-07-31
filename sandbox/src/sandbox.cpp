@@ -11,6 +11,9 @@
 #include "cat/gfx/vertex_buffer.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/core/ecs.hpp"
+#include "glaze/core/context.hpp"
+#include "glaze/json/generic_fwd.hpp"
+#include "glaze/json/read.hpp"
 #include <cat/core/core_engine.hpp>
 #include <cat/util/benchmark.hpp>
 #include <cat/gfx/vertex_array.hpp>
@@ -20,6 +23,16 @@
 #include <cat/gfx/sprite_atlas.hpp>
 
 #include <unistd.h>
+
+cat::cSprite get_json()
+{
+    glz::generic obj;
+    auto ec = glz::read_file_json(obj, "./res/scene.json", std::string{});
+    CAT_ASSERT(ec.ec == glz::error_code::none);
+
+    glz::generic_json spr_data = obj["components"]["cSprite"][0];
+    return cat::cSprite::from_json(spr_data);
+}
 
 int main(int argc, char** argv)
 {
@@ -44,7 +57,7 @@ int main(int argc, char** argv)
         glm::ivec2{8, 8}
     };
 
-    cSprite sprite = atlas.get_sprite({0, 0});
+    cSprite sprite = get_json(); // atlas.get_sprite({0, 0});
 
     ECS& ecs = CoreEngine::get().get_ecs();
 

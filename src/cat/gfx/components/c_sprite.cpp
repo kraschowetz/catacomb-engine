@@ -38,9 +38,14 @@ cSprite cSprite::from_json(const glz::generic& json)
         (f32) uv_json[1][1].get<f64>(),
     };
 
+    glm::ivec2 size = {
+        (i32) size_json[0].get<double>(),
+        (i32) size_json[1].get<double>()
+    };
+
     return cSprite{
         .uv = uv,
-        .size = json["size"].as<glm::ivec2>(),
+        .size = size,
         .texture_handle = texture->get_handle(),
         .z_index = json["z_index"].as<u8>()
     };
