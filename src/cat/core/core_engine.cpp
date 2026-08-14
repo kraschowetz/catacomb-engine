@@ -1,6 +1,10 @@
+#include "cat/core/component_registry.hpp"
 #include "cat/core/components/c_scene_tag.hpp"
 #include "cat/core/ecs.hpp"
+#include "cat/core/json_scene_loader.hpp"
 #include "cat/error.hpp"
+#include "glaze/core/common.hpp"
+#include "glaze/core/read.hpp"
 #include <cat/core/core_engine.hpp>
 
 #include <cat/core/input_manager.hpp>
@@ -65,6 +69,34 @@ Scene& CoreEngine::create_scene()
 {
     m_loaded_scenes.emplace_back(m_last_scene_id++);
     return m_loaded_scenes.back();
+}
+
+Scene& CoreEngine::load_scene(const std::string& path)
+{
+    SceneJson scene_json = read_scene_json(path);
+    Scene& scene = create_scene();
+
+    auto& registry = get_component_registry();
+
+    for(EntityJson& entity_json : scene_json.entities)
+    {
+        EntityID entity = scene.create_entity();
+
+        for(auto& [component_name, object] : entity_json)
+        {
+            auto it = registry.find(component_name);
+
+            if(it == registry.end())
+            {
+                LOG_ERRF("unknown component %s\n", component_name.c_str());
+                continue;
+            }
+
+            it->second(m_ecs, entity, object);
+        }
+    }
+
+    return scene;
 }
 
 void CoreEngine::unload_scene(u32 scene_id)

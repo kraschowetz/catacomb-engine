@@ -1,6 +1,7 @@
 #include <cat/gfx/components/c_sprite.hpp>
 
 #include <cat/gfx/texture_loader.hpp>
+#include "cat/core/component_registry.hpp"
 #include "cat/gfx/sprite_atlas.hpp"
 #include "cat/core/core_engine.hpp"
 #include "cat/core/resource_manager.hpp"
@@ -50,5 +51,7 @@ cSprite cSprite::from_json(const glz::generic& json)
         .z_index = json["z_index"].as<u8>()
     };
 }
+
+CAT_REGISTER_COMPONENT_TYPE(cSprite);
 
 }

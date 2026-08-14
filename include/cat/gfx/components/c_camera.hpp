@@ -26,4 +26,6 @@ struct cCamera
     static cCamera create_ortho(const glm::ivec2& size);
 };
 
+// TODO:create a from_json method (if needed)
+
 }

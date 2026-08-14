@@ -8,6 +8,8 @@
 #include <cat/core/component_io.hpp>
 #include <cat/core/glz_meta.hpp>
 
+#include <cat/core/component_registry.hpp>
+
 namespace cat
 {
 
@@ -22,7 +24,10 @@ struct cTransform
 
     cTransform inverse() const;
     glm::mat4 as_mat4() const;
+
 };
+
+CAT_REGISTER_COMPONENT_TYPE(cTransform);
 
 static_assert(GlazeReflectable<cTransform>);
 

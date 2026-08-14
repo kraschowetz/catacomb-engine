@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/core/component_registry.hpp"
 #include <cat/core/ecs.hpp>
 
 namespace cat
@@ -13,5 +14,7 @@ struct cWorldHierarchy
     EntityID next_sibling = NULL_ENTITY;
     EntityID prev_sibling = NULL_ENTITY;
 };
+
+CAT_REGISTER_COMPONENT_TYPE(cWorldHierarchy);
 
 }
