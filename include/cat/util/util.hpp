@@ -36,3 +36,4 @@ constexpr u32 str_hash(std::string_view str)
 #define NO_MOVE(classname)				\
 	classname(classname&&) = delete;		\
 	classname& operator=(classname&&) = delete	\
+

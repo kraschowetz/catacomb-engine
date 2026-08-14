@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cat/core/component_registry.hpp"
+#include <cat/core/glz_meta.hpp>
 #include <cat/core/ecs.hpp>
 
 namespace cat

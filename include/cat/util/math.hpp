@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>              // IWYU pragma: export
 #include <glm/fwd.hpp>              // IWYU pragma: export
+#include <glm/gtc/type_ptr.hpp>     // IWYU pragma: export
 #include <glm/gtc/quaternion.hpp>   // IWYU pragma: export
 #include <glm/geometric.hpp>        // IWYU pragma: export
 #include <math.h>                   // IWYU pragma: export

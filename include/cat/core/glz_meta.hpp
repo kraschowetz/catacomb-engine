@@ -73,3 +73,23 @@ struct glz::meta<glm::quat> {
         "z", &T::z
     );
 };
+
+template <>
+struct glz::from<glz::JSON, glm::mat4> {
+    template <auto Opts>
+    static void op(glm::mat4& value, is_context auto&& ctx, auto&& it, auto&& end) {
+        std::array<float, 16> data{};
+        parse<JSON>::op<Opts>(data, ctx, it, end);
+        value = glm::make_mat4(data.data());
+    }
+};
+
+template <>
+struct glz::to<glz::JSON, glm::mat4> {
+    template <auto Opts>
+    static void op(const glm::mat4& value, is_context auto&& ctx, auto&& b, auto&& ix) noexcept {
+        std::array<float, 16> data{};
+        std::memcpy(data.data(), glm::value_ptr(value), sizeof(data));
+        serialize<JSON>::op<Opts>(data, ctx, b, ix);
+    }
+};
