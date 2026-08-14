@@ -1,3 +1,5 @@
+#include "cat/core/components/c_scene_tag.hpp"
+#include "cat/core/ecs.hpp"
 #include "cat/error.hpp"
 #include <cat/core/core_engine.hpp>
 
@@ -15,6 +17,7 @@ using namespace cat;
 
 CoreEngine::CoreEngine()
 {
+    m_current_active_scene = nullptr;
 }
 
 CoreEngine::~CoreEngine()
@@ -26,6 +29,9 @@ void CoreEngine::update()
 {
     m_chrono.update();
     m_input_manager.update();
+
+    if(m_current_active_scene)
+        m_current_active_scene->update();
 }
 
 const Chrono& CoreEngine::get_chrono() const
@@ -50,22 +56,45 @@ ECS& CoreEngine::get_ecs()
 
 Scene& CoreEngine::get_current_scene()
 {
-    for(Scene& s : m_loaded_scenes)
-    {
-        if(s.get_scene_id() == m_current_active_scene)
-            return s;
-    }
-
-    throw Exception{eErrorCode::UNKNOWN, "no scene loaded"};
+    CAT_ASSERT(m_current_active_scene != nullptr);
+    
+    return *m_current_active_scene;
 }
 
 Scene& CoreEngine::create_scene()
 {
     m_loaded_scenes.emplace_back(m_last_scene_id++);
-    return m_loaded_scenes[m_loaded_scenes.size() - 1];
+    return m_loaded_scenes.back();
+}
+
+void CoreEngine::unload_scene(u32 scene_id)
+{
+    auto view = m_ecs.view<cSceneTag>();
+    std::list<EntityID> entities_to_delete;
+
+    view.foreach(
+        [scene_id, &entities_to_delete](EntityID entity, cSceneTag& scene_tag)
+    {
+        if(scene_tag.tag == scene_id)
+            entities_to_delete.emplace_back(entity);
+    });
+
+    for(EntityID id : entities_to_delete)
+    {
+        m_ecs.delete_entity(id);
+    }
 }
 
 void CoreEngine::set_active_scene(u32 scene_id)
 {
-    m_current_active_scene = scene_id;
+    for(Scene& scene : m_loaded_scenes)
+    {
+        if(scene.get_scene_id() == scene_id)
+        {
+            m_current_active_scene = &scene;
+            return;
+        }
+    }
+
+    throw Exception{cat::eErrorCode::FAILED, "scene id not found"};
 }

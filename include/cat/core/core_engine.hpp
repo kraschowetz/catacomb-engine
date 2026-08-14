@@ -30,16 +30,18 @@ public:
 
     Scene& get_current_scene();
     Scene& create_scene();
+    Scene& load_scene(const std::string& path);
+    void unload_scene(u32 scene_id);
     void set_active_scene(u32 scene_id);
 
 private:
     Chrono m_chrono;
     InputManager m_input_manager;
     ResourceManager m_resource_manager;
-    std::vector<Scene> m_loaded_scenes;
+    std::list<Scene> m_loaded_scenes;
+    Watcher<Scene> m_current_active_scene;
     ECS m_ecs;
 
-    u32 m_current_active_scene;
     u32 m_last_scene_id;
 };
 
