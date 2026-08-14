@@ -62,6 +62,7 @@ int main(int argc, char** argv)
     ECS& ecs = CoreEngine::get().get_ecs();
 
     Scene& scene = CoreEngine::get().create_scene();
+    CoreEngine::get().set_active_scene(scene.get_scene_id());
 
     EntityID entity = scene.create_entity();
     
@@ -80,7 +81,6 @@ int main(int argc, char** argv)
         CAT_BENCH_SCOPE("update loop", bench_marker);
 
         CoreEngine::get().update();
-        scene.update();
 
         if(CoreEngine::get().get_input_manager().is_key_just_released(eKeyType::SPACE))
         {
@@ -115,6 +115,8 @@ int main(int argc, char** argv)
             LOG_TEXTF("FPS: %u\n", CoreEngine::get().get_chrono().get_fps());
         }
     }
+
+    CoreEngine::get().unload_scene(scene.get_scene_id());
 
     CAT_BENCH_DISPLAY(BENCHMARK_IN_SECONDS);
 }
