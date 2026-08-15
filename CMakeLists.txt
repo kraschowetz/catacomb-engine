@@ -32,7 +32,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glaze)
 
-target_link_libraries(catacomb PRIVATE glaze::glaze)
+target_link_libraries(catacomb PUBLIC glaze::glaze)
 
 get_target_property(GLAZE_INCLUDE_DIRS glaze_glaze INTERFACE_INCLUDE_DIRECTORIES)
 
