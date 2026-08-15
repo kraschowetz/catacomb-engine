@@ -45,6 +45,10 @@ target_include_directories(catacomb PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(catacomb SYSTEM PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty
+)
+
 # ── compiler warnings ─────────────────────────────────────────
 target_compile_options(catacomb PRIVATE
     -Wall

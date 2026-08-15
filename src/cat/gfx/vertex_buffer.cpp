@@ -13,6 +13,7 @@ GLenum _buffer_usage_to_gl_enum(eBufferUsage usage)
         case eBufferUsage::STATIC: return GL_STATIC_DRAW;
         case eBufferUsage::DYNAMIC: return GL_DYNAMIC_DRAW;
         case eBufferUsage::STREAM: return GL_STREAM_DRAW;
+        default: return 0;
     }
 }
 

@@ -1,151 +1,151 @@
 [
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/components/c_transform.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_transform.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/components/c_transform.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_transform.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_transform.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/core/components/c_transform.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/components/c_world_transform.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_world_transform.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/components/c_world_transform.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_world_transform.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/components/c_world_transform.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/core/components/c_world_transform.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/core_engine.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/core_engine.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/core_engine.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/core_engine.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/core_engine.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/core/core_engine.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/input_manager.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/input_manager.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/input_manager.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/input_manager.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/input_manager.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/core/input_manager.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/scene.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/scene.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/json_scene_loader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/json_scene_loader.cpp",
+  "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/json_scene_loader.cpp",
+  "output": "CMakeFiles/catacomb.dir/src/cat/core/json_scene_loader.cpp.o"
+},
+{
+  "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/core/scene.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/core/scene.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/core/scene.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/core/scene.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/components/c_camera.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_camera.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/components/c_camera.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_camera.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_camera.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/components/c_camera.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/components/c_sprite.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_sprite.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/components/c_sprite.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_sprite.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/components/c_sprite.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/components/c_sprite.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/csl/csl.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/csl/csl.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/csl/csl.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/csl/csl.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/csl/csl.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/csl/csl.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/display_server.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/display_server.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/display_server.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/display_server.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/display_server.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/display_server.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/gfx_engine.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/gfx_engine.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/gfx_engine.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/gfx_engine.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/gfx_engine.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/gfx_engine.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sdl_canvas.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sdl_canvas.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sdl_canvas.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sdl_canvas.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sdl_canvas.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/sdl_canvas.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/shader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/shader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/shader.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/shader_loader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader_loader.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/shader_loader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader_loader.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/shader_loader.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/shader_loader.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sprite_atlas.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_atlas.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sprite_atlas.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_atlas.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_atlas.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/sprite_atlas.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sprite_renderer.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_renderer.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/sprite_renderer.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_renderer.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/sprite_renderer.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/sprite_renderer.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/texture.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/texture.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/texture.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/texture_loader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture_loader.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/texture_loader.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture_loader.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/texture_loader.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/texture_loader.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_array.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_array.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_array.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_array.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_array.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/vertex_array.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_buffer.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_buffer.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_buffer.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_buffer.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_buffer.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/vertex_buffer.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_layout.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_layout.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/gfx/vertex_layout.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_layout.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/gfx/vertex_layout.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/gfx/vertex_layout.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/benchmark.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/benchmark.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/benchmark.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/benchmark.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/util/benchmark.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/util/benchmark.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/cconf.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/cconf.cpp",
-  "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/util/cconf.cpp",
-  "output": "CMakeFiles/catacomb.dir/src/cat/util/cconf.cpp.o"
-},
-{
-  "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/chrono.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/chrono.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/chrono.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/chrono.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/util/chrono.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/util/chrono.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/math.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/math.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -DLINUX -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -fpic -g -O1 -Wno-missing-braces -o CMakeFiles/catacomb.dir/src/cat/util/math.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/src/cat/util/math.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/src/cat/util/math.cpp",
   "output": "CMakeFiles/catacomb.dir/src/cat/util/math.cpp.o"
 },
 {
   "directory": "/home/kraschowetz/Documents/C++/catacomb/build/develop/sandbox",
-  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /usr/include/SDL2 -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -g -O1 -o CMakeFiles/main.dir/src/sandbox.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/sandbox/src/sandbox.cpp",
+  "command": "/usr/bin/g++-13 -DDEVELOP -DENABLE_BENCHMARK -I/home/kraschowetz/Documents/C++/catacomb/include -isystem /home/kraschowetz/Documents/C++/catacomb/thirdparty -isystem /home/kraschowetz/Documents/C++/catacomb/build/develop/_deps/glaze-src/include -isystem /usr/include/SDL2 -std=c++23 -Wall -Wextra -Wconversion -Wunreachable-code -Wno-unused-parameter -Wpointer-arith -g -O1 -Wno-missing-braces -o CMakeFiles/main.dir/src/sandbox.cpp.o -c /home/kraschowetz/Documents/C++/catacomb/sandbox/src/sandbox.cpp",
   "file": "/home/kraschowetz/Documents/C++/catacomb/sandbox/src/sandbox.cpp",
   "output": "sandbox/CMakeFiles/main.dir/src/sandbox.cpp.o"
 }
