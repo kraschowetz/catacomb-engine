@@ -38,15 +38,6 @@ inline constexpr char BASIC_UNLIT_2D_VERTEX[] = R"std_vertex_2d(
             position.w
         );
 
-    #if false
-        gl_Position = vec4(
-            a_position.x / 800,
-            a_position.y / 600,
-            0,
-            1
-        );
-    #endif
-
         // who knowns who might use this...
         v_position = position.xyz;
         

@@ -1,13 +1,3 @@
---gcc-toolchain=/usr
 -std=c++23
--Wall
--Wextra
--Wconversion
--Wunreacheable-code
--Wpointer-arith
--Wno-unused-parameter
 -I../include
--L../lib
--D DEVELOP
--D LINUX
--D ENABLE_BENCHMARK
+-I../thirdparty
