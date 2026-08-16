@@ -19,6 +19,7 @@
 #include <cat/gfx/texture_loader.hpp>
 #include <cat/gfx/sprite_atlas.hpp>
 
+#include <cfloat>
 #include <unistd.h>
 
 int main(int argc, char** argv)
@@ -51,7 +52,6 @@ int main(int argc, char** argv)
 
     EntityID entity = scene.create_entity();
 
-    // ecs.add_component<cCamera>(entity, cCamera::create_perspective(45, 800.f/600.f, {800, 600}));
     ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
@@ -71,6 +71,8 @@ int main(int argc, char** argv)
         {
             LOG_TEXT("A has been pressed\n");
         }
+
+        rotate_transform(entity, 360.f * CoreEngine::get().get_chrono().get_delta());
 
         auto camera_view = ecs.view<cCamera, cWorldTransform>();
 

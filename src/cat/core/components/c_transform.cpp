@@ -14,6 +14,17 @@ glm::mat4 cTransform::as_mat4() const
 {
     glm::mat4 mat{1};
     mat = glm::translate(mat, this->position);
+    mat = mat * glm::mat4_cast(this->rotation);
+    mat = glm::scale(mat, this->scale);
+
+    CAT_ASSERT(glm::determinant(mat) != 0.f && "Transform matrix is singular");
+    return mat;
+
+    /*
+    glm::mat4 mat{1};
+    mat = glm::translate(mat, this->position);
+
+
     mat = glm::scale(mat, this->scale);
 
     glm::vec3 euler = glm::eulerAngles(this->rotation);
@@ -22,6 +33,7 @@ glm::mat4 cTransform::as_mat4() const
     mat = glm::rotate(mat, euler.z, glm::vec3{0, 0, 1});
 
     return mat;
+    */
 }
 
 cTransform cTransform::from_mat4(const glm::mat4 &mat)
@@ -107,7 +119,7 @@ void rotate_transform(EntityID entity, const glm::quat& delta)
 {
     ECS& ecs = _get_ecs();
     
-    ecs.get_component<cTransform>(entity)->rotation += delta;
+    ecs.get_component<cTransform>(entity)->rotation *= delta;
     ecs.get_component<cWorldTransform>(entity)->dirty = true;
 }
 
@@ -137,7 +149,7 @@ void rotate_transform(EntityID entity, f32 delta)
 
     glm::quat _delta = glm::quat{glm::vec3{0.f, 0.f, glm::radians(delta)}};
     
-    ecs.get_component<cTransform>(entity)->rotation += _delta;
+    ecs.get_component<cTransform>(entity)->rotation *= _delta;
     ecs.get_component<cWorldTransform>(entity)->dirty = true;
 }
 
@@ -177,7 +189,7 @@ void set_transform_scale(EntityID entity, const glm::vec2& val)
 {
     ECS& ecs = _get_ecs();
 
-    ecs.get_component<cTransform>(entity)->scale = glm::vec3{val, 0.f};
+    ecs.get_component<cTransform>(entity)->scale = glm::vec3{val, 1.f};
     ecs.get_component<cWorldTransform>(entity)->dirty = true;
 }
 

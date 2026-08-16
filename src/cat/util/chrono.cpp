@@ -1,4 +1,5 @@
 #include <cat/util/chrono.hpp>
+#include <cfloat>
 
 using namespace cat;
 using namespace std::chrono;

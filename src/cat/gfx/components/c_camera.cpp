@@ -97,8 +97,8 @@ cCamera cCamera::create_ortho(const glm::ivec2 &size)
             (f32) size.x,
             0.f,
             (f32) size.y,
-            -1.f,
-            1.f
+            -1000.f,
+            1000.f
         ),
         .size = size,
         .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
