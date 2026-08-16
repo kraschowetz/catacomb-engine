@@ -89,7 +89,11 @@ void cCamera::bind(const cWorldTransform& transform)
     ctx->projection = this->projection;
 }
 
-cCamera cCamera::create_ortho(const glm::ivec2 &size)
+cCamera cCamera::create_ortho(
+    const glm::ivec2 &size,
+    f32 near,
+    f32 far
+)
 {
     return cCamera{
         .projection = glm::ortho(
@@ -97,8 +101,8 @@ cCamera cCamera::create_ortho(const glm::ivec2 &size)
             (f32) size.x,
             0.f,
             (f32) size.y,
-            -1000.f,
-            1000.f
+            near,
+            far
         ),
         .size = size,
         .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
@@ -106,10 +110,17 @@ cCamera cCamera::create_ortho(const glm::ivec2 &size)
     };
 }
 
-cCamera cCamera::create_perspective(u8 fov, f32 aspect, const glm::ivec2& size)
+cCamera cCamera::create_perspective(
+    u8 fov, 
+    const glm::ivec2& size,
+    f32 near,
+    f32 far
+)
 {
+    f32 aspect = (f32)(size.x) / (f32)(size.y);
+
     return cCamera {
-        .projection = glm::perspective((f32) fov, aspect, 0.01f, 1000.f),
+        .projection = glm::perspective((f32) fov, aspect, near, far),
         .size = size,
         .render_context_handle = GfxEngine::MAIN_3D_CONTEXT,
         .type = eCameraType::PERSPECTIVE

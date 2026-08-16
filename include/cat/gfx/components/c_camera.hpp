@@ -23,8 +23,22 @@ struct cCamera
     void bind(const struct cWorldTransform& transform);
     void bind(const struct cTransform& transform);
 
-    static cCamera create_ortho(const glm::ivec2& size);
-    static cCamera create_perspective(u8 fov, f32 aspect, const glm::ivec2& size);
+    static cCamera create_ortho(
+        const glm::ivec2& size,
+        f32 near = DEFAULT_ORTHO_NEAR,
+        f32 far = DEFAULT_ORTHO_FAR
+    );
+    static cCamera create_perspective(
+        u8 fov,
+        const glm::ivec2& size,
+        f32 near = DEFAULT_PERSPECTIVE_NEAR,
+        f32 far = DEFAULT_PERSPECTIVE_FAR
+    );
+
+    static constexpr f32 DEFAULT_ORTHO_NEAR         = -1000.f;
+    static constexpr f32 DEFAULT_ORTHO_FAR          = 1000.f;
+    static constexpr f32 DEFAULT_PERSPECTIVE_NEAR   = 0.0001f;
+    static constexpr f32 DEFAULT_PERSPECTIVE_FAR    = 1000.f;
 };
 
 // TODO:create a from_json method (if needed)
