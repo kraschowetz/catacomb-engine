@@ -58,6 +58,7 @@ int main(int argc, char** argv)
 
     set_transform_scale(entity, glm::vec2{4.f, 4.f});
     set_transform_position(entity, glm::vec3{0.f, 0.f, -1.f});
+    set_transform_rotation(entity, 45.f);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())

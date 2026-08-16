@@ -4,6 +4,8 @@
 #include <glaze/reflection/get_name.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/fwd.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include "cat/core/components/c_world_transform.hpp"
 #include "cat/gfx/gfx_engine.hpp"
 
@@ -14,20 +16,20 @@ void cCamera::bind(const cTransform& transform)
     Watcher<RenderContext> ctx = 
         GfxEngine::get().get_render_context(this->render_context_handle);
 
-    // TODO: switch (this->type)
-
     switch(this->type)
     {
         case eCameraType::ORTHOGRAPHIC:
-            ctx->view = glm::translate(
-                glm::mat4{1.f},
-                -glm::vec3{
-                    transform.position.x - ((f32)this->size.x / 2),
-                    transform.position.y - ((f32)this->size.y / 2),
-                    transform.position.z
-                }
-            );
-        break;
+        {
+            glm::vec3 half_size{(f32)this->size.x / 2.f, (f32)this->size.y / 2.f, 0.f};
+
+            glm::mat4 camera_matrix =
+                glm::translate(glm::mat4{1.f}, transform.position)
+                * glm::mat4_cast(transform.rotation)
+                * glm::translate(glm::mat4{1.f}, -half_size);
+
+            ctx->view = glm::inverse(camera_matrix);
+            break;
+        }
         case eCameraType::PERSPECTIVE:
             glm::mat4 camera_matrix = glm::translate(glm::mat4{1.f}, transform.position)
                 * glm::mat4_cast(transform.rotation);
@@ -43,33 +45,41 @@ void cCamera::bind(const cWorldTransform& transform)
     Watcher<RenderContext> ctx = 
         GfxEngine::get().get_render_context(this->render_context_handle);
 
-    // TODO: switch (this->type)
-
     glm::vec3 position = transform.get_position();
+
+    const glm::mat4& mat = transform.matrix;
+    glm::vec3 right   = glm::normalize(glm::vec3(mat[0]));
+    glm::vec3 up      = glm::normalize(glm::vec3(mat[1]));
+    glm::vec3 forward = glm::cross(right, up); // glm::normalize(glm::vec3(mat[2]));
+
+    glm::mat4 rotation{
+        glm::vec4{right, 0.f},
+        glm::vec4{up, 0.f},
+        glm::vec4{forward, 0.f},
+        glm::vec4{0.f, 0.f, 0.f, 1.f},
+    };
     
     switch(this->type)
     {
         case eCameraType::ORTHOGRAPHIC:
-            ctx->view = glm::translate(
-                glm::mat4{1.f},
-                -glm::vec3{
-                    position.x - ((f32)this->size.x / 2),
-                    position.y - ((f32)this->size.y / 2),
-                    position.z
-                }
-            );
-        break;
+        {
+            glm::vec3 half_size{(f32)this->size.x / 2.f, (f32)this->size.y / 2.f, 0.f};
+
+            glm::mat4 camera_matrix = 
+                    glm::translate(glm::mat4{1.f}, position)
+                    * rotation
+                    * glm::translate(glm::mat4{1.f}, -half_size);
+
+            ctx->view = glm::inverse(camera_matrix);
+            break;
+        }
         case eCameraType::PERSPECTIVE:
-            const glm::mat4& mat = transform.matrix;
-            glm::vec3 right   = glm::normalize(glm::vec3(mat[0]));
-            glm::vec3 up      = glm::normalize(glm::vec3(mat[1]));
-            glm::vec3 forward = glm::normalize(glm::vec3(mat[2]));
 
             glm::mat4 camera_matrix {
                 glm::vec4{right, 0.f},
                 glm::vec4{up, 0.f},
                 glm::vec4{forward, 0.f},
-                glm::vec4{position, 0.f},
+                glm::vec4{position, 1.f},
             };
 
             ctx->view = glm::inverse(camera_matrix);
