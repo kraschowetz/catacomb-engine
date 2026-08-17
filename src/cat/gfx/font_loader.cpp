@@ -1,9 +1,9 @@
-#include <cat/gfx/text/font_loader.hpp>
+#include <cat/gfx/font_loader.hpp>
 
 #include "cat/error.hpp"
 #include "cat/gfx/gfx_util.hpp"
-#include "cat/gfx/text/font.hpp"
-#include "cat/gfx/text/msdf_schema.hpp"
+#include "cat/gfx/font.hpp"
+#include "cat/gfx/msdf_schema.hpp"
 
 #include <cerrno>
 #include <cstddef>

@@ -1,5 +1,6 @@
-#include "cat/gfx/text/font.hpp"
-#include <cat/gfx/text/glyph_quad.hpp>
+#include <cat/gfx/glyph_quad.hpp>
+
+#include "cat/gfx/font.hpp"
 
 using namespace cat;
 

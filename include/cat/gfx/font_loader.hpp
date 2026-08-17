@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cat/gfx/text/font.hpp>
+#include <cat/gfx/font.hpp>
 
 namespace cat
 {
