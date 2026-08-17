@@ -20,6 +20,9 @@ public:
 
     glm::vec4 get_color() const;
     f32 get_font_size() const;
+    const std::string& get_content() const;
+    const Shared<Font> get_font() const;
+
 
     void set_content(const std::string& content);
     void set_font(Shared<Font>& font);
@@ -32,6 +35,8 @@ private:
     glm::vec4 m_color = glm::vec4{1.f};
     f32 m_font_size   = 32.f;
     bool m_dirty      = true;
+
+    friend class TextRenderer;
 };
 
 }

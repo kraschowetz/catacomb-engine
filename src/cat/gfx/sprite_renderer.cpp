@@ -1,7 +1,7 @@
-#include "cat/error.hpp"
+#include <cat/gfx/sprite_renderer.hpp>
+
 #include "cat/gfx/components/c_sprite.hpp"
 #include "cat/util/memory.hpp"
-#include <cat/gfx/sprite_renderer.hpp>
 
 #include <cat/gfx/gfx_engine.hpp>
 #include <cat/gfx/vertex_buffer.hpp>
@@ -17,11 +17,7 @@ static constexpr u32 SPRITE_INDEX_COUNT = 6;
 
 SpriteRenderer::SpriteRenderer()
 {
-    if(!GfxEngine::is_loaded())
-    {
-        GfxEngine::get();
-        throw Exception{eErrorCode::UNKNOWN};
-    }
+    CAT_ASSERT(GfxEngine::is_loaded());
 
     m_sprite_layout.push_f32(3); // position
     m_sprite_layout.push_f32(2); // uv

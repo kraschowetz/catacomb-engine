@@ -7,6 +7,8 @@ using namespace cat;
 
 glm::vec4 cText::get_color() const { return m_color; }
 f32 cText::get_font_size() const { return m_font_size; }
+const std::string& cText::get_content() const { return m_content; }
+const Shared<Font> cText::get_font() const { return m_font; }
 
 void cText::set_content(const std::string& content)
 {

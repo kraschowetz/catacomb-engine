@@ -1,5 +1,4 @@
 #include "cat/gfx/sprite_atlas.hpp"
-#include "cat/util/logger.hpp"
 
 using namespace cat;
 
