@@ -3,6 +3,7 @@
 #include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/gfx/sprite_renderer.hpp"
+#include "cat/gfx/text_renderer.hpp"
 #include <cat/gfx/gfx_config.hpp>
 #include <cat/gfx/sdl_canvas.hpp>
 #include <cat/util/memory.hpp>
@@ -37,6 +38,7 @@ enum class eRenderPass : u8
     MAIN_3D,
     UI_2D,
     UI_3D,
+    UI_TEXT,
     AUX_2D,
     AUX_3D
 };
@@ -53,6 +55,7 @@ public:
     void update_settings(const GfxConfig& config);
 
     SpriteRenderer& get_sprite_renderer();
+    TextRenderer& get_text_renderer();
     Shader& get_basic_shader(eBasicShaderType type);
     Watcher<RenderContext> get_render_context(hash_t handle);
 
@@ -74,6 +77,7 @@ private:
 private:
     Unique<SdlCanvas> m_main_window;
     Unique<SpriteRenderer> m_sprite_renderer;
+    Unique<TextRenderer> m_text_renderer;
 
     Weak<Shader> m_current_shader;
 

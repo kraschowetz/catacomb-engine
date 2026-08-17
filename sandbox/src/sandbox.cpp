@@ -19,7 +19,9 @@
 #include <cat/gfx/texture_loader.hpp>
 #include <cat/gfx/sprite_atlas.hpp>
 
-#include <cfloat>
+#include <cat/gfx/font.hpp>
+#include <cat/gfx/font_loader.hpp>
+
 #include <unistd.h>
 
 int main(int argc, char** argv)
@@ -31,11 +33,16 @@ int main(int argc, char** argv)
 
     resource_manager.register_resource<Shader, ShaderLoader>();
     resource_manager.register_resource<Texture, TextureLoader>();
+    resource_manager.register_resource<Font, FontLoader>();
 
     Shared<Shader> csl_shader = resource_manager
         .load<Shader, ShaderLoader>(
             "./res/shader.csl"
         );
+
+    Shared<Font> font = resource_manager.load<Font, FontLoader>(
+        "./res/font_atlas.png", "./res/font_atlas.json"
+    );
 
     // could also use a basic shader like this
     Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
@@ -53,6 +60,7 @@ int main(int argc, char** argv)
     EntityID entity = scene.create_entity();
 
     ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
+    ecs.add_component<cText>(entity, cText{"1234", font});
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
@@ -72,8 +80,6 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
-        rotate_transform(entity, 360.f * CoreEngine::get().get_chrono().get_delta());
-
         auto camera_view = ecs.view<cCamera, cWorldTransform>();
 
         camera_view.foreach([](cCamera& cam, cWorldTransform& trans){
@@ -84,11 +90,18 @@ int main(int argc, char** argv)
         basic_shader.set_texture_atlas(atlas);
         GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, basic_shader);
 
-        GfxEngine::get().prepare(eRenderPass::MAIN_2D);
+        GfxEngine::get().prepare(eRenderPass::UI_TEXT);
 
+        /*
         auto sprite_view = ecs.view<cSprite, cWorldTransform>();
         sprite_view.foreach([](cSprite& spr, cWorldTransform& trans){
             GfxEngine::get().get_sprite_renderer().render_sprite(spr, trans);
+        });
+        */
+
+        auto text_view = ecs.view<cText, cTransform>();
+        text_view.foreach([](cText& text, cTransform& trans){
+            GfxEngine::get().get_text_renderer().render_text(text, trans);
         });
 
         // csl_shader->set_uniform("u_my_uniform", 1);

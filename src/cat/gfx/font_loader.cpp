@@ -100,7 +100,7 @@ Font FontLoader::load(
 
     font.m_atlas = _load_font_texture(image_path);
     font.m_pixel_range = raw.atlas.distanceRange;
-    font.m_line_height = raw.metrics.lineSize;
+    font.m_line_height = raw.metrics.lineHeight;
     font.m_ascender = raw.metrics.ascender;
     font.m_descender = raw.metrics.descender;
 

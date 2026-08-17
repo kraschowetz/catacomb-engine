@@ -2,11 +2,12 @@
 
 #include "cat/gfx/font.hpp"
 
-using namespace cat;
+namespace cat
+{
 
 std::vector<GlyphQuad> layout_text(
-    const std::string &content,
-    const Font &font,
+    const std::string& content,
+    const Font& font,
     f32 font_size
 )
 {
@@ -24,7 +25,7 @@ std::vector<GlyphQuad> layout_text(
             continue;
         }
 
-        const Watcher<GlyphInfo> glyph =  font.get_glyph(static_cast<u8>(c));
+        const Watcher<const GlyphInfo> glyph = font.get_glyph(static_cast<u8>(c));
         if(!glyph) continue;
 
         if(glyph->has_ink)
@@ -44,4 +45,6 @@ std::vector<GlyphQuad> layout_text(
     }
 
     return quads;
+}
+
 }

@@ -32,13 +32,13 @@ public:
 
     NO_COPY(Font);
 
-    const Watcher<GlyphInfo> get_glyph(u32 codepoint) const;
+    Watcher<const GlyphInfo> get_glyph(u32 codepoint) const;
 
-    const Shared<Texture> get_atlas() const;
+    Watcher<const Texture> get_atlas() const;
     f32 get_pixel_range() const;
     f32 get_line_height() const;
     f32 get_ascender() const;
-    f32 get_descenfer() const;
+    f32 get_descender() const;
 
 private:
     std::unordered_map<u32, GlyphInfo> m_glyphs;

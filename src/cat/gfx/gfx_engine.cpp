@@ -1,6 +1,7 @@
 #include "cat/error.hpp"
 #include "cat/gfx/render_context.hpp"
 #include "cat/gfx/shader.hpp"
+#include "cat/gfx/text_renderer.hpp"
 #include "cat/util/logger.hpp"
 #include "cat/util/util.hpp"
 #include "glaze/core/context.hpp"
@@ -101,6 +102,7 @@ GfxEngine::GfxEngine()
 {
     m_main_window = std::make_unique<SdlCanvas>();
     m_sprite_renderer = std::make_unique<SpriteRenderer>();
+    m_text_renderer = std::make_unique<TextRenderer>();
 
     m_render_context_map.insert(MAIN_2D_CONTEXT, RenderContext{});
     m_render_context_map.insert(MAIN_3D_CONTEXT, RenderContext{});
@@ -151,6 +153,7 @@ void GfxEngine::prepare(eRenderPass pass)
 
         case eRenderPass::UI_2D:
         case eRenderPass::UI_3D:
+        case eRenderPass::UI_TEXT:
             glDisable(GL_DEPTH_TEST);
             break;
 
@@ -168,6 +171,8 @@ void GfxEngine::finish_render_pass()
         case eRenderPass::UI_2D:
             m_sprite_renderer->render_batch();
             break;
+        case cat::eRenderPass::UI_TEXT:
+            m_text_renderer->render_batch();
 
         default: break;
     }
@@ -176,6 +181,11 @@ void GfxEngine::finish_render_pass()
 SpriteRenderer& GfxEngine::get_sprite_renderer()
 {
     return *m_sprite_renderer;
+}
+
+TextRenderer& GfxEngine::get_text_renderer()
+{
+    return *m_text_renderer;
 }
 
 Shader& GfxEngine::get_basic_shader(eBasicShaderType type)

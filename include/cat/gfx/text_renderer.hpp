@@ -60,6 +60,7 @@ private:
     u32 m_num_glyphs_batched = 0;
     u32 m_ring_index = 0;
 
+    friend class GfxEngine;
 };
 
 }
