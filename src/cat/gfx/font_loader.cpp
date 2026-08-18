@@ -37,8 +37,8 @@ static Texture _load_font_texture(const std::string& path) THROWS
     glBindTexture(GL_TEXTURE_2D, handle);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
     glTexImage2D(
         GL_TEXTURE_2D,
@@ -72,12 +72,12 @@ void FontLoader::build_font_glyph_table(Font& font, const MSDFAtlasJson& raw) co
             info.plane_min = {glyph.planeBounds->left, glyph.planeBounds->bottom};
             info.plane_max = {glyph.planeBounds->right, glyph.planeBounds->top};
             info.uv_min = {
-                glyph.atlasBounds->left / atlas_width,
-                glyph.atlasBounds->bottom / atlas_height
+                (glyph.atlasBounds->left / atlas_width),
+                1.0f - (glyph.atlasBounds->bottom / atlas_height)
             };
             info.uv_max = {
-                glyph.atlasBounds->right / atlas_width,
-                glyph.atlasBounds->top / atlas_height
+                (glyph.atlasBounds->right / atlas_width),
+                1.0f - (glyph.atlasBounds->top / atlas_height)
             };
             info.has_ink = true;
         }

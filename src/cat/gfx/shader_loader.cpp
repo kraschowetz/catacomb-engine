@@ -192,7 +192,12 @@ Shader ShaderLoader::load_basic(eBasicShaderType type)
     Shader shader{ program };
     shader.m_uniform_cache = _populate_uniform_cache(
         shader.get_handle(),
-        {}
+        {
+            .vertex{},
+            .fragment{},
+            .base_behaviour{},
+            .custom_uniforms{"u_color", "u_pixel_range", "u_font_atlas"},
+        }
     );
 
     return shader;

@@ -1,7 +1,6 @@
 #include "cat/core/components/c_transform.hpp"
 #include "cat/core/scene.hpp"
 #include "cat/gfx/components/c_camera.hpp"
-#include "cat/gfx/components/c_sprite.hpp"
 #include "cat/gfx/shader.hpp"
 #include "cat/util/chrono.hpp"
 #include "cat/util/memory.hpp"
@@ -45,7 +44,7 @@ int main(int argc, char** argv)
     );
 
     // could also use a basic shader like this
-    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
+    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::TEXT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -60,13 +59,13 @@ int main(int argc, char** argv)
     EntityID entity = scene.create_entity();
 
     ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
-    ecs.add_component<cText>(entity, cText{"1234", font});
+    ecs.add_component<cText>(entity, cText{"abcd", font});
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
     set_transform_scale(entity, glm::vec2{4.f, 4.f});
     set_transform_position(entity, glm::vec3{0.f, 0.f, -1.f});
-    set_transform_rotation(entity, 45.f);
+    set_transform_rotation(entity, 0.f);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -99,10 +98,18 @@ int main(int argc, char** argv)
         });
         */
 
+        font->get_atlas()->bind(1);
+        basic_shader.set_uniform("u_font_atlas", 1);
+
+        basic_shader.set_uniform("u_color", glm::vec4{1.f});
+        basic_shader.set_uniform("u_pixel_range", font->get_pixel_range());
+
         auto text_view = ecs.view<cText, cTransform>();
         text_view.foreach([](cText& text, cTransform& trans){
             GfxEngine::get().get_text_renderer().render_text(text, trans);
         });
+
+        font->get_atlas()->unbind();
 
         // csl_shader->set_uniform("u_my_uniform", 1);
 

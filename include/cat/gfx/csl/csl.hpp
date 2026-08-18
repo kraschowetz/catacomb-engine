@@ -9,6 +9,7 @@
 
 #include "basic_shaders/preamble.hpp"   // IWYU pragma: export
 #include "basic_shaders/unlit_2d.hpp"   // IWYU pragma: export
+#include "basic_shaders/text_2d.hpp"    // IWYU pragma: export
 
 // TODO: @output directive (should be a contract!)
 // TODO: @include directive
@@ -24,6 +25,7 @@ namespace cat
 enum class eBasicShaderType : u8
 {
     UNLIT_2D,
+    TEXT_2D,
     COUNT
 };
 
@@ -43,7 +45,8 @@ struct BasicShaderDef
 };
 
 inline constexpr BasicShaderDef BASIC_SHADERS_LIST[] = {
-    {BASIC_UNLIT_2D_VERTEX, BASIC_UNLIT_2D_FRAGMENT}
+    {BASIC_UNLIT_2D_VERTEX, BASIC_UNLIT_2D_FRAGMENT},
+    {BASIC_TEXT_2D_VERTEX, BASIC_TEXT_2D_FRAGMENT}
 };
 
 struct TargetDef
@@ -54,7 +57,8 @@ struct TargetDef
 
 inline constexpr TargetDef SHADER_TARGET_LOOKUP_TABLE[]
 {
-    {"UNLIT_2D", eBasicShaderType::UNLIT_2D}
+    {"UNLIT_2D", eBasicShaderType::UNLIT_2D},
+    {"TEXT_2D", eBasicShaderType::TEXT_2D}
 };
 
 struct ShaderSource

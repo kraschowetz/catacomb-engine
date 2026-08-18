@@ -8,8 +8,6 @@
 #include "cat/gfx/gfx_engine.hpp"
 #include <cat/gfx/gfx_util.hpp>
 #include "cat/gfx/glyph_quad.hpp"
-#include "cat/gfx/sprite_renderer.hpp"
-#include "cat/gfx/vertex_array.hpp"
 #include "cat/gfx/vertex_buffer.hpp"
 
 using namespace cat;
