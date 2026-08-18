@@ -127,7 +127,7 @@ public:
     {
         hash_t hash = std::hash<std::type_index>{}(typeid(ResourceT));
 
-        CAT_ASSERT(m_resource_pools.contains(hash));
+        ASSERT(m_resource_pools.contains(hash), "resource not registered");
 
         iResourcePool* interface_ptr = m_resource_pools.get(hash).get()->get();
         ResourcePool<ResourceT, LoaderT>* pool = static_cast<ResourcePool<ResourceT, LoaderT>*>(interface_ptr);

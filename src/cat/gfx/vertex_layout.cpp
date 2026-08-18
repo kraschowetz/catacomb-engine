@@ -39,7 +39,12 @@ u32 VertexLayout::get_offset(u32 index) const
 {
 	if(index == 0) return 0;
 
-	CAT_ASSERT(index < m_elements.size());
+	ASSERT(
+        index < m_elements.size(), 
+        "access of invalid index ({}) on an array of size {})",
+        index,
+        m_elements.size()
+    );
 	
 	u32 offset = 0;
 	for(u32 i = 0; i < index; ++i)

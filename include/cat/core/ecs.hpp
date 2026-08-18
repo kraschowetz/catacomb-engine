@@ -2,7 +2,6 @@
 
 #include "cat/config.hpp"
 #include "cat/util/memory.hpp"
-#include "cat/util/logger.hpp"
 #include <algorithm>
 #include <bitset>
 #include <functional>
@@ -151,7 +150,7 @@ public:
 
 		if(m_available_entities.empty())
 		{
-			CAT_ASSERT(m_last_entity_id < MAX_ENTITIES);
+            ASSERT(m_last_entity_id < MAX_ENTITIES, "ecs full");
 			id = m_last_entity_id++;
 		}
 		else 
@@ -234,7 +233,7 @@ public:
 	SimpleView(Watcher<ECS> ecs)
 		: m_ecs{ecs}, m_view_pools{ecs->get_component_pool_ptr<Components>()...}
 	{
-		CAT_ASSERT(ComponentTypes::size == m_view_pools.size());
+		ASSERT(ComponentTypes::size == m_view_pools.size());
 
 		auto smallest_pool = std::min_element(
 			m_view_pools.begin(),
@@ -245,7 +244,7 @@ public:
 			}
 		);
 
-		CAT_ASSERT(smallest_pool != m_view_pools.end());
+		ASSERT(smallest_pool != m_view_pools.end());
 
 		m_smallest_sparse_set = *smallest_pool;
 	}
@@ -348,9 +347,8 @@ private:
 					std::apply(func, make_component_tuple(id, indices));
 				}
 				else {
-					LOG_ERR("bad lambda args!\n");
-					CAT_ASSERT(false);     
-			        }
+                    ASSERT(false, "bad lambda arguments");
+                }
 			}
 		}
 	}

@@ -4,7 +4,7 @@ using namespace cat;
 
 Watcher<const GlyphInfo> Font::get_glyph(u32 codepoint) const
 {
-    CAT_ASSERT(m_glyphs.contains(codepoint));
+    ASSERT(m_glyphs.contains(codepoint), "font dont have character {}", codepoint);
 
     return &m_glyphs.at(codepoint);
 }

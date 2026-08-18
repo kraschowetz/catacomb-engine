@@ -3,8 +3,6 @@
 #include "cat/core/ecs.hpp"
 #include "cat/core/json_scene_loader.hpp"
 #include "cat/error.hpp"
-#include "glaze/core/common.hpp"
-#include "glaze/core/read.hpp"
 #include <cat/core/core_engine.hpp>
 
 #include <cat/core/input_manager.hpp>
@@ -60,7 +58,7 @@ ECS& CoreEngine::get_ecs()
 
 Scene& CoreEngine::get_current_scene()
 {
-    CAT_ASSERT(m_current_active_scene != nullptr);
+    ASSERT(m_current_active_scene != nullptr, "no scene set as active");
     
     return *m_current_active_scene;
 }

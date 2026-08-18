@@ -126,7 +126,7 @@ Shader ShaderLoader::load(
     i32 linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
 
-    CAT_ASSERT(linked);
+    ASSERT(linked, "shader not linked");
 #endif
 
     glDeleteShader(vs);
@@ -183,7 +183,7 @@ Shader ShaderLoader::load_basic(eBasicShaderType type)
     i32 linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
 
-    CAT_ASSERT(linked);
+    ASSERT(linked, "shader not linked");
 #endif
 
     glDeleteShader(vs);

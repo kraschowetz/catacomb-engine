@@ -92,7 +92,7 @@ private:
         // @brief: write `obj` into slot and return {`slot`,`ptr`}
         std::pair<u64, T*> insert(T&& obj)
         {
-            CAT_ASSERT(has_free_slot());
+            ASSERT(has_free_slot(), "attepmted insertion in a full stable buffer block");
 
             u64 slot = m_free_slots[--m_free_count];
 

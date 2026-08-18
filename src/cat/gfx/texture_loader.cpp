@@ -3,7 +3,7 @@
 #include <cat/gfx/gfx_util.hpp>
 #include <cat/error.hpp>
 
-#define STBI_ASSERT(x) CAT_ASSERT(x)
+#define STBI_ASSERT(x) ASSERT(x)
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 

@@ -14,7 +14,10 @@ using namespace cat;
 
 TextRenderer::TextRenderer()
 {
-    CAT_ASSERT(GfxEngine::is_loaded());
+    ASSERT(
+        GfxEngine::is_loaded(),
+        "gfx engine is not loaded; avoid user-owned TextRenderer's"
+    );
 
     m_glyph_layout.push_f32(3); // position
     m_glyph_layout.push_f32(2); // uv

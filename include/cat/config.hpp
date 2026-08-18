@@ -24,14 +24,29 @@ typedef u64 hash_t;
 
 #ifdef DEVELOP
 
-#include <cassert>
+#include <iostream>     // IWYU pragma: export
+#include <format>       // IWYU pragma: export
 
 #define DEBUGBREAK __builtin_trap()
-#define CAT_ASSERT(expr) assert(expr)
+
+#define FMT_MESSAGE(msg, ...) std::format(msg __VA_OPT__(,) __VA_ARGS__)
+
+#define ASSERT(expr, ...)                                                   \
+    do {                                                                    \
+        if(!(expr))                                                         \
+        {                                                                   \
+            std::cerr << "assertion failed! (" << #expr << ")\n";           \
+            std::cerr << "\t at line " << __LINE__ << " of "                \
+                << __FILE__ << "\n";                                        \
+            __VA_OPT__(std::string errmsg = FMT_MESSAGE(__VA_ARGS__);)      \
+            __VA_OPT__(std::cerr << errmsg << "\n";)                        \
+            std::abort();                                                   \
+        }                                                                   \
+    } while(false)
 
 #else
 
 #define DEBUGBREAK
-#define CAT_ASSERT(expr)
+#define ASSERT(...) do{}while(false)
 
 #endif

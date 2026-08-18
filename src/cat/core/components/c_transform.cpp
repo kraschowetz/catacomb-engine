@@ -17,7 +17,7 @@ glm::mat4 cTransform::as_mat4() const
     mat = mat * glm::mat4_cast(this->rotation);
     mat = glm::scale(mat, this->scale);
 
-    CAT_ASSERT(glm::determinant(mat) != 0.f && "Transform matrix is singular");
+    ASSERT(glm::determinant(mat) != 0.f, "transform matrix is singular");
     return mat;
 
     /*

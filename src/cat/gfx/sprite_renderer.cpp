@@ -17,7 +17,10 @@ static constexpr u32 SPRITE_INDEX_COUNT = 6;
 
 SpriteRenderer::SpriteRenderer()
 {
-    CAT_ASSERT(GfxEngine::is_loaded());
+    ASSERT(
+        GfxEngine::is_loaded(),
+        "gfx engine is not loaded; avoid user-owned SpriteRenderer's"
+    );
 
     m_sprite_layout.push_f32(3); // position
     m_sprite_layout.push_f32(2); // uv
