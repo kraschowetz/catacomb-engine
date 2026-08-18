@@ -88,7 +88,7 @@ Scene& CoreEngine::load_scene(const std::string& path)
 
             if(it == registry.end())
             {
-                LOG_ERRF("unknown component %s\n", component_name.c_str());
+                LOG_ERR("unknown component %s\n", component_name.c_str());
                 continue;
             }
 

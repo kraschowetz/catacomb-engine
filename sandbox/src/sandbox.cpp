@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     EntityID entity = scene.create_entity();
 
     ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
-    ecs.add_component<cText>(entity, cText{"abcd", font});
+    ecs.add_component<cText>(entity, cText{"ola, Pedro e Leo", font});
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
         if(CoreEngine::get().get_chrono().current_seconds() >= last_time + 1.f)
         {
             last_time = CoreEngine::get().get_chrono().current_seconds();
-            LOG_TEXTF("FPS: %u\n", CoreEngine::get().get_chrono().get_fps());
+            LOG_TEXT("FPS: %u\n", CoreEngine::get().get_chrono().get_fps());
         }
     }
 

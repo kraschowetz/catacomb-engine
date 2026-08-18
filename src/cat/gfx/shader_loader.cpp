@@ -17,7 +17,7 @@ using namespace cat;
 #ifdef DEVELOP
     #define LOG_SHADER_COMPILE_ERROR(_code, _handle, _path)                             \
         do {                                                                            \
-        LOG_ERRF("%s\n", _code);                                                        \
+        LOG_ERR("%s\n", _code);                                                         \
         _log_err(_handle, "compiling", _path, glGetShaderInfoLog, glGetShaderiv);       \
         throw Exception{"failed to compile shader"};                                    \
         } while(false)

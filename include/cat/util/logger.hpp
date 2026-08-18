@@ -7,11 +7,8 @@
 
 #include <cstdio>
 
-#define LOG_TEXT(_msg) printf(_msg)
-#define LOG_ERR(_msg) fprintf(stderr, _msg);
-
-#define LOG_TEXTF(_msg, ...) printf(_msg, __VA_ARGS__);
-#define LOG_ERRF(_msg, ...) fprintf(stderr, _msg, __VA_ARGS__)
+#define LOG_TEXT(_msg, ...) printf(_msg __VA_OPT__(,) __VA_ARGS__)
+#define LOG_ERR(_msg, ...) fprintf(stderr, _msg __VA_OPT__(,) __VA_ARGS__);
 
 #else
 

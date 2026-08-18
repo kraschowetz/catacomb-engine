@@ -87,7 +87,7 @@ void BenchMarker::display(bool convert_to_seconds)
 			max /= 1000;
 		}
 
-		LOG_TEXTF(
+		LOG_TEXT(
 			"%s benchmarks:\n\tentries: %lu\n\tmean: %lu %s\n\tmin: %lu %s\n\tmax: %lu %s\n\tstddev: %.2f\n",
 			label.data(),
 			data.size(),
@@ -95,7 +95,7 @@ void BenchMarker::display(bool convert_to_seconds)
 			min, timescale,
 			max, timescale,
 			stddev
-		)
+		);
 	}
 }
 
