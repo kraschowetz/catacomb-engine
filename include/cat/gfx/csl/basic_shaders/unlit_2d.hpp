@@ -11,7 +11,7 @@ inline constexpr char BASIC_UNLIT_2D_FRAGMENT[] = R"std_fragment_2d(
 
     void main()
     {
-        out_color = texture(u_texture_atlas, v_uv);
+        out_color = texture(u_texture_0, v_uv) * u_modulate_color;
 
         post_process_hook();
     }
@@ -27,6 +27,8 @@ inline constexpr char BASIC_UNLIT_2D_VERTEX[] = R"std_vertex_2d(
 
     void main()
     {
+        pre_process_hook();
+
         vec4 position = 
             u_projection_matrix * u_view_matrix * u_model_matrix * vec4(a_position, 1.0f);
 

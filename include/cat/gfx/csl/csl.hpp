@@ -19,6 +19,8 @@
 #define CAT_CSL_TARGET_DIRECTIVE "@target"
 #define CAT_CSL_UNIFORM_DIRECTIVE "@uniform"
 
+constexpr i32 CAT_CSL_NUM_TEXTURE_SLOTS = 4;
+
 namespace cat
 {
 

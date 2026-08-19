@@ -5,10 +5,22 @@
 
 #ifdef DEVELOP
 
-#include <cstdio>
+#include <iostream>     // IWYU pragma: export
+#include <format>       // IWYU pragma: export
 
-#define LOG_TEXT(_msg, ...) printf(_msg __VA_OPT__(,) __VA_ARGS__)
-#define LOG_ERR(_msg, ...) fprintf(stderr, _msg __VA_OPT__(,) __VA_ARGS__);
+#define LOG_TEXT(_msg, ...)                                                 \
+    do {                                                                    \
+        std::string _text = std::format(_msg __VA_OPT__(,) __VA_ARGS__);    \
+        std::cout << _text << "\n";                                         \
+        }                                                                   \
+    while (false)   
+
+#define LOG_ERR(_msg, ...)                                                  \
+    do {                                                                    \
+        std::string _text = std::format(_msg __VA_OPT__(,) __VA_ARGS__);    \
+        std::cerr << _text << "\n";                                         \
+        }                                                                   \
+    while (false)   
 
 #else
 

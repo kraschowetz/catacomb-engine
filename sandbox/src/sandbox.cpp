@@ -34,17 +34,12 @@ int main(int argc, char** argv)
     resource_manager.register_resource<Texture, TextureLoader>();
     resource_manager.register_resource<Font, FontLoader>();
 
-    Shared<Shader> csl_shader = resource_manager
-        .load<Shader, ShaderLoader>(
-            "./res/shader.csl"
-        );
+    Shader& text_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::TEXT_2D);
+    Shader& sprite_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
 
     Shared<Font> font = resource_manager.load<Font, FontLoader>(
         "./res/font_atlas.png", "./res/font_atlas.json"
     );
-
-    // could also use a basic shader like this
-    Shader& basic_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::TEXT_2D);
 
     SpriteAtlas atlas = {
         resource_manager.load<Texture, TextureLoader>("res/sprite.png"),
@@ -56,16 +51,21 @@ int main(int argc, char** argv)
     Scene& scene = CoreEngine::get().load_scene("res/scene.json");
     CoreEngine::get().set_active_scene(scene.get_scene_id());
 
-    EntityID entity = scene.create_entity();
+    EntityID camera = scene.create_entity();
+    EntityID text = scene.create_entity();
+    EntityID sprite = scene.create_entity();
 
-    ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
-    ecs.add_component<cText>(entity, cText{"ola, mundo!", font});
+    ecs.add_component<cCamera>(camera, cCamera::create_ortho({800, 600}));
+    ecs.add_component<cText>(text, cText{"ola, mundo!", font});
+    ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
+
+    ecs.get_component<cCamera>(camera)->render_context_handle = GfxEngine::MAIN_2D_CONTEXT;
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
-    set_transform_scale(entity, glm::vec2{4.f, 4.f});
-    set_transform_position(entity, glm::vec3{0.f, 0.f, -1.f});
-    set_transform_rotation(entity, 0.f);
+    set_transform_scale(sprite, glm::vec2{4.f, 4.f});
+    set_transform_position(sprite, glm::vec2{0.f, 0.f});
+    set_transform_position(text, glm::vec3{0.f, 0.f, 0.f});
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -79,17 +79,18 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
+        GfxEngine::get().prepare(eRenderPass::UI_TEXT);
+
+        text_shader.bind();
+        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, text_shader);
+
         auto camera_view = ecs.view<cCamera, cWorldTransform>();
 
         camera_view.foreach([](cCamera& cam, cWorldTransform& trans){
             cam.bind(trans);
         });
 
-        basic_shader.bind();
-        basic_shader.set_texture_atlas(atlas);
-        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, basic_shader);
-
-        GfxEngine::get().prepare(eRenderPass::UI_TEXT);
+        atlas.bind();
 
         /*
         auto sprite_view = ecs.view<cSprite, cWorldTransform>();
@@ -98,20 +99,16 @@ int main(int argc, char** argv)
         });
         */
 
-        font->get_atlas()->bind(1);
-        basic_shader.set_uniform("u_font_atlas", 1);
+        text_shader.set_texture(*font->get_atlas(), 0);
 
-        basic_shader.set_uniform("u_color", glm::vec4{1.f});
-        basic_shader.set_uniform("u_pixel_range", font->get_pixel_range());
+        // basic_shader.set_uniform("u_color", glm::vec4{1.f});
+        text_shader.set_modulate_color(glm::vec4{1});
+        text_shader.set_font_pixel_range(font->get_pixel_range());
 
         auto text_view = ecs.view<cText, cTransform>();
         text_view.foreach([](cText& text, cTransform& trans){
             GfxEngine::get().get_text_renderer().render_text(text, trans);
         });
-
-        font->get_atlas()->unbind();
-
-        // csl_shader->set_uniform("u_my_uniform", 1);
 
         GfxEngine::get().display();
 
@@ -119,7 +116,7 @@ int main(int argc, char** argv)
         if(CoreEngine::get().get_chrono().current_seconds() >= last_time + 1.f)
         {
             last_time = CoreEngine::get().get_chrono().current_seconds();
-            LOG_TEXT("FPS: %u\n", CoreEngine::get().get_chrono().get_fps());
+            LOG_TEXT("FPS: {}", CoreEngine::get().get_chrono().get_fps());
         }
     }
 

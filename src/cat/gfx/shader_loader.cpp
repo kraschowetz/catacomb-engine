@@ -9,6 +9,7 @@
 
 #include <cat/gfx/csl/csl.hpp>
 
+#include <format>
 #include <cstdlib>
 
 
@@ -80,8 +81,17 @@ Shader::UniformCache _populate_uniform_cache(u32 handle, const csl::ShaderSource
     cache.projection_matrix =
         glGetUniformLocation(handle, "u_projection_matrix");
 
-    cache.texture_atlas =
-        glGetUniformLocation(handle, "u_texture_atlas");
+    cache.modulate_color = 
+        glGetUniformLocation(handle, "u_modulate_color");
+
+    cache.font_pixel_range = 
+        glGetUniformLocation(handle, "u_font_pixel_range");
+
+    for(u32 i = 0; i < CAT_CSL_NUM_TEXTURE_SLOTS; ++i)
+    {
+        std::string texture_str = std::format("u_texture_{}", i);
+        cache.textures[i] = glGetUniformLocation(handle, texture_str.c_str());
+    }
 
     for(const std::string& uname : src.custom_uniforms)
     {
@@ -192,12 +202,7 @@ Shader ShaderLoader::load_basic(eBasicShaderType type)
     Shader shader{ program };
     shader.m_uniform_cache = _populate_uniform_cache(
         shader.get_handle(),
-        {
-            .vertex{},
-            .fragment{},
-            .base_behaviour{},
-            .custom_uniforms{"u_color", "u_pixel_range", "u_font_atlas"},
-        }
+        {}
     );
 
     return shader;

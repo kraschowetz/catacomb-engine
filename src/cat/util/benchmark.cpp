@@ -88,7 +88,7 @@ void BenchMarker::display(bool convert_to_seconds)
 		}
 
 		LOG_TEXT(
-			"%s benchmarks:\n\tentries: %lu\n\tmean: %lu %s\n\tmin: %lu %s\n\tmax: %lu %s\n\tstddev: %.2f\n",
+			"{} benchmarks:\n\tentries: {}\n\tmean: {} {}\n\tmin: {} {}\n\tmax: {} {}\n\tstddev: {}\n",
 			label.data(),
 			data.size(),
 			mean, timescale,

@@ -33,7 +33,11 @@ public:
     void set_model_matrix(const glm::mat4& val) const;
     void set_view_matrix(const glm::mat4& val) const;
     void set_projection_matrix(const glm::mat4& val) const;
-    void set_texture_atlas(const SpriteAtlas& sprite_atlas) const;
+    void set_texture_atlas(const SpriteAtlas& sprite_atlas, u32 slot = 0) const;
+    void set_texture(const Texture& texture, u32 slot = 0) const;
+    void set_modulate_color(const glm::vec4& color) const;
+
+    void set_font_pixel_range(f32 range) const;
 
     void set_uniform(const std::string& name, f32 val) const;
     void set_uniform(const std::string& name, i32 val) const;
@@ -51,8 +55,10 @@ public:
         i32 model_matrix        = -1;
         i32 view_matrix         = -1;
         i32 projection_matrix   = -1;
+        i32 modulate_color      = -1;
+        i32 font_pixel_range    = -1;
 
-        i32 texture_atlas       = -1;
+        std::array<i32, CAT_CSL_NUM_TEXTURE_SLOTS> textures;
 
         std::unordered_map<hash_t, i32> user_uniforms;
     };

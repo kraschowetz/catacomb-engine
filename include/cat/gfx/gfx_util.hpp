@@ -22,7 +22,7 @@ static inline bool gl_check_error_status(const char* fn, u32 line, const char* f
 
 	if (err != GL_NO_ERROR)
 	{
-		LOG_ERR("gl error 0x%u\t line %u\tfunction %s\tfile %s\n", err, line, fn, file);
+		LOG_ERR("gl error 0x{}\t line {}\tfunction {}\tfile {}\n", err, line, fn, file);
 		DEBUGBREAK;
 		return true;
 	}

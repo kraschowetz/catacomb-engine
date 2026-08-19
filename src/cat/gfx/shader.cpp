@@ -54,15 +54,53 @@ void Shader::set_projection_matrix(const glm::mat4& val) const
     GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
 }
 
-void Shader::set_texture_atlas(const SpriteAtlas& atlas) const
+void Shader::set_texture_atlas(const SpriteAtlas& atlas, u32 slot) const
 {
-    constexpr u32 TEXTURE_ATLAS_UNIT = 0;
-    // TODO: manage texture units properly
-    i32 location = m_uniform_cache.texture_atlas;
+    i32 location = m_uniform_cache.textures[slot];
+#ifdef DEVELOP
+    if(location < 0)
+        LOG_ERR("texture_{} is not an uniform", slot);
+#endif
 
-    atlas.bind(TEXTURE_ATLAS_UNIT);
+    atlas.bind(slot);
     
-    GL_CALL(glUniform1i(location, TEXTURE_ATLAS_UNIT));
+    GL_CALL(glUniform1i(location, slot));
+}
+
+void Shader::set_texture(const Texture& texture, u32 slot) const
+{
+    i32 location = m_uniform_cache.textures[slot];
+
+#ifdef DEVELOP
+    if(location < 0)
+        LOG_ERR("texture_{} is not an uniform", slot);
+#endif
+
+    texture.bind(slot);
+
+    GL_CALL(glUniform1i(location, slot));
+}
+
+void Shader::set_modulate_color(const glm::vec4& color) const
+{
+    i32 location = m_uniform_cache.modulate_color;
+#ifdef DEVELOP
+    if(location < 0)
+        LOG_ERR("modulate_color is not an uniform");
+#endif
+
+    GL_CALL(glUniform4fv(location, 1, &color[0]));
+}
+
+void Shader::set_font_pixel_range(f32 range) const
+{
+    i32 location = m_uniform_cache.font_pixel_range;
+#ifdef DEVELOP
+    if(location < 0)
+        LOG_ERR("font_pixel_range is not an uniform");
+#endif
+
+    GL_CALL(glUniform1f(location, range));
 }
 
 void Shader::set_uniform(const std::string& name, f32 val) const
