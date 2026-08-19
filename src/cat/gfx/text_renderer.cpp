@@ -112,10 +112,10 @@ void TextRenderer::add_glyph_to_batch(const GlyphQuad& glyph, const glm::vec3& p
     u64 i = m_batch_position_data.size();
     u64 j = m_batch_uv_data.size();
 
-    const f32 left = position.x + glyph.position.x - (glyph.size.x / 2.f);
-    const f32 right = position.x + glyph.position.x + (glyph.size.x / 2.f);
-    const f32 top = position.y + glyph.position.y + (glyph.size.y / 2.f);
-    const f32 bottom = position.y + glyph.position.y - (glyph.size.y / 2.f);
+    const f32 left = position.x + glyph.position.x;
+    const f32 right = position.x + glyph.position.x + glyph.size.x;
+    const f32 top = position.y + glyph.position.y + glyph.size.y;
+    const f32 bottom = position.y + glyph.position.y;
 
     m_batch_position_data.resize(i + NUM_POSITIONS);
     m_batch_uv_data.resize(j + NUM_UVS);

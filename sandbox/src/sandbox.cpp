@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     EntityID entity = scene.create_entity();
 
     ecs.add_component<cCamera>(entity, cCamera::create_ortho({800, 600}));
-    ecs.add_component<cText>(entity, cText{"ola, Pedro e Leo", font});
+    ecs.add_component<cText>(entity, cText{"ola, mundo!", font});
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
