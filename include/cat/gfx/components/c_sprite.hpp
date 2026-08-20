@@ -2,6 +2,7 @@
 
 #include <cat/config.hpp>
 #include "cat/gfx/texture.hpp"
+#include "cat/util/memory.hpp"
 #include <cat/core/component_io.hpp>
 
 namespace cat
@@ -11,7 +12,7 @@ struct cSprite
 {
     TextureUV uv;
     glm::ivec2 size;
-    u32 texture_handle;
+    Shared<Texture> texture;
     u8 z_index;
 
     static cSprite from_json(const glz::generic&);

@@ -34,7 +34,7 @@ public:
 
     Watcher<const GlyphInfo> get_glyph(u32 codepoint) const;
 
-    Watcher<const Texture> get_atlas() const;
+    Watcher<Texture> get_atlas();
     f32 get_pixel_range() const;
     f32 get_line_height() const;
     f32 get_ascender() const;

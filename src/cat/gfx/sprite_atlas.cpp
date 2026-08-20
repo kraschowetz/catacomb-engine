@@ -27,7 +27,7 @@ cSprite SpriteAtlas::get_sprite(const glm::ivec2& index, u8 z_index) const
     {
         .uv = get_uv(index),
         .size = m_sprite_size,
-        .texture_handle = m_texture->get_handle(),
+        .texture = m_texture,
         .z_index = z_index
     };
 }

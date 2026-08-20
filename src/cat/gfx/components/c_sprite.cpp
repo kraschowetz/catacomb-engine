@@ -45,7 +45,7 @@ cSprite cSprite::from_json(const glz::generic& json)
     return cSprite{
         .uv = uv,
         .size = size,
-        .texture_handle = texture->get_handle(),
+        .texture = texture,
         .z_index = json["z_index"].as<u8>()
     };
 }

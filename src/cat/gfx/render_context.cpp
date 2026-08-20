@@ -1,3 +1,4 @@
+#include "cat/gfx/csl/csl.hpp"
 #include <cat/gfx/render_context.hpp>
 
 using namespace cat;
@@ -19,7 +20,20 @@ void RenderContext::update(Shared<Shader> arg_shader)
     shader.set_modulate_color(m_modulate_color);
     shader.set_font_pixel_range(m_font_pixel_range);
 
+    for(u32 i = 0; i < CAT_CSL_NUM_TEXTURE_SLOTS; ++i)
+    {
+        if(m_textures[i]){
+            m_textures[i]->bind(i);
+            shader.set_texture(*m_textures[i], i);
+        }
+    }
+
     m_dirty = false;
+}
+
+bool RenderContext::is_dirty() const
+{
+    return m_dirty;
 }
 
 void RenderContext::set_view(const glm::mat4& mat)
@@ -43,5 +57,11 @@ void RenderContext::set_modulate_color(const glm::vec4& color)
 void RenderContext::set_font_pixel_range(f32 range)
 {
     m_font_pixel_range = range;
+    m_dirty = true;
+}
+
+void RenderContext::set_texture(Watcher<Texture> texture, u32 id)
+{
+    m_textures[id] = texture;
     m_dirty = true;
 }

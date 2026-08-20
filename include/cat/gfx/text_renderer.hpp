@@ -56,7 +56,7 @@ private:
     std::vector<f32> m_batch_uv_data;
 
     glm::vec4 m_current_ink_color;
-    u32 m_current_font_handle;
+    Shared<Font> m_current_font;
     u32 m_num_glyphs_batched = 0;
     u32 m_ring_index = 0;
 

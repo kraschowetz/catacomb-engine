@@ -161,6 +161,7 @@ void GfxEngine::prepare(eRenderPass pass)
     m_render_context_map.get(pass)->bind();
     m_render_context_map.get(pass)->update();
 
+
     m_current_pass = pass;
 }
 
@@ -204,8 +205,14 @@ void GfxEngine::display()
 Watcher<RenderContext> GfxEngine::get_render_context(eRenderPass pass)
 {
     ASSERT(m_render_context_map.contains(pass), "accessing null render context");
+    ASSERT(m_render_context_map.get(pass) != nullptr, "accessing null render context");
 
     return m_render_context_map.get(pass);
+}
+
+Watcher<RenderContext> GfxEngine::get_current_render_context()
+{
+    return get_render_context(m_current_pass);
 }
 
 Watcher<RenderContext> GfxEngine::create_render_context(

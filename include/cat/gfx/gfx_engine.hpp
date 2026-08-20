@@ -60,6 +60,8 @@ public:
 
     // @return ptr to a render pass' render context
     Watcher<RenderContext> get_render_context(eRenderPass pass);
+    Watcher<RenderContext> get_current_render_context();
+
     Watcher<RenderContext> create_render_context(
         eRenderPass pass, 
         Watcher<Shader> default_shader

@@ -92,7 +92,7 @@ int main(int argc, char** argv)
             cam.bind(trans);
         });
 
-        atlas.bind();
+        // atlas.bind();
 
         /*
         auto sprite_view = ecs.view<cSprite, cWorldTransform>();
@@ -101,11 +101,11 @@ int main(int argc, char** argv)
         });
         */
 
-        text_shader.set_texture(*font->get_atlas(), 0);
+        // text_shader.set_texture(*font->get_atlas(), 0);
 
         // basic_shader.set_uniform("u_color", glm::vec4{1.f});
-        text_shader.set_modulate_color(glm::vec4{1});
-        text_shader.set_font_pixel_range(font->get_pixel_range());
+        // text_shader.set_modulate_color(glm::vec4{1});
+        // text_shader.set_font_pixel_range(font->get_pixel_range());
 
         auto text_view = ecs.view<cText, cTransform>();
         text_view.foreach([](cText& text, cTransform& trans){

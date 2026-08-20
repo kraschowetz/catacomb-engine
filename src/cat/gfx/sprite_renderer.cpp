@@ -1,6 +1,7 @@
 #include <cat/gfx/sprite_renderer.hpp>
 
 #include "cat/gfx/components/c_sprite.hpp"
+#include "cat/gfx/render_context.hpp"
 #include "cat/util/memory.hpp"
 
 #include <cat/gfx/gfx_engine.hpp>
@@ -78,12 +79,17 @@ SpriteRenderer::SpriteRenderer()
 void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& transform)
 {
     if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
-        sprite.texture_handle != m_current_spriteatlas_handle)
+        sprite.texture != m_current_texture)
     {
         render_batch();
     }
 
-    m_current_spriteatlas_handle = sprite.texture_handle;
+    if(sprite.texture != m_current_texture)
+    {
+        GfxEngine::get().get_current_render_context()->set_texture(sprite.texture);
+        m_current_texture = sprite.texture;
+    }
+
     add_sprite_to_batch(sprite, transform.as_mat4());
 }
 
@@ -91,12 +97,17 @@ void SpriteRenderer::render_sprite(
     const cSprite &sprite, const cWorldTransform& transform)
 {
     if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
-        sprite.texture_handle != m_current_spriteatlas_handle)
+        sprite.texture != m_current_texture)
     {
         render_batch();
     }
 
-    m_current_spriteatlas_handle = sprite.texture_handle;
+    if(sprite.texture != m_current_texture)
+    {
+        GfxEngine::get().get_current_render_context()->set_texture(sprite.texture);
+        m_current_texture = sprite.texture;
+    }
+
     add_sprite_to_batch(sprite, transform.matrix);
 }
 
@@ -183,6 +194,11 @@ void SpriteRenderer::add_sprite_to_batch(
 
 void SpriteRenderer::render_batch()
 {
+    Watcher<RenderContext> ctx = GfxEngine::get().get_current_render_context();
+
+    if(ctx->is_dirty())
+        ctx->update();
+
     const VertexBuffer& vbo = *m_vbo_ring[m_ring_index];
     const VertexArray& vao = *m_vao_ring[m_ring_index];
 

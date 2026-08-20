@@ -9,7 +9,7 @@ Watcher<const GlyphInfo> Font::get_glyph(u32 codepoint) const
     return &m_glyphs.at(codepoint);
 }
 
-Watcher<const Texture> Font::get_atlas() const
+Watcher<Texture> Font::get_atlas()
 {
     return &m_atlas;
 }

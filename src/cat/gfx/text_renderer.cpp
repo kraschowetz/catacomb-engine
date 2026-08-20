@@ -75,16 +75,33 @@ TextRenderer::TextRenderer()
 
 void TextRenderer::render_text(const cText& text, const cTransform& transform)
 {
-    u32 handle = text.get_font()->get_atlas()->get_handle();
+    Shared<Font> font = text.get_font();
     if(
         m_num_glyphs_batched + text.get_content().size() >= GLYPH_BATCH_SIZE    ||
         text.get_color() != m_current_ink_color                                 ||
-        handle != m_current_font_handle
+        font != m_current_font
     )
     {
         render_batch();
+    }
 
-        m_current_font_handle = handle;
+    if(font != m_current_font)
+    {
+        GfxEngine::get().get_current_render_context()->set_texture(
+            font->get_atlas()
+        );
+        GfxEngine::get().get_current_render_context()->set_font_pixel_range(
+            font->get_pixel_range()
+        );
+
+        m_current_font = font;
+    }
+
+    if(text.get_color() != m_current_ink_color)
+    {
+        GfxEngine::get().get_current_render_context()->set_modulate_color(
+            text.get_color()
+        );
         m_current_ink_color = text.get_color();
     }
 
@@ -157,6 +174,11 @@ void TextRenderer::add_glyph_to_batch(const GlyphQuad& glyph, const glm::vec3& p
 
 void TextRenderer::render_batch()
 {
+    Watcher<RenderContext> ctx = GfxEngine::get().get_current_render_context();
+
+    if(ctx->is_dirty())
+        ctx->update();
+
     const VertexBuffer& vbo = *m_vbo_ring[m_ring_index];
     const VertexArray& vao = *m_vao_ring[m_ring_index];
 

@@ -40,7 +40,7 @@ private:
     
     std::vector<f32> m_batch_position_data;
     std::vector<f32> m_batch_uv_data;
-    u32 m_current_spriteatlas_handle;
+    Shared<Texture> m_current_texture;
     u32 m_num_sprites_batched = 0;
 
     static constexpr u32 SPRITE_BATCH_SIZE = 64;
