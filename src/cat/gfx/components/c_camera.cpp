@@ -27,17 +27,17 @@ void cCamera::bind(const cTransform& transform)
                 * glm::mat4_cast(transform.rotation)
                 * glm::translate(glm::mat4{1.f}, -half_size);
 
-            ctx->view = glm::inverse(camera_matrix);
+            ctx->set_view(glm::inverse(camera_matrix));
             break;
         }
         case eCameraType::PERSPECTIVE:
             glm::mat4 camera_matrix = glm::translate(glm::mat4{1.f}, transform.position)
                 * glm::mat4_cast(transform.rotation);
 
-            ctx->view = glm::inverse(camera_matrix);
+            ctx->set_view(glm::inverse(camera_matrix));
         break;
     }
-    ctx->projection = this->projection;
+    ctx->set_projection(this->projection);
 }
 
 void cCamera::bind(const cWorldTransform& transform)
@@ -70,7 +70,7 @@ void cCamera::bind(const cWorldTransform& transform)
                     * rotation
                     * glm::translate(glm::mat4{1.f}, -half_size);
 
-            ctx->view = glm::inverse(camera_matrix);
+            ctx->set_view(glm::inverse(camera_matrix));
             break;
         }
         case eCameraType::PERSPECTIVE:
@@ -82,17 +82,18 @@ void cCamera::bind(const cWorldTransform& transform)
                 glm::vec4{position, 1.f},
             };
 
-            ctx->view = glm::inverse(camera_matrix);
+            ctx->set_view(glm::inverse(camera_matrix));
         break;
     }
 
-    ctx->projection = this->projection;
+    ctx->set_projection(this->projection);
 }
 
 cCamera cCamera::create_ortho(
     const glm::ivec2 &size,
     f32 near,
-    f32 far
+    f32 far,
+    eRenderPass context
 )
 {
     return cCamera{
@@ -105,7 +106,7 @@ cCamera cCamera::create_ortho(
             far
         ),
         .size = size,
-        .render_context_handle = GfxEngine::MAIN_2D_CONTEXT,
+        .render_context_handle = context,
         .type = eCameraType::ORTHOGRAPHIC
     };
 }
@@ -114,7 +115,8 @@ cCamera cCamera::create_perspective(
     u8 fov, 
     const glm::ivec2& size,
     f32 near,
-    f32 far
+    f32 far,
+    eRenderPass context
 )
 {
     f32 aspect = (f32)(size.x) / (f32)(size.y);
@@ -122,7 +124,7 @@ cCamera cCamera::create_perspective(
     return cCamera {
         .projection = glm::perspective((f32) fov, aspect, near, far),
         .size = size,
-        .render_context_handle = GfxEngine::MAIN_3D_CONTEXT,
+        .render_context_handle = context,
         .type = eCameraType::PERSPECTIVE
     };
 }

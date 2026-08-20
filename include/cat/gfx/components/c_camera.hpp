@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/gfx_engine.hpp"
 #include <cat/config.hpp>
 #include <cat/util/math.hpp>
 
@@ -17,7 +18,7 @@ struct cCamera
     glm::mat4 projection;
     glm::ivec2 size;
 
-    hash_t render_context_handle;
+    eRenderPass render_context_handle;
     eCameraType type;
 
     void bind(const struct cWorldTransform& transform);
@@ -26,13 +27,15 @@ struct cCamera
     static cCamera create_ortho(
         const glm::ivec2& size,
         f32 near = DEFAULT_ORTHO_NEAR,
-        f32 far = DEFAULT_ORTHO_FAR
+        f32 far = DEFAULT_ORTHO_FAR,
+        eRenderPass context = eRenderPass::MAIN_2D
     );
     static cCamera create_perspective(
         u8 fov,
         const glm::ivec2& size,
         f32 near = DEFAULT_PERSPECTIVE_NEAR,
-        f32 far = DEFAULT_PERSPECTIVE_FAR
+        f32 far = DEFAULT_PERSPECTIVE_FAR,
+        eRenderPass context = eRenderPass::MAIN_3D
     );
 
     static constexpr f32 DEFAULT_ORTHO_NEAR         = -1000.f;

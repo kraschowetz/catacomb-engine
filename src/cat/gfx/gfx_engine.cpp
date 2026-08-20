@@ -3,6 +3,7 @@
 #include "cat/gfx/shader.hpp"
 #include "cat/gfx/text_renderer.hpp"
 #include "cat/util/logger.hpp"
+#include "cat/util/memory.hpp"
 #include "cat/util/util.hpp"
 #include "glaze/core/context.hpp"
 #include "glaze/json/read.hpp"
@@ -104,9 +105,6 @@ GfxEngine::GfxEngine()
     m_sprite_renderer = std::make_unique<SpriteRenderer>();
     m_text_renderer = std::make_unique<TextRenderer>();
 
-    m_render_context_map.insert(MAIN_2D_CONTEXT, RenderContext{});
-    m_render_context_map.insert(MAIN_3D_CONTEXT, RenderContext{});
-    
     GfxConfig config = _load_config_file();
     _update_gl_state(config);
 
@@ -160,6 +158,9 @@ void GfxEngine::prepare(eRenderPass pass)
         default: break;
     }
 
+    m_render_context_map.get(pass)->bind();
+    m_render_context_map.get(pass)->update();
+
     m_current_pass = pass;
 }
 
@@ -200,16 +201,18 @@ void GfxEngine::display()
     m_current_pass = eRenderPass::NONE;
 }
 
-Watcher<RenderContext> GfxEngine::get_render_context(hash_t handle)
+Watcher<RenderContext> GfxEngine::get_render_context(eRenderPass pass)
 {
-    return m_render_context_map.get(handle);
+    ASSERT(m_render_context_map.contains(pass), "accessing null render context");
+
+    return m_render_context_map.get(pass);
 }
 
-void GfxEngine::bind_render_context(hash_t handle, const Shader& shader)
+Watcher<RenderContext> GfxEngine::create_render_context(
+    eRenderPass pass,
+    Watcher<Shader> default_shader
+)
 {
-    Watcher<RenderContext> ctx = m_render_context_map.get(handle);
-
-    shader.set_model_matrix(glm::mat4{1});
-    shader.set_projection_matrix(ctx->projection);
-    shader.set_view_matrix(ctx->view);
+    m_render_context_map.insert(pass, RenderContext{default_shader});
+    return m_render_context_map.get(pass);
 }

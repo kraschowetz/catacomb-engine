@@ -57,9 +57,13 @@ public:
     SpriteRenderer& get_sprite_renderer();
     TextRenderer& get_text_renderer();
     Shader& get_basic_shader(eBasicShaderType type);
-    Watcher<RenderContext> get_render_context(hash_t handle);
 
-    void bind_render_context(hash_t handle, const Shader& shader);
+    // @return ptr to a render pass' render context
+    Watcher<RenderContext> get_render_context(eRenderPass pass);
+    Watcher<RenderContext> create_render_context(
+        eRenderPass pass, 
+        Watcher<Shader> default_shader
+    );
 
     void prepare(eRenderPass pass);
     void display();
@@ -82,7 +86,7 @@ private:
     Weak<Shader> m_current_shader;
 
     std::array<Shader, 4> m_basic_shaders;
-    DenseMap<hash_t, RenderContext> m_render_context_map;
+    DenseMap<eRenderPass, RenderContext> m_render_context_map;
 
     eRenderPass m_current_pass = eRenderPass::NONE;
 };

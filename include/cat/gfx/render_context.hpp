@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/gfx/shader.hpp"
 #include <cat/util/memory.hpp>
 #include <cat/util/math.hpp>
 
@@ -8,10 +9,35 @@ namespace cat
 
 struct RenderContext
 {
-    glm::mat4 view;
-    glm::mat4 projection;
+public:
+    RenderContext() = default;
+    RenderContext(const Watcher<Shader> shader)
+        : m_default_shader(shader)
+    {}
+
+    void set_view(const glm::mat4& mat);
+    void set_projection(const glm::mat4& mat);
+    void set_modulate_color(const glm::vec4& color);
+    void set_font_pixel_range(f32 range);
+
+private:
+    glm::mat4 m_view;
+    glm::mat4 m_projection;
+
+    glm::vec4 m_modulate_color;
+
+    Watcher<Shader> m_default_shader;
+
+    f32 m_font_pixel_range;
+
+    bool m_dirty;
 
     // TODO: FrameBuffer* output;
+public:
+    // @brief apply this context's info to a shader
+    // @param shader: which shader to bind, defaults to `default_shader`
+    void bind(Shared<Shader> shader = nullptr) const;
+    void update(Shared<Shader> shader = nullptr);
 };
 
 }

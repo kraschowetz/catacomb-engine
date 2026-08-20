@@ -95,12 +95,9 @@ void Shader::set_modulate_color(const glm::vec4& color) const
 void Shader::set_font_pixel_range(f32 range) const
 {
     i32 location = m_uniform_cache.font_pixel_range;
-#ifdef DEVELOP
-    if(location < 0)
-        LOG_ERR("font_pixel_range is not an uniform");
-#endif
 
-    GL_CALL(glUniform1f(location, range));
+    if(location >= 0)
+        GL_CALL(glUniform1f(location, range));
 }
 
 void Shader::set_uniform(const std::string& name, f32 val) const

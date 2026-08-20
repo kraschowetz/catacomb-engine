@@ -55,17 +55,22 @@ int main(int argc, char** argv)
     EntityID text = scene.create_entity();
     EntityID sprite = scene.create_entity();
 
-    ecs.add_component<cCamera>(camera, cCamera::create_ortho({800, 600}));
+    ecs.add_component<cCamera>(camera, cCamera::create_ortho(
+        {800, 600},
+        -1000.f,
+        1000.f,
+        eRenderPass::UI_TEXT
+    ));
     ecs.add_component<cText>(text, cText{"ola, mundo!", font});
     ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
-
-    ecs.get_component<cCamera>(camera)->render_context_handle = GfxEngine::MAIN_2D_CONTEXT;
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
     set_transform_scale(sprite, glm::vec2{4.f, 4.f});
     set_transform_position(sprite, glm::vec2{0.f, 0.f});
     set_transform_position(text, glm::vec3{0.f, 0.f, 0.f});
+
+    GfxEngine::get().create_render_context(eRenderPass::UI_TEXT, &text_shader);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -80,9 +85,6 @@ int main(int argc, char** argv)
         }
 
         GfxEngine::get().prepare(eRenderPass::UI_TEXT);
-
-        text_shader.bind();
-        GfxEngine::get().bind_render_context(GfxEngine::MAIN_2D_CONTEXT, text_shader);
 
         auto camera_view = ecs.view<cCamera, cWorldTransform>();
 
