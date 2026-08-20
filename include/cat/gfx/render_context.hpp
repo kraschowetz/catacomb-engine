@@ -34,6 +34,11 @@ public:
     glm::vec4 get_modulate_color() const { return m_modulate_color; }
     f32 get_font_pixel_range() const { return m_font_pixel_range; }
 
+    // @brief apply this context's info to a shader
+    // @param shader: which shader to bind, defaults to `default_shader`
+    void bind(Shared<Shader> shader = nullptr);
+    void update(Shared<Shader> shader = nullptr);
+
 private:
     glm::mat4 m_view;
     glm::mat4 m_projection;
@@ -49,11 +54,6 @@ private:
     bool m_dirty;
 
     // TODO: FrameBuffer* output;
-public:
-    // @brief apply this context's info to a shader
-    // @param shader: which shader to bind, defaults to `default_shader`
-    void bind(Shared<Shader> shader = nullptr) const;
-    void update(Shared<Shader> shader = nullptr);
 };
 
 }

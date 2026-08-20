@@ -36,6 +36,9 @@ int main(int argc, char** argv)
 
     Shader& text_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::TEXT_2D);
     Shader& sprite_shader = GfxEngine::get().get_basic_shader(eBasicShaderType::UNLIT_2D);
+    Shared<Shader> csl_shader = resource_manager.load<Shader, ShaderLoader>(
+        "./res/shader.csl"
+    );
 
     Shared<Font> font = resource_manager.load<Font, FontLoader>(
         "./res/font_atlas.png", "./res/font_atlas.json"
@@ -62,7 +65,9 @@ int main(int argc, char** argv)
         eRenderPass::MAIN_2D
     ));
     ecs.add_component<cText>(text, cText{"ola, mundo!", font});
-    ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
+    Watcher<cSprite> sprite_component = 
+        ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
+    sprite_component->shader = csl_shader;
 
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
@@ -82,7 +87,7 @@ int main(int argc, char** argv)
 
         if(CoreEngine::get().get_input_manager().is_key_just_released(eKeyType::SPACE))
         {
-            LOG_TEXT("A has been pressed\n");
+            LOG_TEXT("SPACE has been pressed");
         }
 
         GfxEngine::get().prepare(eRenderPass::MAIN_2D);

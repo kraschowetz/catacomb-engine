@@ -3,9 +3,9 @@
 
 using namespace cat;
 
-void RenderContext::bind(Shared<Shader> arg_shader) const
+void RenderContext::bind(Shared<Shader> arg_shader)
 {
-    const Shader& shader = arg_shader == nullptr ? *m_default_shader : *arg_shader;
+    Shader& shader = arg_shader == nullptr ? *m_default_shader : *arg_shader;
 
     shader.bind();
 }

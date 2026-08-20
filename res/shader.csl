@@ -6,8 +6,5 @@
 
 void post_process_hook()
 {
-    if(u_my_uniform != 1)
-    {
-        out_color = vec4(0, 0, 1, 1);
-    }
+    out_color = vec4(0, 0, 1, 1);
 }

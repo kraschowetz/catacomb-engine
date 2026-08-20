@@ -17,6 +17,8 @@ static constexpr u32 SPRITE_VERTEX_COUNT = 4;
 static constexpr u32 SPRITE_INDEX_COUNT = 6;
 
 SpriteRenderer::SpriteRenderer()
+    : m_current_texture(nullptr)
+    , m_current_shader(nullptr)
 {
     ASSERT(
         GfxEngine::is_loaded(),
@@ -78,8 +80,10 @@ SpriteRenderer::SpriteRenderer()
 
 void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& transform)
 {
-    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
-        sprite.texture != m_current_texture)
+    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE   ||
+        sprite.texture != m_current_texture         ||
+        sprite.shader != m_current_shader
+    )
     {
         render_batch();
     }
@@ -88,6 +92,16 @@ void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& tran
     {
         GfxEngine::get().get_current_render_context()->set_texture(sprite.texture);
         m_current_texture = sprite.texture;
+    }
+
+    if(sprite.shader && sprite.shader != m_current_shader)
+    {
+        RenderContext& ctx = *GfxEngine::get().get_current_render_context();
+
+        ctx.bind(sprite.shader);
+        ctx.update(sprite.shader);
+
+        m_current_shader = sprite.shader;
     }
 
     add_sprite_to_batch(sprite, transform.as_mat4());
@@ -96,8 +110,10 @@ void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& tran
 void SpriteRenderer::render_sprite(
     const cSprite &sprite, const cWorldTransform& transform)
 {
-    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE ||
-        sprite.texture != m_current_texture)
+    if(m_num_sprites_batched >= SPRITE_BATCH_SIZE   ||
+        sprite.texture != m_current_texture         ||
+        sprite.shader != m_current_shader
+    )
     {
         render_batch();
     }
@@ -106,6 +122,16 @@ void SpriteRenderer::render_sprite(
     {
         GfxEngine::get().get_current_render_context()->set_texture(sprite.texture);
         m_current_texture = sprite.texture;
+    }
+
+    if(sprite.shader && sprite.shader != m_current_shader)
+    {
+        RenderContext& ctx = *GfxEngine::get().get_current_render_context();
+
+        ctx.bind(sprite.shader);
+        ctx.update(sprite.shader);
+
+        m_current_shader = sprite.shader;
     }
 
     add_sprite_to_batch(sprite, transform.matrix);
@@ -225,6 +251,8 @@ void SpriteRenderer::render_batch()
 
     m_batch_position_data.clear();
     m_batch_uv_data.clear();
+
+    m_current_shader = nullptr;
 
     m_ring_index = (m_ring_index + 1) % BUFFER_RING_SIZE;
 }

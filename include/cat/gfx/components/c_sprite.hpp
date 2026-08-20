@@ -13,6 +13,7 @@ struct cSprite
     TextureUV uv;
     glm::ivec2 size;
     Shared<Texture> texture;
+    Shared<class Shader> shader = nullptr;
     u8 z_index;
 
     static cSprite from_json(const glz::generic&);
