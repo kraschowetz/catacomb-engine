@@ -89,6 +89,17 @@ void cCamera::bind(const cWorldTransform& transform)
     ctx->set_projection(this->projection);
 }
 
+void cCamera::copy_to_context(eRenderPass context) const
+{
+    Watcher<RenderContext> src_ctx = 
+        GfxEngine::get().get_render_context(this->render_context_handle);
+    Watcher<RenderContext> dest_ctx = 
+        GfxEngine::get().get_render_context(context);
+
+    dest_ctx->set_view(src_ctx->get_view());
+    dest_ctx->set_projection(src_ctx->get_projection());
+}
+
 cCamera cCamera::create_ortho(
     const glm::ivec2 &size,
     f32 near,

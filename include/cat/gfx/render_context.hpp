@@ -13,7 +13,10 @@ struct RenderContext
 public:
     RenderContext() = default;
     RenderContext(const Watcher<Shader> shader)
-        : m_default_shader(shader)
+        : m_view{1.f}
+        , m_projection{1.f}
+        , m_modulate_color{1.f}
+        , m_default_shader(shader)
     {
         m_textures.fill(nullptr);
     }
@@ -25,6 +28,11 @@ public:
     void set_modulate_color(const glm::vec4& color);
     void set_font_pixel_range(f32 range);
     void set_texture(Watcher<Texture> texture, u32 index = 0);
+
+    glm::mat4 get_view() const { return m_view; }
+    glm::mat4 get_projection() const { return m_projection; }
+    glm::vec4 get_modulate_color() const { return m_modulate_color; }
+    f32 get_font_pixel_range() const { return m_font_pixel_range; }
 
 private:
     glm::mat4 m_view;

@@ -59,7 +59,7 @@ int main(int argc, char** argv)
         {800, 600},
         -1000.f,
         1000.f,
-        eRenderPass::UI_TEXT
+        eRenderPass::MAIN_2D
     ));
     ecs.add_component<cText>(text, cText{"ola, mundo!", font});
     ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
@@ -71,6 +71,7 @@ int main(int argc, char** argv)
     set_transform_position(text, glm::vec3{0.f, 0.f, 0.f});
 
     GfxEngine::get().create_render_context(eRenderPass::UI_TEXT, &text_shader);
+    GfxEngine::get().create_render_context(eRenderPass::MAIN_2D, &sprite_shader);
 
     // bare-bones game loop
     while(!CoreEngine::get().get_input_manager().has_queued_exit())
@@ -84,28 +85,21 @@ int main(int argc, char** argv)
             LOG_TEXT("A has been pressed\n");
         }
 
-        GfxEngine::get().prepare(eRenderPass::UI_TEXT);
+        GfxEngine::get().prepare(eRenderPass::MAIN_2D);
 
         auto camera_view = ecs.view<cCamera, cWorldTransform>();
 
         camera_view.foreach([](cCamera& cam, cWorldTransform& trans){
             cam.bind(trans);
+            cam.copy_to_context(eRenderPass::UI_TEXT);
         });
 
-        // atlas.bind();
-
-        /*
         auto sprite_view = ecs.view<cSprite, cWorldTransform>();
         sprite_view.foreach([](cSprite& spr, cWorldTransform& trans){
             GfxEngine::get().get_sprite_renderer().render_sprite(spr, trans);
         });
-        */
 
-        // text_shader.set_texture(*font->get_atlas(), 0);
-
-        // basic_shader.set_uniform("u_color", glm::vec4{1.f});
-        // text_shader.set_modulate_color(glm::vec4{1});
-        // text_shader.set_font_pixel_range(font->get_pixel_range());
+        GfxEngine::get().prepare(eRenderPass::UI_TEXT);
 
         auto text_view = ecs.view<cText, cTransform>();
         text_view.foreach([](cText& text, cTransform& trans){

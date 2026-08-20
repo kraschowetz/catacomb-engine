@@ -23,6 +23,7 @@ struct cCamera
 
     void bind(const struct cWorldTransform& transform);
     void bind(const struct cTransform& transform);
+    void copy_to_context(eRenderPass context) const;
 
     static cCamera create_ortho(
         const glm::ivec2& size,
