@@ -50,3 +50,7 @@ typedef u64 hash_t;
 #define ASSERT(...) do{}while(false)
 
 #endif
+
+#ifndef LOG_ENGINE_SHADER_WARNINGS
+    #define LOG_ENGINE_SHADER_WARNINGS 0
+#endif
