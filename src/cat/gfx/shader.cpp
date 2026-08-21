@@ -43,7 +43,7 @@ void Shader::set_model_matrix(const glm::mat4& val) const
 
 #if LOG_ENGINE_SHADER_WARNINGS
     if(location < 0)
-        LOG_ERR("model_matrix is not an uniform");
+        LOG_WARN("model_matrix is not an uniform");
 #endif
 }
 
@@ -54,7 +54,7 @@ void Shader::set_view_matrix(const glm::mat4& val) const
 
 #if LOG_ENGINE_SHADER_WARNINGS
     if(location < 0)
-        LOG_ERR("view_matrix is not an uniform");
+        LOG_WARN("view_matrix is not an uniform");
 #endif
 }
 
@@ -65,7 +65,7 @@ void Shader::set_projection_matrix(const glm::mat4& val) const
 
 #if LOG_ENGINE_SHADER_WARNINGS
     if(location < 0)
-        LOG_ERR("projection_matrix is not an uniform");
+        LOG_WARN("projection_matrix is not an uniform");
 #endif
 }
 
@@ -79,7 +79,7 @@ void Shader::set_texture_atlas(const SpriteAtlas& atlas, u32 slot) const
         GL_CALL(glUniform1i(location, slot));
     }
 #if LOG_ENGINE_SHADER_WARNINGS
-    else { LOG_ERR("texture_{} is not an uniform", slot); }
+    else { LOG_WARN("texture_{} is not an uniform", slot); }
 #endif
 }
 
@@ -93,7 +93,7 @@ void Shader::set_texture(const Texture& texture, u32 slot) const
         GL_CALL(glUniform1i(location, slot));
     }
 #if LOG_ENGINE_SHADER_WARNINGS
-    else { LOG_ERR("texture_{} is not an uniform", slot); }
+    else { LOG_WARN("texture_{} is not an uniform", slot); }
 #endif
 }
 
@@ -103,7 +103,7 @@ void Shader::set_modulate_color(const glm::vec4& color) const
     if(location >= 0)
         GL_CALL(glUniform4fv(location, 1, &color[0]));
 #if LOG_ENGINE_SHADER_WARNINGS
-    else { LOG_ERR("modulate_color is not an uniform"); }
+    else { LOG_WARN("modulate_color is not an uniform"); }
 #endif
 }
 
@@ -114,7 +114,7 @@ void Shader::set_font_pixel_range(f32 range) const
     if(location >= 0)
         GL_CALL(glUniform1f(location, range));
 #if LOG_ENGINE_SHADER_WARNINGS
-    else { LOG_ERR("font_pixel_range is not an uniform"); }
+    else { LOG_WARN("font_pixel_range is not an uniform"); }
 #endif
 }
 
@@ -124,7 +124,7 @@ void Shader::set_uniform(const std::string& name, f32 val) const
     if(location >= 0)
         GL_CALL(glUniform1f(location, val));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, i32 val) const
@@ -134,7 +134,7 @@ void Shader::set_uniform(const std::string& name, i32 val) const
     if(location >= 0)
         GL_CALL(glUniform1i(location, val));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, const glm::mat4& val) const
@@ -144,7 +144,7 @@ void Shader::set_uniform(const std::string& name, const glm::mat4& val) const
     if(location >= 0)
         GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &val[0][0]));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, const glm::mat3& val) const
@@ -154,7 +154,7 @@ void Shader::set_uniform(const std::string& name, const glm::mat3& val) const
     if(location >= 0)
         GL_CALL(glUniformMatrix3fv(location, 1, GL_FALSE, &val[0][0]));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec4& val) const
@@ -164,7 +164,7 @@ void Shader::set_uniform(const std::string& name, const glm::vec4& val) const
     if(location >= 0)
         GL_CALL(glUniform4fv(location, 1, &val[0]));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec3& val) const
@@ -174,7 +174,7 @@ void Shader::set_uniform(const std::string& name, const glm::vec3& val) const
     if(location >= 0)
         GL_CALL(glUniform3fv(location, 1, &val[0]));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec2& val) const
@@ -184,5 +184,5 @@ void Shader::set_uniform(const std::string& name, const glm::vec2& val) const
     if(location >= 0)
         GL_CALL(glUniform2fv(location, 1, &val[0]));
     else 
-        LOG_ERR("uniform {} does not exists", name);
+        LOG_WARN("uniform {} does not exists", name);
 }

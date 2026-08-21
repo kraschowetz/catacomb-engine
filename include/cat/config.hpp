@@ -27,6 +27,10 @@ typedef u64 hash_t;
 #include <iostream>     // IWYU pragma: export
 #include <format>       // IWYU pragma: export
 
+#define RED "\033[31m"
+#define RESET "\033[0m"
+#define BOLD "\033[1m"
+
 #define DEBUGBREAK __builtin_trap()
 
 #define FMT_MESSAGE(msg, ...) std::format(msg __VA_OPT__(,) __VA_ARGS__)
@@ -35,11 +39,12 @@ typedef u64 hash_t;
     do {                                                                    \
         if(!(expr))                                                         \
         {                                                                   \
-            std::cerr << "assertion failed! (" << #expr << ")\n";           \
+            std::cerr << RED << BOLD <<                                     \
+                "assertion failed! (" << #expr << ")\n" << RESET;           \
             std::cerr << "\t at line " << __LINE__ << " of "                \
                 << __FILE__ << "\n";                                        \
             __VA_OPT__(std::string errmsg = FMT_MESSAGE(__VA_ARGS__);)      \
-            __VA_OPT__(std::cerr << errmsg << "\n";)                        \
+            __VA_OPT__(std::cerr << BOLD << RED <<errmsg << RESET << "\n";) \
             std::abort();                                                   \
         }                                                                   \
     } while(false)

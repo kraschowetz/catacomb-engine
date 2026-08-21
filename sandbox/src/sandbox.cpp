@@ -65,6 +65,7 @@ int main(int argc, char** argv)
         eRenderPass::MAIN_2D
     ));
     ecs.add_component<cText>(text, cText{"ola, mundo!", font});
+
     Watcher<cSprite> sprite_component = 
         ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
     sprite_component->shader = csl_shader;
