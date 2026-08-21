@@ -74,7 +74,10 @@ int main(int argc, char** argv)
 
     set_transform_scale(sprite, glm::vec2{4.f, 4.f});
     set_transform_position(sprite, glm::vec2{0.f, 0.f});
+
     set_transform_position(text, glm::vec3{0.f, 0.f, 0.f});
+    set_transform_rotation(text, 15.f);
+    set_transform_scale(text, glm::vec2{2, 2});
 
     GfxEngine::get().create_render_context(eRenderPass::UI_TEXT, &text_shader);
     GfxEngine::get().create_render_context(eRenderPass::MAIN_2D, &sprite_shader);

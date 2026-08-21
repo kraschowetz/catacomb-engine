@@ -1,6 +1,7 @@
 #include <cat/gfx/text_renderer.hpp>
 
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/fwd.hpp>
 #include <glm/matrix.hpp>
 #include <memory>
 
@@ -115,57 +116,58 @@ void TextRenderer::render_text(const cText& text, const cTransform& transform)
     {
         glm::mat4 model = transform.as_mat4();
         model *= glm::translate(glm::mat4{1.f}, glm::vec3{quad.position, 0.f});
-        add_glyph_to_batch(quad, transform.position);
+        add_glyph_to_batch(quad, transform);
     }
 }
 
-void TextRenderer::add_glyph_to_batch(const GlyphQuad& glyph, const glm::vec3& position)
+void TextRenderer::add_glyph_to_batch(const GlyphQuad& glyph, const cTransform& transform)
 {
     constexpr u64 NUM_POSITIONS = 12;
     constexpr u64 NUM_UVS = 8;
 
-    const f32 z_index = 0.0f;
-
     u64 i = m_batch_position_data.size();
     u64 j = m_batch_uv_data.size();
-
-    const f32 left = position.x + glyph.position.x;
-    const f32 right = position.x + glyph.position.x + glyph.size.x;
-    const f32 top = position.y + glyph.position.y + glyph.size.y;
-    const f32 bottom = position.y + glyph.position.y;
 
     m_batch_position_data.resize(i + NUM_POSITIONS);
     m_batch_uv_data.resize(j + NUM_UVS);
 
-    // bottom left
-    m_batch_position_data[i] = left;
-    m_batch_position_data[i+1] = bottom;
-    m_batch_position_data[i+2] = z_index;
+    const glm::mat4 model = transform.as_mat4();
 
+    const f32 left      = glyph.position.x;
+    const f32 right     = glyph.position.x + glyph.size.x;
+    const f32 bottom    = glyph.position.y;
+    const f32 top       = glyph.position.y + glyph.size.y;
+
+    const glm::vec3 local_corners[4] = {
+        {left, bottom, 0.f},
+        {right, bottom, 0.f},
+        {right, top, 0.f},
+        {left, top, 0.f}
+    };
+
+    for(u64 corner = 0; corner < 4; ++corner)
+    {
+        glm::vec3 world = glm::vec3{model * glm::vec4{local_corners[corner], 1.f}};
+
+        m_batch_position_data[i + corner*3 + 0] = world.x;
+        m_batch_position_data[i + corner*3 + 1] = world.y;
+        m_batch_position_data[i + corner*3 + 2] = world.z;
+    }
+
+
+    // bottom left
     m_batch_uv_data[j] = glyph.uv_min.x;
     m_batch_uv_data[j+1] = glyph.uv_min.y;
 
     // bottom right
-    m_batch_position_data[i+3] = right;
-    m_batch_position_data[i+4] = bottom;
-    m_batch_position_data[i+5] = z_index;
-
     m_batch_uv_data[j+2] = glyph.uv_max.x;
     m_batch_uv_data[j+3] = glyph.uv_min.y;
 
     // top right
-    m_batch_position_data[i+6] = right;
-    m_batch_position_data[i+7] = top;
-    m_batch_position_data[i+8] = z_index;
-
     m_batch_uv_data[j+4] = glyph.uv_max.x;
     m_batch_uv_data[j+5] = glyph.uv_max.y;
 
     // top left
-    m_batch_position_data[i+9] = left;
-    m_batch_position_data[i+10] = top;
-    m_batch_position_data[i+11] = z_index;
-
     m_batch_uv_data[j+6] = glyph.uv_min.x;
     m_batch_uv_data[j+7] = glyph.uv_max.y;
 

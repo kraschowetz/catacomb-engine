@@ -30,7 +30,7 @@ public:
 private:
     void add_glyph_to_batch(
         const GlyphQuad& glyph,
-        const glm::vec3& position
+        const cTransform& tranform
     );
 
     void render_batch();
