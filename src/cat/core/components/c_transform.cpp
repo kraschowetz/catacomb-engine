@@ -2,6 +2,7 @@
 
 #include "cat/core/components/c_world_transform.hpp"
 #include "cat/core/core_engine.hpp"
+#include "cat/util/logger.hpp"
 #include "cat/util/math.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/quaternion.hpp"
@@ -67,7 +68,7 @@ cTransform cTransform::from_mat4(const glm::mat4 &mat)
 
     glm::mat3 inverse_rotation = glm::mat3(glm::mat4_cast(glm::inverse(trans.rotation)));
 
-    glm::mat3 scale_skew = rotation_scale_mat * inverse_rotation;
+    glm::mat3 scale_skew = inverse_rotation * rotation_scale_mat;
 
     trans.scale = glm::vec3{
         scale_skew[0][0],
@@ -89,7 +90,7 @@ cTransform cTransform::inverse() const
     inv.scale.z = fabs(this->scale.z) < VEC3_EPSILON ? 0.f : 1.f / this->scale.z;
 
     glm::vec3 inv_translation = this->position * -1.f;
-    inv.position = inv.rotation * (inv.scale * inv_translation);
+    inv.position = inv.scale * (inv.rotation * inv_translation);
 
     return inv;
 }
@@ -148,8 +149,8 @@ void rotate_transform(EntityID entity, f32 delta)
     ECS& ecs = _get_ecs();
 
     glm::quat _delta = glm::quat{glm::vec3{0.f, 0.f, glm::radians(delta)}};
-    
-    ecs.get_component<cTransform>(entity)->rotation *= _delta;
+    glm::quat& rotation = ecs.get_component<cTransform>(entity)->rotation;
+    rotation *= _delta;
     ecs.get_component<cWorldTransform>(entity)->dirty = true;
 }
 

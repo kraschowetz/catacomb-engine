@@ -105,7 +105,7 @@ EntityID Scene::create_entity(EntityID parent)
     ecs.add_component<cTransform>(entity, cTransform{
         .position = {},
         .scale = glm::vec3{1.f},
-        .rotation = {}
+        .rotation = {glm::vec3{0.f}}
     });
     ecs.add_component<cWorldTransform>(entity);
     ecs.add_component<cWorldHierarchy>(entity);

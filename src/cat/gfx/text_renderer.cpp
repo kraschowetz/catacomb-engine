@@ -114,8 +114,6 @@ void TextRenderer::render_text(const cText& text, const cTransform& transform)
 
     for(const GlyphQuad& quad : layout)
     {
-        glm::mat4 model = transform.as_mat4();
-        model *= glm::translate(glm::mat4{1.f}, glm::vec3{quad.position, 0.f});
         add_glyph_to_batch(quad, transform);
     }
 }

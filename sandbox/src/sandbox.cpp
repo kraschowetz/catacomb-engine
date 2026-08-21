@@ -64,7 +64,7 @@ int main(int argc, char** argv)
         1000.f,
         eRenderPass::MAIN_2D
     ));
-    ecs.add_component<cText>(text, cText{"ola, mundo!", font});
+    ecs.add_component<cText>(text, cText{"Hello, world!", font});
 
     Watcher<cSprite> sprite_component = 
         ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
@@ -73,11 +73,10 @@ int main(int argc, char** argv)
     seconds_t last_time = CoreEngine::get().get_chrono().current_seconds();
 
     set_transform_scale(sprite, glm::vec2{4.f, 4.f});
-    set_transform_position(sprite, glm::vec2{0.f, 0.f});
+    set_transform_position(sprite, glm::vec2{0.f, -64.f});
 
     set_transform_position(text, glm::vec3{0.f, 0.f, 0.f});
-    set_transform_rotation(text, 15.f);
-    set_transform_scale(text, glm::vec2{2, 2});
+    rotate_transform(text, 15.f);
 
     GfxEngine::get().create_render_context(eRenderPass::UI_TEXT, &text_shader);
     GfxEngine::get().create_render_context(eRenderPass::MAIN_2D, &sprite_shader);
@@ -111,8 +110,9 @@ int main(int argc, char** argv)
         GfxEngine::get().prepare(eRenderPass::UI_TEXT);
 
         auto text_view = ecs.view<cText, cTransform>();
-        text_view.foreach([](cText& text, cTransform& trans){
-            GfxEngine::get().get_text_renderer().render_text(text, trans);
+        text_view.foreach([text](cText& text_component, cTransform& trans){
+            rotate_transform(text, 30.f * CoreEngine::get().get_chrono().get_delta());
+            GfxEngine::get().get_text_renderer().render_text(text_component, trans);
         });
 
         GfxEngine::get().display();

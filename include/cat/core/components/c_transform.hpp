@@ -15,9 +15,9 @@ namespace cat
 
 struct cTransform
 {
-	glm::vec3 position;	// position in meters
-	glm::vec3 scale;
-	glm::quat rotation;
+	glm::vec3 position{0.f}; // pixels in 2D, meters in 3D
+	glm::vec3 scale{1.f};
+	glm::quat rotation{glm::vec3{0.f, 0.f, 0.f}};
 
     // using this instead of a ctor to keep the c-style ctor
     static cTransform from_mat4(const glm::mat4& mat);
