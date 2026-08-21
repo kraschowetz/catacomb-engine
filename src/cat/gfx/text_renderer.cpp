@@ -112,9 +112,13 @@ void TextRenderer::render_text(const cText& text, const cTransform& transform)
         text.get_font_size()
     );
 
-    for(const GlyphQuad& quad : layout)
+    u64 lenght = static_cast<u64>(
+        static_cast<f32>(text.get_content().size()) * text.get_visible_ratio()
+    );
+
+    for(u64 i = 0; i < lenght; ++i)
     {
-        add_glyph_to_batch(quad, transform);
+        add_glyph_to_batch(layout[i], transform);
     }
 }
 

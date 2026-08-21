@@ -112,6 +112,9 @@ int main(int argc, char** argv)
         auto text_view = ecs.view<cText, cTransform>();
         text_view.foreach([text](cText& text_component, cTransform& trans){
             rotate_transform(text, 30.f * CoreEngine::get().get_chrono().get_delta());
+            text_component.set_visible_ratio(
+                CoreEngine::get().get_chrono().current_seconds() / 10.f
+            );
             GfxEngine::get().get_text_renderer().render_text(text_component, trans);
         });
 
