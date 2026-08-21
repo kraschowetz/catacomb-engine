@@ -100,6 +100,7 @@ void SpriteRenderer::render_sprite(const cSprite &sprite, const cTransform& tran
 
         ctx.bind(sprite.shader);
         ctx.update(sprite.shader);
+        sprite.shader->setup_custom_uniforms();
 
         m_current_shader = sprite.shader;
     }
@@ -130,6 +131,7 @@ void SpriteRenderer::render_sprite(
 
         ctx.bind(sprite.shader);
         ctx.update(sprite.shader);
+        sprite.shader->setup_custom_uniforms();
 
         m_current_shader = sprite.shader;
     }

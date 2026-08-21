@@ -20,16 +20,21 @@ public:
         static_assert(std::is_invocable_v<CallableT>, "callable must be invocable");
     }
     
-    void operator()()
+    void operator()() const
     {
         (*m_function)();
+    }
+
+    operator bool() const
+    {
+        return m_function != nullptr;
     }
     
 private:
     struct FunctionConcept
     {
         virtual ~FunctionConcept() = default;
-        virtual void operator()() = 0;
+        virtual void operator()() const = 0;
     };
 
     template<typename CallableT>
@@ -39,8 +44,8 @@ private:
             : callable(std::forward<CallableT>(c))
         {}
         
-        void operator()() override {
-            std::invoke(std::forward<CallableT>(callable));
+        void operator()() const override {
+            std::invoke(std::forward<const CallableT>(callable));
         }
         
         CallableT callable;

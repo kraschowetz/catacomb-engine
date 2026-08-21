@@ -2,6 +2,7 @@
 
 #include "cat/gfx/sprite_atlas.hpp"
 #include <cat/util/math.hpp>
+#include <cat/util/function_ptr.hpp>
 #include <cat/util/util.hpp>
 
 #include <cat/gfx/csl/csl.hpp>  // IWYU pragma: export
@@ -23,6 +24,9 @@ public:
 
     Shader(Shader&&) = default;
     Shader& operator=(Shader&&) = default;
+
+    void set_setup_custom_uniforms_method(FunctionPtr&& ptr);
+    void setup_custom_uniforms() const;
 
     u32 get_handle() const;
     u32& get_handle_ref();
@@ -67,9 +71,9 @@ private:
     i32 get_uniform_location(const std::string& name) const;
 
 private:
-    u32 m_handle;
-
+    FunctionPtr m_setup_uniforms;
     UniformCache m_uniform_cache;
+    u32 m_handle;
 
     friend struct ShaderLoader;
 };

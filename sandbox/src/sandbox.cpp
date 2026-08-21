@@ -40,6 +40,8 @@ int main(int argc, char** argv)
         "./res/shader.csl"
     );
 
+    // csl_shader->set_setup_custom_uniforms_method([](){LOG_TEXT("setting da uniform");});
+
     Shared<Font> font = resource_manager.load<Font, FontLoader>(
         "./res/font_atlas.png", "./res/font_atlas.json"
     );

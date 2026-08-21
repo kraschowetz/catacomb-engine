@@ -10,6 +10,17 @@ using namespace cat;
 Shader::Shader(u32 handle) : m_handle(handle) {}
 Shader::Shader() : m_handle(0) {}
 
+void Shader::set_setup_custom_uniforms_method(FunctionPtr&& ptr)
+{
+    m_setup_uniforms = std::forward<FunctionPtr>(ptr);
+}
+
+void Shader::setup_custom_uniforms() const
+{
+    if(m_setup_uniforms)
+        m_setup_uniforms();
+}
+
 void Shader::bind() const
 {
     GL_CALL(glUseProgram(m_handle));
