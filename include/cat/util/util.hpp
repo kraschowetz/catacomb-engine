@@ -10,7 +10,7 @@ namespace cat
 {
 
 template <typename E>
-inline std::underlying_type_t<E> enum_val(E e)
+inline constexpr std::underlying_type_t<E> enum_val(E e)
 {
 	using T = std::underlying_type_t<E>;
 

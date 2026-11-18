@@ -13,6 +13,7 @@ struct cWorldTransform
     bool dirty = true;
 
     glm::vec3 get_position() const;
+    glm::vec3 get_scale() const;
 };
 
 CAT_REGISTER_COMPONENT_TYPE(cWorldTransform);

@@ -7,7 +7,7 @@ file(GLOB_RECURSE SANDBOX_SOURCES
     "src/*.c"
 )
 
-set(CMAKE_CXX_COMPILER /usr/bin/g++-13)
+set(CMAKE_CXX_COMPILER /usr/bin/g++)
 
 # ── define the executable ─────────────────────────────────────
 add_executable(main ${SANDBOX_SOURCES})

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-set(CMAKE_CXX_COMPILER /usr/bin/g++-13)
+set(CMAKE_CXX_COMPILER /usr/bin/g++)
 
 project(catacomb CXX)
 

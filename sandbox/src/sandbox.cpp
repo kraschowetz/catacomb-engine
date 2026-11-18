@@ -66,7 +66,7 @@ int main(int argc, char** argv)
         1000.f,
         eRenderPass::MAIN_2D
     ));
-    ecs.add_component<cText>(text, cText{"Hello, world!", font});
+    ecs.add_component<cText>(text, cText{"Hello, world!\nother thext!", font});
 
     Watcher<cSprite> sprite_component = 
         ecs.add_component<cSprite>(sprite, atlas.get_sprite({0, 0}));
