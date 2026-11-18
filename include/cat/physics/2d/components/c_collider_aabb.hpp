@@ -10,8 +10,8 @@ namespace cat::physics2D
 struct cColliderAABB
 {
     glm::vec2 half_extents;
-    u32 layer = 1;
-    u32 mask = 0xFFFFFFFF;
+    bitmask_32_t layer = 1;
+    bitmask_32_t mask = 0xFFFFFFFF;
 };
 
 CAT_REGISTER_COMPONENT_TYPE(cColliderAABB);

@@ -18,6 +18,9 @@ typedef double f64;
 typedef u8 byte_t;
 typedef u64 hash_t;
 
+typedef u32 bitmask_32_t;
+typedef u64 bitmask_64_t;
+
 #define THROWS noexcept(false)
 #define IN
 #define OUT
