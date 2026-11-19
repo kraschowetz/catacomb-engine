@@ -158,6 +158,8 @@ void Scene::update_transform_subtree(
         glm::mat4 local = ecs.get_component<cTransform>(e)->as_mat4();
         world->matrix = parent_world * local;
         world->dirty = false;
+
+        // TODO: call Physics2D::update(entity)
     }
 
     Watcher<cWorldHierarchy> hierarchy = ecs.get_component<cWorldHierarchy>(e);
