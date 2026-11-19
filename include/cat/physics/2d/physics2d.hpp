@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/core/ecs.hpp"
 #include "spatial_grid.hpp"
 #include "collision_type.hpp"
 #include <cat/util/util.hpp>
@@ -18,6 +19,8 @@ class Physics2D
 {
 public:
     static Physics2D& get();
+
+    void update_entity(EntityID entity);
 
 private:
     template<typename A, typename B>

@@ -1,4 +1,6 @@
 #include "cat/core/components/c_world_transform.hpp"
+#include "cat/physics/2d/components/c_collider_aabb.hpp"
+#include "cat/physics/2d/physics2d.hpp"
 #include "cat/util/memory.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include <cat/core/scene.hpp>
@@ -159,7 +161,10 @@ void Scene::update_transform_subtree(
         world->matrix = parent_world * local;
         world->dirty = false;
 
-        // TODO: call Physics2D::update(entity)
+        if(ecs.has_component<physics2D::cColliderAABB>(e))
+        {
+            physics2D::Physics2D::get().update_entity(e);
+        }
     }
 
     Watcher<cWorldHierarchy> hierarchy = ecs.get_component<cWorldHierarchy>(e);
