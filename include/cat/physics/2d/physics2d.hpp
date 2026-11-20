@@ -21,6 +21,7 @@ public:
     static Physics2D& get();
 
     void update_entity(EntityID entity);
+    bool is_colliding(EntityID entity) const;
 
 private:
     template<typename A, typename B>

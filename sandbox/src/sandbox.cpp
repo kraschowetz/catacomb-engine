@@ -17,6 +17,8 @@
 #include <cat/gfx/shader_loader.hpp>
 #include <cat/gfx/texture_loader.hpp>
 #include <cat/gfx/sprite_atlas.hpp>
+#include <cat/physics/2d/components/c_collider_aabb.hpp>
+#include <cat/physics/2d/physics2d.hpp>
 
 #include <cat/gfx/font.hpp>
 #include <cat/gfx/font_loader.hpp>
@@ -59,6 +61,12 @@ int main(int argc, char** argv)
     EntityID camera = scene.create_entity();
     EntityID text = scene.create_entity();
     EntityID sprite = scene.create_entity();
+
+    ecs.add_component<physics2D::cColliderAABB>(sprite,
+        physics2D::cColliderAABB{
+            .half_extents = glm::vec2(8*4)
+        }
+    );
 
     ecs.add_component<cCamera>(camera, cCamera::create_ortho(
         {800, 600},
@@ -128,6 +136,8 @@ int main(int argc, char** argv)
             last_time = CoreEngine::get().get_chrono().current_seconds();
             LOG_TEXT("FPS: {}", CoreEngine::get().get_chrono().get_fps());
         }
+
+    LOG_TEXT("is_colliding: {}", physics2D::Physics2D::get().is_colliding(sprite));
     }
 
     CoreEngine::get().unload_scene(scene.get_scene_id());
