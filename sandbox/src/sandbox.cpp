@@ -137,7 +137,6 @@ int main(int argc, char** argv)
             LOG_TEXT("FPS: {}", CoreEngine::get().get_chrono().get_fps());
         }
 
-    LOG_TEXT("is_colliding: {}", physics2D::Physics2D::get().is_colliding(sprite));
     }
 
     CoreEngine::get().unload_scene(scene.get_scene_id());

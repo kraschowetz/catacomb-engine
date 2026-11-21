@@ -223,6 +223,9 @@ private:
 	
 };
 
+enum class eLoopControl { CONTINUE, BREAK };
+template<class> inline constexpr bool always_false = false;
+
 template<typename... Components>
 class SimpleView
 {
@@ -256,15 +259,21 @@ public:
 		return *this;
 	}
 
-	void foreach(ForeachFunc func)
-	{
-		foreach_impl(func);
-	}
+    template<typename Func>
+    void foreach(Func&& func)
+    {
+        constexpr auto indices = std::make_index_sequence<sizeof...(Components)>{};
 
-	void foreach(ForeachFuncWithID func)
-	{
-		foreach_impl(func);
-	}
+		// iterate over smallest
+		// using a copy of smalest.entity_list for safe deletions (or insertion, who knows...)
+		for(EntityID id : m_smallest_sparse_set->get_entity_list())
+        {
+            if(!all_contain(id) || !not_excluded(id)) continue;
+
+            if(dispatch(func, id, indices) == eLoopControl::BREAK)
+				return;
+        }
+    }
 
 private:
 	using ComponentTypes = TypeList<Components...>;
@@ -313,44 +322,35 @@ private:
 		);
 	}
 
-	template<u64... Indices>
-	auto make_component_tuple(EntityID id, std::index_sequence<Indices...>)
-	{
-		return std::make_tuple((std::ref(*get_pool_at<Indices>()->get(id)))...);
-	}
+    template<typename Func, typename... Args>
+    static eLoopControl invoke(Func& func, Args&&... args)
+    {
+        using Ret = std::invoke_result_t<Func&, Args...>;
 
-	// private implementation of foreach loops
-	template <typename Func>
-	void foreach_impl(Func func)
-	{
-		constexpr auto indices = std::make_index_sequence<sizeof...(Components)>{};
-		
-		// iterate over smallest
-		// using a copy of smalest.entity_list for safe deletions (or insertion, who knows...)
-		for(EntityID id : m_smallest_sparse_set->get_entity_list())
+        if constexpr(std::is_void_v<Ret>)
 		{
-			if(all_contain(id) && not_excluded(id))
-			{
-				// for methods like my_method(EntityID, ComponentA, ComponentB)
-				if constexpr(std::is_invocable_v<Func, EntityID, Components&...>)
-				{
-					std::apply(
-						func, 
-						std::tuple_cat(
-							std::make_tuple(id), 
-							make_component_tuple(id, indices)
-						)
-					);
-				}
-				else if constexpr(std::is_invocable_v<Func, Components&...>)
-				{
-					std::apply(func, make_component_tuple(id, indices));
-				}
-				else {
-                    ASSERT(false, "bad lambda arguments");
-                }
-			}
+			func(std::forward<Args>(args)...);
+			return eLoopControl::CONTINUE;
 		}
+        else
+		{
+			static_assert(std::is_same_v<Ret, eLoopControl>,
+				"foreach callback must return void or eLoopControl");
+
+            return func(std::forward<Args>(args)...);
+        }
+    }
+
+    template<typename Func, u64... Indices>
+	eLoopControl dispatch(Func& func, EntityID id, std::index_sequence<Indices...>)
+	{
+		if constexpr(std::is_invocable_v<Func&, EntityID, Components&...>)
+			return invoke(func, id, *get_pool_at<Indices>()->get(id)...);
+		else if constexpr(std::is_invocable_v<Func&, Components&...>)
+			return invoke(func, *get_pool_at<Indices>()->get(id)...);
+		else
+			static_assert(always_false<Func>,
+				"bad lambda arguments: expected (EntityID, Components&...) or (Components&...)");
 	}
 };
 
