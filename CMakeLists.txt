@@ -50,7 +50,7 @@ target_include_directories(catacomb SYSTEM PUBLIC
 )
 
 # ── compiler warnings ─────────────────────────────────────────
-target_compile_options(catacomb PRIVATE
+target_compile_options(catacomb PUBLIC
     -Wall
     -Wextra
     -Wconversion
@@ -61,18 +61,21 @@ target_compile_options(catacomb PRIVATE
 )
 
 # ── compile definitions per build type ───────────────────────
-target_compile_definitions(catacomb PRIVATE
+target_compile_definitions(catacomb PUBLIC
     $<$<CONFIG:Debug>:DEVELOP ENABLE_BENCHMARK>
     $<$<CONFIG:Develop>:DEVELOP ENABLE_BENCHMARK>
     LINUX
 )
 
 # ── optimization flags per build type ────────────────────────
-target_compile_options(catacomb PRIVATE
+target_compile_options(catacomb PUBLIC
     $<$<CONFIG:Debug>:-g -O0>
     $<$<CONFIG:Develop>:-g -O1> 
     $<$<CONFIG:Release>:-O3>           
 )
 
 # ── subdirectory ──────────────────────────────────────────────
-add_subdirectory(sandbox)
+option(CATACOMB_BUILD_SANDBOX "Build the sandbox" ${PROJECT_IS_TOP_LEVEL})
+if(CATACOMB_BUILD_SANDBOX)
+    add_subdirectory(sandbox)
+endif()
