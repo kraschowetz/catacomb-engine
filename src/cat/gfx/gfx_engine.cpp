@@ -104,7 +104,10 @@ void GfxEngine::unload_basic_shaders()
 
 GfxEngine::GfxEngine()
 {
+    _is_engine_loaded = true;
+
     m_main_window = std::make_unique<SdlCanvas>();
+
     m_sprite_renderer = std::make_unique<SpriteRenderer>();
     m_text_renderer = std::make_unique<TextRenderer>();
 
@@ -112,8 +115,6 @@ GfxEngine::GfxEngine()
     _update_gl_state(config);
 
     load_basic_shaders();
-
-    _is_engine_loaded = true;
 }
 
 GfxEngine::~GfxEngine()
