@@ -1,3 +1,4 @@
+#include "cat/gfx/gfx_engine.hpp"
 #include <cat/gfx/texture_loader.hpp>
 
 #include <cat/gfx/gfx_util.hpp>
@@ -66,6 +67,11 @@ hash_t TextureLoader::hash(const std::string &path) const noexcept
 
 void TextureLoader::unload(Texture *texture) const
 {
+    ASSERT(texture != nullptr);
+
+    if(!GfxEngine::is_loaded())
+        return;
+
     u32 temp_handle = texture->get_handle();
     glDeleteTextures(1, &temp_handle);
     texture->get_handle_ref() = 0;

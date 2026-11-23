@@ -24,6 +24,9 @@ CoreEngine::CoreEngine()
 
 CoreEngine::~CoreEngine()
 {
+    for(Scene& scene : m_loaded_scenes)
+        unload_scene(scene.get_scene_id());
+
     m_loaded_scenes.clear();
 }
 

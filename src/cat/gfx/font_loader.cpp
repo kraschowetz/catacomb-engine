@@ -1,11 +1,11 @@
 #include <cat/gfx/font_loader.hpp>
 
 #include "cat/error.hpp"
+#include "cat/gfx/gfx_engine.hpp"
 #include "cat/gfx/gfx_util.hpp"
 #include "cat/gfx/font.hpp"
 #include "cat/gfx/msdf_schema.hpp"
 
-#include <cerrno>
 #include <cstddef>
 #include <glaze/json/read.hpp>
 #include <string>
@@ -119,6 +119,13 @@ hash_t FontLoader::hash(
 
 void FontLoader::unload(Font* font) const
 {
+    ASSERT(font != nullptr);
+
+    // ignore glDelete operations if GfxEngine is not loaded
+    // probably the game is being terminated
+    if(!GfxEngine::is_loaded())
+        return;
+
     u32 temp_handle = font->m_atlas.get_handle();
     glDeleteTextures(1, &temp_handle);
     font->m_atlas.get_handle_ref() = 0;

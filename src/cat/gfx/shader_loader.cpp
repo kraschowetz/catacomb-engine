@@ -160,6 +160,11 @@ hash_t ShaderLoader::hash(
 
 void ShaderLoader::unload(Shader* shader) const
 {
+    ASSERT(shader != nullptr);
+
+    if(!GfxEngine::is_loaded())
+        return;
+
     glDeleteProgram(shader->get_handle());
 }
 
