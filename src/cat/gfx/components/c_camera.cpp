@@ -140,7 +140,7 @@ cCamera cCamera::create_perspective(
     };
 }
 
-cCamera cCamera::from_json(glz::generic &json)
+cCamera cCamera::from_json(const glz::generic &json)
 {
     const auto& is_ortho_json = json["is_ortho"];
     
