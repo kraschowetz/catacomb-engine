@@ -5,6 +5,8 @@
 #include <cat/config.hpp>
 #include <cat/util/math.hpp>
 
+#include <cat/core/component_io.hpp>
+
 namespace cat
 {
 
@@ -40,7 +42,7 @@ struct cCamera
         eRenderPass context = eRenderPass::MAIN_3D
     );
 
-    static cCamera from_json(glz::generic& json);
+    static cCamera from_json(const glz::generic& json);
 
     static constexpr f32 DEFAULT_ORTHO_NEAR         = -1000.f;
     static constexpr f32 DEFAULT_ORTHO_FAR          = 1000.f;
@@ -49,5 +51,7 @@ struct cCamera
 };
 
 CAT_REGISTER_COMPONENT_TYPE(cCamera);
+
+static_assert(GlazeReflectable<cCamera>);
 
 }
