@@ -153,7 +153,9 @@ cCamera cCamera::from_json(const glz::generic &json)
         ASSERT(json.contains("size"), 
             "cCamera component must contain 'size' value");
 
-        glm::ivec2 size = json["size"].get<glm::ivec2>();
+        glm::ivec2 size;
+        size.x = json["size"]["x"].as<i32>();
+        size.y = json["size"]["y"].as<i32>();
         f32 near = DEFAULT_ORTHO_NEAR;
         f32 far = DEFAULT_ORTHO_FAR;
         eRenderPass context = eRenderPass::MAIN_2D;
