@@ -7,6 +7,7 @@
 #include <glm/fwd.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "cat/core/components/c_world_transform.hpp"
+#include <cat/core/glz_meta.hpp>
 #include "cat/gfx/gfx_engine.hpp"
 
 using namespace cat;
@@ -152,7 +153,7 @@ cCamera cCamera::from_json(const glz::generic &json)
         ASSERT(json.contains("size"), 
             "cCamera component must contain 'size' value");
 
-        glm::ivec2 size = json["size"].as<glm::ivec2>();
+        glm::ivec2 size = json["size"].get<glm::ivec2>();
         f32 near = DEFAULT_ORTHO_NEAR;
         f32 far = DEFAULT_ORTHO_FAR;
         eRenderPass context = eRenderPass::MAIN_2D;
