@@ -8,6 +8,7 @@
 #include "glaze/core/context.hpp"
 #include "glaze/json/read.hpp"
 #include "glaze/json/write.hpp"
+#include <atomic>
 #include <cat/gfx/gfx_engine.hpp>
 
 #include <cat/gfx/gfx_config.hpp>
@@ -24,6 +25,8 @@
 #include <memory>
 
 using namespace cat;
+
+static std::atomic_bool _is_engine_loaded = false;
 
 static void _save_config_file(const GfxConfig& config)
 {
@@ -96,7 +99,7 @@ void GfxEngine::unload_basic_shaders()
 {
     // check if opengl ptrs are valid
     // if theyre not, the GfxEngine was probably not loaded
-    return glEnable;
+    return _is_engine_loaded;
 }
 
 GfxEngine::GfxEngine()
@@ -109,11 +112,15 @@ GfxEngine::GfxEngine()
     _update_gl_state(config);
 
     load_basic_shaders();
+
+    _is_engine_loaded = true;
 }
 
 GfxEngine::~GfxEngine()
 {
     unload_basic_shaders();
+
+    _is_engine_loaded = false;
 }
 
 void GfxEngine::update_settings(const GfxConfig& config)
