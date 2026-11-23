@@ -139,3 +139,43 @@ cCamera cCamera::create_perspective(
         .type = eCameraType::PERSPECTIVE
     };
 }
+
+cCamera cCamera::from_json(glz::generic &json)
+{
+    const auto& is_ortho_json = json["is_ortho"];
+    
+    ASSERT(is_ortho_json.is_boolean());
+
+
+    if(is_ortho_json.get_boolean() == true)
+    {
+        ASSERT(json.contains("size"), 
+            "cCamera component must contain 'size' value");
+
+        glm::ivec2 size = json["size"].as<glm::ivec2>();
+        f32 near = DEFAULT_ORTHO_NEAR;
+        f32 far = DEFAULT_ORTHO_FAR;
+        eRenderPass context = eRenderPass::MAIN_2D;
+
+        if(json.contains("near"))
+            near = json["near"].as<f32>();
+
+        if(json.contains("far"))
+            near = json["far"].as<f32>();
+        
+        if(json.contains("context"))
+            context = json["context"].as<eRenderPass>();
+
+        return create_ortho(
+            size,
+            near,
+            far,
+            context
+        );
+    }
+    else 
+    {
+        // TODO: handle perspective camera loading
+        return create_perspective(45, {800, 600});
+    }
+}

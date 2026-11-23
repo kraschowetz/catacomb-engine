@@ -10,6 +10,8 @@
 #include <cat/util/stable_buffer.hpp>
 #include <cat/util/dense_map.hpp>
 
+#include <glaze/glaze.hpp>
+
 #ifndef CAT_DEFAULT_GFX_CONFIG
     #define CAT_DEFAULT_GFX_CONFIG                  \
         GfxConfig {                                 \
@@ -94,3 +96,19 @@ private:
 };
 
 }
+
+template <>
+struct glz::meta<cat::eRenderPass>
+{
+    using enum cat::eRenderPass;
+    static constexpr auto value = enumerate(
+        "NONE",    NONE,
+        "MAIN_2D", MAIN_2D,
+        "MAIN_3D", MAIN_3D,
+        "UI_2D",   UI_2D,
+        "UI_3D",   UI_3D,
+        "UI_TEXT", UI_TEXT,
+        "AUX_2D",  AUX_2D,
+        "AUX_3D",  AUX_3D
+    );
+};

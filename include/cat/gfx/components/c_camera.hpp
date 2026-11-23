@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cat/core/component_registry.hpp"
 #include "cat/gfx/gfx_engine.hpp"
 #include <cat/config.hpp>
 #include <cat/util/math.hpp>
@@ -39,12 +40,14 @@ struct cCamera
         eRenderPass context = eRenderPass::MAIN_3D
     );
 
+    static cCamera from_json(glz::generic& json);
+
     static constexpr f32 DEFAULT_ORTHO_NEAR         = -1000.f;
     static constexpr f32 DEFAULT_ORTHO_FAR          = 1000.f;
     static constexpr f32 DEFAULT_PERSPECTIVE_NEAR   = 0.0001f;
     static constexpr f32 DEFAULT_PERSPECTIVE_FAR    = 1000.f;
 };
 
-// TODO:create a from_json method (if needed)
+CAT_REGISTER_COMPONENT_TYPE(cCamera);
 
 }
