@@ -141,44 +141,35 @@ cCamera cCamera::create_perspective(
     };
 }
 
+struct CameraJson
+{
+    bool is_ortho = true;
+    glm::ivec2 size{800, 600};
+    std::optional<f32> near;
+    std::optional<f32> far;
+    std::optional<eRenderPass> context;
+};
+
 cCamera cCamera::from_json(const glz::generic &json)
 {
     const auto& is_ortho_json = json["is_ortho"];
     
     ASSERT(is_ortho_json.is_boolean());
+    
+    auto cfg = generic_to<CameraJson>(json);
 
-
-    if(is_ortho_json.get_boolean() == true)
+    if(cfg.is_ortho)
     {
-        ASSERT(json.contains("size"), 
-            "cCamera component must contain 'size' value");
-
-        glm::ivec2 size;
-        size.x = json["size"]["x"].as<i32>();
-        size.y = json["size"]["y"].as<i32>();
-        f32 near = DEFAULT_ORTHO_NEAR;
-        f32 far = DEFAULT_ORTHO_FAR;
-        eRenderPass context = eRenderPass::MAIN_2D;
-
-        if(json.contains("near"))
-            near = json["near"].as<f32>();
-
-        if(json.contains("far"))
-            near = json["far"].as<f32>();
-        
-        if(json.contains("context"))
-            context = json["context"].as<eRenderPass>();
-
         return create_ortho(
-            size,
-            near,
-            far,
-            context
+            cfg.size,
+            cfg.near.value_or(DEFAULT_ORTHO_NEAR),
+            cfg.far.value_or(DEFAULT_ORTHO_FAR),
+            cfg.context.value_or(eRenderPass::MAIN_2D)
         );
     }
     else 
     {
         // TODO: handle perspective camera loading
-        return create_perspective(45, {800, 600});
+        return create_perspective(45, cfg.size);
     }
 }

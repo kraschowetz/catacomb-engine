@@ -18,6 +18,11 @@
                 "position":{"x": 0, "y": 0, "z": 0},
                 "scale":{"x": 4, "y": 4, "z": 1},
                 "rotation":{"x": 0, "y": 0, "z": 0, "w": 1}
+            },
+            "cCamera":
+            {
+                "is_ortho":true,
+                "size":{"x":800, "y":600}
             }
         }
     ]

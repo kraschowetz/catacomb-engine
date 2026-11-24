@@ -1,7 +1,24 @@
 #pragma once
 
 #include <glaze/glaze.hpp>
+#include <cat/config.hpp>
 #include <cat/util/math.hpp>
+
+template <typename T>
+T generic_to(const glz::generic& json)
+{
+    auto str = glz::write_json(json);
+    ASSERT(str.has_value(), "failed to dump generic json");
+
+    auto result = glz::read_json<T>(*str);
+    if(!result)
+    {
+        LOG_ERR("%s\n", glz::format_error(result.error(), *str).c_str());
+        ASSERT(false, "failed to convert generic json");
+    }
+
+    return *result;
+}
 
 template <>
 struct glz::meta<glm::vec4> {
