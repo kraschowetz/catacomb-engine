@@ -141,6 +141,11 @@ void GfxEngine::prepare(eRenderPass pass)
         finish_render_pass();
     }
 
+    ASSERT(m_render_context_map.contains(pass), 
+        "attempting to prepeare for a pass with no context set! ({})", 
+        enum_val(pass)
+    );
+
     switch(pass)
     {
         case eRenderPass::MAIN_2D:
