@@ -11,7 +11,12 @@ inline constexpr char BASIC_UNLIT_2D_FRAGMENT[] = R"std_fragment_2d(
 
     void main()
     {
-        out_color = texture(u_texture_0, v_uv) * u_modulate_color;
+        vec4 texcolor = texture(u_texture_0, v_uv); 
+
+        if(texcolor.a <= 0.05)
+            discard;
+
+        out_color = texcolor * u_modulate_color;
 
         post_process_hook();
     }
